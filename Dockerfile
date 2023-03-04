@@ -1,5 +1,5 @@
 # pull official base image
-FROM node:latest
+FROM node:18.14.2-alpine3.17
 
 # set working directory
 WORKDIR /reactapp
@@ -8,9 +8,9 @@ WORKDIR /reactapp
 # install app dependencies
 COPY package.json ./
 COPY package-lock.json ./
-RUN npm install --silent
+RUN npm install
 
-# add app
+# add appv
 COPY . ./
 
 EXPOSE 3000
