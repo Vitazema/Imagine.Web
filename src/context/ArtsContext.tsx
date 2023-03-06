@@ -1,6 +1,6 @@
 import React from "react"
 import { ArtsContextType } from "../@types/art";
-import Art from "../models/Art"
+import Art, { Prompt } from "../models/Art"
 
 export const ArtsContext = React.createContext<ArtsContextType> ({
     arts: [],
@@ -19,8 +19,9 @@ const ArtsProvider: React.FC<Props> = ({ children }) => {
         new Art('Black cube')
     ]);
 
-    const addArtHandler = (prompt: string) => {
-        const newArt = new Art(prompt)
+    const addArtHandler = (prompt: Prompt) => {
+        const newArt = new Art(prompt.textPrompt)
+        newArt.SetSettings(prompt)
     
         // update state
         setArts((currentArts) => {
