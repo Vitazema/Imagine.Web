@@ -1,33 +1,28 @@
 import React from "react";
 import { ArtsContext } from "../../context/ArtsContext";
-import ArtItem from "./ArtItem";
 
-import classes from "./ArtGallery.module.css";
 import ArtFilter from "./ArtFilter";
+import ArtGrid from "./ArtGrid";
 
 const ArtGallery: React.FC = () => {
   const artsContext = React.useContext(ArtsContext);
-  const [isFavourites, setFilter] = React.useState(false)
-  const filterChangeHandler = (isFavourites: boolean ) => {
-    setFilter(isFavourites)
-    console.log(isFavourites)
-  }
+  const [onlyFavourites, setFilter] = React.useState(false);
+  const filterChangeHandler = (isFavourites: string) => {
+    setFilter(isFavourites === "false" ? false : true);
+  };
+
+  const filteredArts = artsContext?.arts.filter((art) =>
+    onlyFavourites === false ? art : art.favourite === onlyFavourites
+  );
 
   return (
-    <div>
-      <ArtFilter isFavourites={isFavourites} onChangeFilter={filterChangeHandler}/>
-      <ul className={classes.arts}>
-        {artsContext?.arts.map((art) => (
-          <ArtItem
-            key={art.id}
-            title={art.title}
-            progress={art.progress}
-            createdAt={art.createdAt}
-            onCancelPrompt={artsContext.cancelArt.bind(null, art.id)}
-          />
-        ))}
-      </ul>
-    </div>
+    <>
+      <ArtFilter
+        isFavourites={onlyFavourites.toString()}
+        onChangeFilter={filterChangeHandler}
+      />
+      <ArtGrid arts={filteredArts} artsContext={artsContext}></ArtGrid>
+    </>
   );
 };
 

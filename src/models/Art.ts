@@ -4,12 +4,14 @@ class Art {
   progress: number
   createdAt: Date
   prompt: Prompt | undefined
+  favourite: boolean
 
-  constructor(title: string) {
+  constructor(title: string, favourite: boolean) {
     this.id = Date.now() + Math.floor(Math.random() * 100);
     this.title = title;
     this.progress = Math.floor(Math.random() * 100);
     this.createdAt = new Date();
+    this.favourite = favourite
   }
 
   SetSettings = (prompt: Prompt) => {
