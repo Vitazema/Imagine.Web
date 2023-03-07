@@ -1,7 +1,7 @@
 import classes from "./ArtGallery.module.css";
 import Art from "../../models/Art";
 import ArtItem from "./ArtItem";
-import { ArtsContextType } from "../../@types/art";
+import { ArtsContextType } from "../../@types/shared";
 
 function ArtGrid(props: {arts: Art[], artsContext: ArtsContextType}) {
   

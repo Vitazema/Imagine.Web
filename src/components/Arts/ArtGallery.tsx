@@ -1,11 +1,11 @@
 import React from "react";
-import { ArtsContext } from "../../context/ArtsContext";
+import { ArtContext } from "../../context/ArtContext";
 
 import ArtFilter from "./ArtFilter";
 import ArtGrid from "./ArtGrid";
 
 const ArtGallery: React.FC = () => {
-  const artsContext = React.useContext(ArtsContext);
+  const artsContext = React.useContext(ArtContext);
   const [onlyFavourites, setFilter] = React.useState(false);
   const filterChangeHandler = (isFavourites: string) => {
     setFilter(isFavourites === "false" ? false : true);

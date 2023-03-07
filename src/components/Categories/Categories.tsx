@@ -9,7 +9,7 @@ function Categories(props: {
 
   const selectCategoryHandler = (category: string) => {
     props.onSelectCategory(category);
-    setSelected(category)
+    setSelected(category);
   };
 
   return (

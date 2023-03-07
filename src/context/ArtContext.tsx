@@ -1,5 +1,5 @@
 import React from "react"
-import { ArtsContextType } from "../@types/art";
+import { ArtsContextType, ContextProps } from "../@types/shared";
 import Art, { Prompt } from "../models/Art"
 
 const DUMMY_ARTS = [
@@ -12,17 +12,13 @@ const DUMMY_CATEGORIES = [
   "Flower shop", "Text to Image"
 ]
 
-export const ArtsContext = React.createContext<ArtsContextType> ({
+export const ArtContext = React.createContext<ArtsContextType> ({
     arts: [],
     addArt: () => { },
     cancelArt: (id: number) => { },
 })
 
-interface Props {
-    children?: React.ReactNode;
-}
-
-const ArtsProvider: React.FC<Props> = ({ children }) => {
+const ArtProvider = ({ children }: ContextProps) => {
 
     const [arts, setArts] = React.useState<Art[]>(DUMMY_ARTS);
 
@@ -48,9 +44,9 @@ const ArtsProvider: React.FC<Props> = ({ children }) => {
         cancelArt: cancelArtHandler,
     }
 
-    return <ArtsContext.Provider value={contextValue}>
+    return <ArtContext.Provider value={contextValue}>
         {children}
-    </ArtsContext.Provider>
+    </ArtContext.Provider>
 }
 
-export default ArtsProvider
+export default ArtProvider

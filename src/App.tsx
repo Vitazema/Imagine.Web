@@ -1,27 +1,36 @@
-import "./App.css";
+import "./App.css"
 
-import Categories from "./components/Categories/Categories";
-import ArtsProvider from "./context/ArtsContext";
-import ArtGallery from "./components/Arts/ArtGallery";
-import ArtForm from "./components/ArtForm/ArtForm";
+import Categories from "./components/Categories/Categories"
+import ArtProvider from "./context/ArtContext"
+import ArtGallery from "./components/Arts/ArtGallery"
+import ArtForm from "./components/ArtForm/ArtForm"
+import AuthContext from "./context/AuthContext"
+import Header from "./components/Header/MainHeader"
+import AuthProvider from "./context/AuthContext"
 
-const categories = ["lol", "kek"];
+const categories = ["lol", "kek"]
 const selectCategoryHandler = (selectedCategory: string) => {
   const category = {
     selectedCategory,
-    id: Math.random().toString()
+    id: Math.random().toString(),
   }
   console.log(category)
 }
 
 function App() {
   return (
-    <ArtsProvider>
-      <Categories titles={categories} onSelectCategory={selectCategoryHandler}/>
-      <ArtForm />
-      <ArtGallery />
-    </ArtsProvider>
-  );
+    <>
+      <Header />
+      <ArtProvider>
+        <Categories
+          titles={categories}
+          onSelectCategory={selectCategoryHandler}
+        />
+        <ArtForm />
+        <ArtGallery />
+      </ArtProvider>
+    </>
+  )
 }
 
-export default App;
+export default App

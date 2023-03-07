@@ -1,12 +1,12 @@
 import React from "react";
 import { useRef } from "react";
-import { ArtsContext } from "../../context/ArtsContext";
+import { ArtContext } from "../../context/ArtContext";
 import { Prompt } from "../../models/Art";
 import classes from "./ArtForm.module.css";
 
 const NewArt: React.FC = () => {
 
-  const artsContext = React.useContext(ArtsContext);
+  const artsContext = React.useContext(ArtContext);
 
   const promptRef = React.useRef<HTMLInputElement>(null);
   const negativePromptRef = React.useRef<HTMLInputElement>(null)
