@@ -1,5 +1,5 @@
 import React from "react"
-import { ContextProps, CurrentUser } from "../@types/shared"
+import { ContextProps, CurrentUser } from "../@types/context"
 
 const DUMMY_USER = "system"
 

@@ -1,52 +1,68 @@
 import React from "react"
-import { ArtsContextType, ContextProps } from "../@types/shared";
+import { IArtDbContext, ContextProps } from "../@types/context"
 import Art, { Prompt } from "../models/Art"
+import { ArtRepository } from "./ArtRepository"
 
-const DUMMY_ARTS = [
-  new Art('A blue ball', false),
-  new Art('Cant say no more', false),
-  new Art('Black cube', false)
-]
-
-const DUMMY_CATEGORIES = [
-  "Flower shop", "Text to Image"
-]
-
-export const ArtContext = React.createContext<ArtsContextType> ({
-    arts: [],
-    addArt: () => { },
-    cancelArt: (id: number) => { },
+export const ArtContext = React.createContext<IArtDbContext>({
+  arts: [],
+  addArt: () => {},
+  cancelArt: (id: number) => {},
+  isLoading: false,
+  getArts: () => [],
+  error: null
 })
 
 const ArtProvider = ({ children }: ContextProps) => {
+  const [arts, setArts] = React.useState<Art[]>([])
+  const [isLoading, setIsLoading] = React.useState(false)
+  const [error, setError] = React.useState(null)
 
-    const [arts, setArts] = React.useState<Art[]>(DUMMY_ARTS);
+  const getArtsHandler = React.useCallback(async () => {
+    setIsLoading(true)
+    setError(null)
 
-    const addArtHandler = (prompt: Prompt) => {
-        const newArt = new Art(prompt.textPrompt, false)
-        newArt.SetSettings(prompt)
-    
-        // update state
-        setArts((currentArts) => {
-            return currentArts.concat(newArt)
-        })
-    }
-    
-    const cancelArtHandler = (artId: number) => {
-        setArts((currentArts) => {
-            return currentArts.filter(art => art.id !== artId)
-        })
-    }
-    
-    const contextValue: ArtsContextType = {
-        arts: arts,
-        addArt: addArtHandler,
-        cancelArt: cancelArtHandler,
-    }
+    try {
+      const arts = await ArtRepository.getArts()
 
-    return <ArtContext.Provider value={contextValue}>
-        {children}
-    </ArtContext.Provider>
+      setArts(arts)
+    } catch (error: any) {
+      setError(error.message)
+    }
+    setIsLoading(false)
+  }, [])
+
+  const addArtHandler = (prompt: Prompt) => {
+    const newArt = new Art(prompt.textPrompt, false)
+    newArt.SetSettings(prompt)
+
+    // update state
+    setArts((currentArts) => {
+      return currentArts.concat(newArt)
+    })
+  }
+
+  const cancelArtHandler = (artId: number) => {
+    setArts((currentArts) => {
+      return currentArts.filter((art) => art.id !== artId)
+    })
+  }
+
+  React.useEffect(() => {
+    getArtsHandler()
+  }, [getArtsHandler])
+
+  const contextValue: IArtDbContext = {
+    arts: arts,
+    getArts: getArtsHandler,
+    addArt: addArtHandler,
+    cancelArt: cancelArtHandler,
+    isLoading: isLoading,
+    error: error
+  }
+
+  return (
+    <ArtContext.Provider value={contextValue}>{children}</ArtContext.Provider>
+  )
 }
 
 export default ArtProvider
