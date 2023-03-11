@@ -1,15 +1,15 @@
 import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
-import Art, { Prompt } from "../models/Art"
+import { Art, Prompt } from "../models/Art"
 import { ArtRepository } from "./ArtRepository"
 
 export const ArtContext = React.createContext<IArtDbContext>({
   arts: [],
+  isLoading: false,
+  error: null,
+  getArts: () => [],
   addArt: () => {},
   cancelArt: (id: number) => {},
-  isLoading: false,
-  getArts: () => [],
-  error: null
 })
 
 const ArtProvider = ({ children }: ContextProps) => {
@@ -34,11 +34,18 @@ const ArtProvider = ({ children }: ContextProps) => {
   const addArtHandler = (prompt: Prompt) => {
     const newArt = new Art(prompt.textPrompt, false)
     newArt.SetSettings(prompt)
-
-    // update state
-    setArts((currentArts) => {
-      return currentArts.concat(newArt)
-    })
+    
+    setError(null)
+    
+    try {
+      ArtRepository.addArt(newArt)
+      // update state
+      setArts((currentArts) => {
+        return currentArts.concat(newArt)
+      })
+    } catch (error: any) {
+      console.log(error.message)
+    }
   }
 
   const cancelArtHandler = (artId: number) => {
@@ -57,7 +64,7 @@ const ArtProvider = ({ children }: ContextProps) => {
     addArt: addArtHandler,
     cancelArt: cancelArtHandler,
     isLoading: isLoading,
-    error: error
+    error: error,
   }
 
   return (

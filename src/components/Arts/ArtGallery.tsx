@@ -5,7 +5,7 @@ import ErrorModule from "../UI/ErrorModule";
 import ArtFilter from "./ArtFilter";
 import ArtGrid from "./ArtGrid";
 
-const ArtGallery: React.FC = () => {
+function ArtGallery() {
   const artContext = React.useContext(ArtContext);
   const [onlyFavourites, setFilter] = React.useState(false);
   const filterChangeHandler = (isFavourites: string) => {
@@ -29,7 +29,6 @@ const ArtGallery: React.FC = () => {
   if (artContext.isLoading){
     content = <p>Loading...</p>
   }
-
 
   return (
     <>

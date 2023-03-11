@@ -1,4 +1,4 @@
-class Art {
+export class Art {
   id: number
   title: string
   progress: number
@@ -7,10 +7,10 @@ class Art {
   favourite: boolean
 
   constructor(title: string, favourite: boolean) {
-    this.id = Date.now() + Math.floor(Math.random() * 100);
-    this.title = title;
-    this.progress = Math.floor(Math.random() * 100);
-    this.createdAt = new Date();
+    this.id = Math.floor(Math.random() * 100)
+    this.title = title
+    this.progress = Math.floor(Math.random() * 100)
+    this.createdAt = new Date()
     this.favourite = favourite
   }
 
@@ -24,11 +24,9 @@ export class Prompt {
   negativePrompt: string
   amount: number
 
-  constructor(textPrompt: string, negativePrompt: string, amount: number){
+  constructor(textPrompt: string, negativePrompt: string, amount: number) {
     this.textPrompt = textPrompt
     this.negativePrompt = negativePrompt
     this.amount = amount
   }
 }
-
-export default Art;
