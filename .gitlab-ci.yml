@@ -33,7 +33,8 @@ push_image:
 test_async:
   stage: test
   script:
-    - npm install
+    - chmod +x ./buiild-scripts/tests.sh
+    - ./buiild-scripts/tests.sh
     - echo "Running tests... Done perfectly - no bugs at all"
   before_script:
     - echo "Preparing test data..." 
