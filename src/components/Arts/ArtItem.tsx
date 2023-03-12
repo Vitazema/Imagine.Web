@@ -1,5 +1,5 @@
-import React from "react";
-import classes from "./ArtItem.module.css";
+import React from "react"
+import classes from "./ArtItem.module.css"
 
 const ArtItem: React.FC<{
   title: string
@@ -7,9 +7,9 @@ const ArtItem: React.FC<{
   createdAt: Date
   onCancelPrompt: () => void
 }> = (props) => {
-  const createdAt = props.createdAt.toLocaleDateString();
+  const createdAt = props.createdAt.toLocaleDateString()
 
-  const [progress, setProgress] = React.useState(props.progress)  
+  const [progress, setProgress] = React.useState(props.progress)
 
   const onRecreateHandler = () => {
     setProgress(0)
@@ -20,13 +20,17 @@ const ArtItem: React.FC<{
       <div className={classes.artDate}>
         <div>{createdAt}</div>
       </div>
-      {props.title}
-      <div className={classes.artProgress}>Progress: {progress}</div>
-      <button onClick={onRecreateHandler} className={classes.artCancel}>Recreate</button>
-      <button onClick={props.onCancelPrompt} className={classes.artCancel}>
+      <h3>{props.title}</h3>
+      <div className={classes.artProgress}>
+        <p>Progress: {progress}</p>
+      </div>
+      <button onClick={onRecreateHandler}>
+        Recreate
+      </button>
+      <button onClick={props.onCancelPrompt}>
         Cancel
       </button>
     </li>
-  );
-};
-export default ArtItem;
+  )
+}
+export default ArtItem

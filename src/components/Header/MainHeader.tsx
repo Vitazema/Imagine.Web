@@ -1,15 +1,19 @@
 import React, { useContext } from "react"
 import { AuthContext } from "../../context/AuthContext"
+import Navigation from "../Navigation/Navitgation"
+import classes from "./MainHeader.module.css"
 
-const Header: React.FC = () => {
+const MainHeader: React.FC = () => {
   const authContext = React.useContext(AuthContext)
 
   return (
-    <nav>
+    <header className={classes["main-header"]}>
+      <h1>Main</h1>
+      <Navigation/>
       {authContext?.isLoggedIn && <p>Logged in as: {authContext.userName}</p>}
       <button onClick={authContext?.login}>Login</button>
-    </nav>
+    </header>
   )
 }
 
-export default Header
+export default MainHeader

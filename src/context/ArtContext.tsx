@@ -1,10 +1,12 @@
 import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
+import { Features } from "../@types/shared"
 import { Art, Prompt } from "../models/Art"
 import { ArtRepository } from "./ArtRepository"
 
 export const ArtContext = React.createContext<IArtDbContext>({
   arts: [],
+  features: [Features.Flowers, Features.Txt2Img],
   isLoading: false,
   error: null,
   getArts: () => [],
@@ -14,6 +16,7 @@ export const ArtContext = React.createContext<IArtDbContext>({
 
 const ArtProvider = ({ children }: ContextProps) => {
   const [arts, setArts] = React.useState<Art[]>([])
+  const [features, setFeatures] = React.useState<Features[]>([Features.Flowers, Features.Txt2Img])
   const [isLoading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState(null)
 
@@ -34,9 +37,9 @@ const ArtProvider = ({ children }: ContextProps) => {
   const addArtHandler = (prompt: Prompt) => {
     const newArt = new Art(prompt.textPrompt, false)
     newArt.SetSettings(prompt)
-    
+
     setError(null)
-    
+
     try {
       ArtRepository.addArt(newArt)
       // update state
@@ -60,6 +63,7 @@ const ArtProvider = ({ children }: ContextProps) => {
 
   const contextValue: IArtDbContext = {
     arts: arts,
+    features: features,
     getArts: getArtsHandler,
     addArt: addArtHandler,
     cancelArt: cancelArtHandler,

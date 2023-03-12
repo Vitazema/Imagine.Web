@@ -3,6 +3,7 @@ import { Features } from "../@types/shared"
 import { Art } from "../models/Art"
 
 const artApiBaseUrl = "https://localhost:7108"
+const categories = ["Flowers", "Text to image"]
 
 export class ArtRepository {
   public static async getArts(): Promise<Art[]> {

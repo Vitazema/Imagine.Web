@@ -9,17 +9,18 @@
   background-color: #fcfcfc;
 }
 
-.artProgress {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #40005d;
-  border: 1px solid white;
-  padding: 0.5rem;
-  border-radius: 12px;
+.artItem h2 {
+  font-size: 2rem;
+  color: #f7e702;
 }
 
-.artCancel {
+.artItem h3 {
+  color: #eccf77;
+  margin: 0;
+  font-size: 1rem;
+}
+
+.artProgress {
   font-size: 1rem;
   font-weight: bold;
   color: white;

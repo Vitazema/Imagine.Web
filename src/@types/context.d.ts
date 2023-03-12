@@ -4,6 +4,7 @@ export interface ContextProps {
 
 export type IArtDbContext = {
   arts: Art[]
+  features: Features[]
   getArts: () => void
   addArt: (prompt: Prompt) => void
   cancelArt: (id: number) => void

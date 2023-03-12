@@ -20,8 +20,8 @@ const NewArt: React.FC = () => {
 
     const enteredPrompt = new Prompt(
       promptRef.current!.value,
-      negativePromptRef.current!.value,
-      Number(amountRef.current!.value)
+      negativePromptRef.current?.value ?? "",
+      Number(amountRef.current?.value)
     );
 
     if (enteredPrompt.textPrompt.trim().length === 0) {
@@ -32,8 +32,11 @@ const NewArt: React.FC = () => {
     artsContext.addArt(enteredPrompt);
     
     // refresh user input
-    promptRef.current!.value = ''
-    negativePromptRef.current!.value = ''
+    if (promptRef.current != null)
+      promptRef.current.value = ''
+
+    if (negativePromptRef.current != null)
+      negativePromptRef.current.value = ''
   };
 
   const showAdvancedHandler = () => {
@@ -45,18 +48,21 @@ const NewArt: React.FC = () => {
       <label htmlFor="text">Promtp</label>
       <input type="text" id="text" ref={promptRef} />
       <button type="submit">Create</button>
-      <button onClick={showAdvancedHandler} type="button">
+      <button onClick={showAdvancedHandler} className={showAdvanced == true ? "clicked" : ""}>
         Advanced
       </button>
       {showAdvanced && (
         <div>
+          <label>Number</label>
           <input
+          title="asdsd"
             type="number"
             min="1"
             step="1"
             max="4"
             ref={amountRef}
           ></input>
+          <label>Negatives</label>
           <input
             type="text"
             ref={negativePromptRef}
