@@ -33,6 +33,9 @@ variables:
   IMAGE_TAG: v1.0
 
 build:
+  tags:
+    - docker
+    - local
   stage: build
   script:
     - echo "Building image..."
