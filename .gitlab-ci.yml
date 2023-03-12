@@ -29,8 +29,6 @@ stages:
   - deploy
 
 build_image:
-  only:
-    - master
   stage: build
   script:
     - echo "Building image..."
