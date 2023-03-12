@@ -43,6 +43,8 @@ test_async:
     # - node ./specs/start.js ./specs/async.spec.js
 
 deploy:
+  only:
+    - master
   stage: deploy
   script: echo "Define your deployment script!"
   environment: production
