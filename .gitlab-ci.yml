@@ -71,6 +71,7 @@ deploy:
   only:
     - master
   stage: deploy
-  needs: push_image
+  needs: 
+    - push_image
   script: echo "Define your deployment script!"
   environment: production
