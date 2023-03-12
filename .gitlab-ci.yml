@@ -51,6 +51,8 @@ test_async:
     - echo "Cleaning temporary files..."
 
 build_image:
+  only:
+    - master
   stage: deploy
   script:
     - echo "Building image..."
