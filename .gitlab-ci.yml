@@ -12,13 +12,43 @@ image: node:lts-alpine3.17
 
 # This folder is cached between builds
 # https://docs.gitlab.com/ee/ci/yaml/index.html#cache
+
+workflow:
+  rules:
+    - if: $CI_COMMIT_BRANCH != "master" && $CI_PIPELINE_SOURCE != "merge_request_event"
+      when: never
+    - when: always
+
 cache:
   paths:
     - node_modules/
 
-test_async:
+stages:
+  - build
+  - test
+  - deploy
+
+build_image:
+  stage: build
   script:
-    - npm install
+    - echo "Building image..."
+    - echo "Tagging the docker image"    
+
+push_image:
+  only:
+    - master
+  stage: build
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry..."
+
+test_async:
+  stage: test
+  script:
+    - chmod +x ./build-scripts/tests.sh
+    - ./build-scripts/tests.sh
     - echo "Running tests... Done perfectly - no bugs at all"
   before_script:
     - echo "Preparing test data..." 
@@ -26,12 +56,9 @@ test_async:
     - echo "Cleaning temporary files..."
     # - node ./specs/start.js ./specs/async.spec.js
 
-build_image:
-  script:
-    - echo "Building image..."
-    - echo "Tagging the docker image"
-
 deploy:
+  only:
+    - master
   stage: deploy
   script: echo "Define your deployment script!"
   environment: production
