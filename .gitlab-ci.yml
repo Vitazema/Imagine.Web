@@ -16,6 +16,20 @@ cache:
   paths:
     - node_modules/
 
+build_image:
+  stage: build
+  script:
+    - echo "Building image..."
+    - echo "Tagging the docker image"    
+
+push_image:
+  stage: build
+  needs:
+    - build_image
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry..."
+
 test_async:
   stage: test
   script:
@@ -26,18 +40,6 @@ test_async:
   after_script:
     - echo "Cleaning temporary files..."
     # - node ./specs/start.js ./specs/async.spec.js
-
-build_image:
-  stage: build
-  script:
-    - echo "Building image..."
-    - echo "Tagging the docker image"
-    
-push_image:
-  stage: build
-  script:
-    - echo "Logging into docker registry..."
-    - echo "Pushing docker image to registry..."
 
 deploy:
   stage: deploy
