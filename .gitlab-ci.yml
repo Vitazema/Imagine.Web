@@ -17,6 +17,7 @@ cache:
     - node_modules/
 
 test_async:
+  stage: test
   script:
     - npm install
     - echo "Running tests... Done perfectly - no bugs at all"
@@ -27,9 +28,16 @@ test_async:
     # - node ./specs/start.js ./specs/async.spec.js
 
 build_image:
+  stage: build
   script:
     - echo "Building image..."
     - echo "Tagging the docker image"
+    
+push_image:
+  stage: build
+  script:
+    - echo "Logging into docker registry..."
+    - echo "Pushing docker image to registry..."
 
 deploy:
   stage: deploy
