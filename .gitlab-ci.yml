@@ -1,6 +1,6 @@
 # Official framework image. Look for the different tagged releases at:
 # https://hub.docker.com/r/library/node/tags/
-image: node:lts-alpine3.17
+# image: node:lts-alpine3.17
 
 # Pick zero or more services to be used on all builds.
 # Only needed when using a docker container to run your tests in.
@@ -29,7 +29,7 @@ stages:
   - deploy
 
 variables:
-  IMAGE_REPOSITORY: docker.io/zema/imagine-ui
+  IMAGE_REPOSITORY: docker.io/zemaclick/imagine-ui
   IMAGE_TAG: v1.0
 
 build:
@@ -42,22 +42,23 @@ build:
     - chmod +x ./build-scripts/build.sh
     - ./build-scripts/build.sh
 
-test_async:
+test_unit_tests:
   stage: test
   tags:
-    - windows
-  script:
-    - chmod +x ./build-scripts/tests.sh
-    - ./build-scripts/tests.sh
-    - echo "Running tests... Done perfectly - no bugs at all"
+    - linux
+    - docker
+    - local
   before_script:
-    - echo "Preparing test data..." 
-  after_script:
-    - echo "Cleaning temporary files..."
+    - cd src
+    - npm install
+  script:
+    - npm test
 
 build_image:
   only:
     - master
+  tags:
+    - docker
   stage: deploy
   script:
     - echo "Building image..."
@@ -66,6 +67,8 @@ build_image:
 push_image:
   only:
     - master
+  tags:
+    - docker
   stage: deploy
   needs:
     - build_image
