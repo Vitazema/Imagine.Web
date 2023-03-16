@@ -29,13 +29,13 @@ stages:
   - deploy
 
 variables:
-  IMAGE_REPOSITORY: docker.io/zemaclick/imagine-ui
-  IMAGE_TAG: v1.0
+  IMAGE_REPOSITORY: registry.gitlab.com/imagine1164210/imagine-ui
+  IMAGE_TAG: 0.1
 
 build:
   tags:
     - docker
-    - local
+    - windows
   stage: build
   script:
     - echo "Building image..."
@@ -45,18 +45,15 @@ build:
 test_unit_tests:
   stage: test
   tags:
-    - windows
     - docker
-    - local
+    - windows
   before_script:
     - cd src
     - npm install
   script:
     - npm test
   artifacts:
-    untracked: false
     when: always
-    expire_in: "30 days"
     reports:
       junit: junit.xml
 
@@ -65,23 +62,27 @@ build_image:
   only:
     - master
   tags:
-    - docker
+    - shell
+    - linux
   stage: deploy
   script:
-    - echo "Building image..."
-    - echo "Tagging the docker image $IMAGE_REPOSITORY:$IMAGE_TAG"
+    - echo "Building image... and tagging the docker image $IMAGE_REPOSITORY:$IMAGE_TAG"
+    - docker build -t $IMAGE_REPOSITORY:$IMAGE_TAG .
 
 push_image:
   only:
     - master
   tags:
-    - docker
+    - shell
+    - linux
   stage: deploy
   needs:
     - build_image
-  script:
+  before_script:
     - echo "Logging into docker registry..."
-    - echo "Pushing docker image $IMAGE_REPOSITORY:$IMAGE_TAG to registry..."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+  script:
+    - docker push $IMAGE_REPOSITORY:$IMAGE_TAG
 
 deploy:
   only:
