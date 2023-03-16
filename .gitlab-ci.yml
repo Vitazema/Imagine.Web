@@ -28,7 +28,6 @@ variables:
 
 build:
   stage: build
-  stage: build
   tags:
     - docker
     - windows
@@ -55,17 +54,9 @@ test_unit_tests:
 
 build_image:
   stage: deploy
-  stage: deploy
   tags:
     - shell
     - linux
-  only:
-    - master
-  before_script:
-    - echo "Tagging the image:"
-    - export APP_VERSION=$(cat package.json | jq -r .version)
-    # - export VERSION=$APP_VERSION-$CI_PIPELINE_IID
-    - echo $APP_VERSION > version-tag.txt
   only:
     - master
   before_script:
