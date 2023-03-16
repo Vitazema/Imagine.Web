@@ -80,8 +80,6 @@ push_image:
     - master
   needs:
     - build_image
-  dependencies:
-    - build_image
   before_script:
     - export VERSION=$(cat version-tag.txt)
     - echo "Logging into docker registry..."
@@ -99,7 +97,7 @@ deploy:
   needs:
     - push_image
   dependencies:
-    - push_image
+    - build_image
   environment: production
   before_script:
     - export VERSION=$(cat version-tag.txt)
