@@ -94,9 +94,11 @@ deploy:
     - linux
   only:
     - master
-  needs: 
+  needs:
     - push_image
   environment: production
+  dependencies:
+    - push_image
   before_script:
     - export VERSION=$(cat version-tag.txt)
     - export DC_IMAGE_NAME=$IMAGE_NAME
