@@ -29,7 +29,6 @@ stages:
   - deploy
 
 variables:
-  IMAGE_REPOSITORY: imagine-ui
   IMAGE_TAG: "0.1"
 
 build:
@@ -87,8 +86,15 @@ push_image:
 deploy:
   only:
     - master
+  tags:
+    - shell
+    - linux
   stage: deploy
   needs: 
     - push_image
-  script: echo "Define your deployment script!"
   environment: production
+  before_script:
+    - echo "Logging into docker registry..."
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker run -d -p 3000:3000 $CI_REGISTRY_IMAGE:$IMAGE_TAG
