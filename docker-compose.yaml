@@ -1,0 +1,6 @@
+version: '3.9'
+services:
+  web:
+    image: registry.gitlab.com/imagine1164210/imagine-ui
+    ports:
+      - 3000:3000

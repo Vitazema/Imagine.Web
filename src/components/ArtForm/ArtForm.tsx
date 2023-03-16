@@ -45,7 +45,7 @@ const NewArt: React.FC = () => {
 
   return (
     <form onSubmit={submitHandler} className={classes.form}>
-      <label htmlFor="text">Promtp</label>
+      <label htmlFor="text">Promtp here</label>
       <input type="text" id="text" ref={promptRef} />
       <button type="submit">Create</button>
       <button onClick={showAdvancedHandler} className={showAdvanced == true ? "clicked" : ""}>
