@@ -30,7 +30,7 @@ stages:
 
 variables:
   IMAGE_REPOSITORY: imagine-ui
-  IMAGE_TAG: 0.1
+  IMAGE_TAG: "0.1"
 
 build:
   tags:
