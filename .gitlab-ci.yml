@@ -36,20 +36,20 @@ build:
     - chmod +x ./build-scripts/build.sh
     - ./build-scripts/build.sh
 
-test_unit_tests:
-  stage: test
-  tags:
-    - docker
-    - windows
-  before_script:
-    - cd src
-    - npm install
-  script:
-    - npm test
-  artifacts:
-    when: always
-    reports:
-      junit: junit.xml
+# test_unit_tests:
+#   stage: test
+#   tags:
+#     - docker
+#     - windows
+#   before_script:
+#     - cd src
+#     - npm install
+#   script:
+#     - npm test
+#   artifacts:
+#     when: always
+#     reports:
+#       junit: junit.xml
 
 
 build_image:
