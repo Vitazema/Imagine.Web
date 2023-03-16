@@ -63,13 +63,13 @@ build_image:
     - echo "Tagging the image:"
     - export APP_VERSION=$(cat package.json | jq -r .version)
     # - export VERSION=$APP_VERSION-$CI_PIPELINE_IID
-    - echo $APP_VERSION > version-tag.txt
+    - echo "VERSION=$VERSION" >> build.env
   script:
     - echo "Building image... and tagging the docker image $IMAGE_NAME:$APP_VERSION"
     - docker build -t $IMAGE_NAME:$APP_VERSION .
   artifacts:
-    paths:
-      - version-tag.txt
+    reports:
+      dotenv: build.env
 
 push_image:
   stage: deploy
@@ -81,7 +81,6 @@ push_image:
   needs:
     - build_image
   before_script:
-    - export VERSION=$(cat version-tag.txt)
     - echo "Logging into docker registry..."
     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
@@ -99,7 +98,6 @@ deploy:
     - build_image
   environment: production
   before_script:
-    - export VERSION=$(cat version-tag.txt)
     - export DC_IMAGE_NAME=$IMAGE_NAME
     - export DC_IMAGE_TAG=$VERSION
     - echo "Logging into docker registry..."
