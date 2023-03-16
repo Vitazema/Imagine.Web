@@ -29,8 +29,8 @@ stages:
   - deploy
 
 variables:
-  IMAGE_REPOSITORY: registry.gitlab.com/imagine1164210/imagine-ui
-  IMAGE_TAG: "0.1"
+  IMAGE_REPOSITORY: imagine-ui
+  IMAGE_TAG: 0.1
 
 build:
   tags:
@@ -80,9 +80,9 @@ push_image:
     - build_image
   before_script:
     - echo "Logging into docker registry..."
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker push $IMAGE_REPOSITORY:$IMAGE_TAG
+    - docker push $CI_REGISTRY_IMAGE/$IMAGE_REPOSITORY:$IMAGE_TAG
 
 deploy:
   only:
