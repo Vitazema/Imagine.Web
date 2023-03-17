@@ -54,6 +54,8 @@ build:
 
 build_image:
   stage: deploy
+  needs:
+    - build
   tags:
     - shell
     - linux
