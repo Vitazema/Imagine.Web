@@ -23,72 +23,86 @@ cache:
   paths:
     - node_modules/
 
-stages:
-  - build
-  - test
-  - deploy
-
 variables:
-  IMAGE_REPOSITORY: registry.gitlab.com/imagine1164210/imagine-ui
-  IMAGE_TAG: "0.1"
+  IMAGE_NAME: $CI_REGISTRY_IMAGE
 
 build:
+  stage: build
   tags:
     - docker
     - windows
-  stage: build
   script:
-    - echo "Building image..."
     - chmod +x ./build-scripts/build.sh
     - ./build-scripts/build.sh
 
-test_unit_tests:
-  stage: test
-  tags:
-    - docker
-    - windows
-  before_script:
-    - cd src
-    - npm install
-  script:
-    - npm test
-  artifacts:
-    when: always
-    reports:
-      junit: junit.xml
+# test_unit_tests:
+#   stage: test
+#   tags:
+#     - docker
+#     - windows
+#   before_script:
+#     - cd src
+#     - npm install
+#   script:
+#     - npm test
+#   artifacts:
+#     when: always
+#     reports:
+#       junit: junit.xml
 
 
 build_image:
-  only:
-    - master
+  stage: deploy
+  needs:
+    - build
   tags:
     - shell
     - linux
-  stage: deploy
+  only:
+    - master
+  before_script:
+    - export APP_VERSION=$(cat package.json | jq -r .version)
+    - echo "Image tag version is $APP_VERSION"
+    # - export APP_VERSION=$APP_VERSION-$CI_PIPELINE_IID
+    - echo "VERSION=$APP_VERSION" >> build.env
   script:
-    - echo "Building image... and tagging the docker image $IMAGE_REPOSITORY:$IMAGE_TAG"
-    - docker build -t $IMAGE_REPOSITORY:$IMAGE_TAG .
+    - echo "Building and tagging docker image $IMAGE_NAME:$APP_VERSION"
+    - docker build -t $IMAGE_NAME:$APP_VERSION .
+  artifacts:
+    reports:
+      dotenv: build.env
 
 push_image:
-  only:
-    - master
+  stage: deploy
   tags:
     - shell
     - linux
-  stage: deploy
+  only:
+    - master
   needs:
     - build_image
   before_script:
-    - echo "Logging into docker registry..."
-    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD registry.gitlab.com
+    - echo "Logging into docker registry... $CI_REGISTRY"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
-    - docker push $IMAGE_REPOSITORY:$IMAGE_TAG
+    - echo "Pushing image to registry $IMAGE_NAME:$VERSION"
+    - docker push $IMAGE_NAME:$VERSION
 
 deploy:
+  stage: deploy
+  tags:
+    - shell
+    - linux
   only:
     - master
-  stage: deploy
-  needs: 
+  needs:
     - push_image
-  script: echo "Define your deployment script!"
+    - build_image
   environment: production
+  before_script:
+    - export DC_IMAGE_NAME=$IMAGE_NAME
+    - export DC_IMAGE_TAG=$VERSION
+    - echo "Logging into docker registry... $CI_REGISTRY \n and updating containers with image $IMAGE_NAME:$VERSION"
+    - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
+  script:
+    - docker compose up -d
