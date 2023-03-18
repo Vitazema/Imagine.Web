@@ -96,7 +96,6 @@ deploy:
   only:
     - master
   needs:
-    - push_image
     - build_image
   environment: production
   before_script:
