@@ -1,14 +1,13 @@
-import React, { Component } from "react"
 import { Features } from "../@types/shared"
 import { Art } from "../models/Art"
 
-const artApiBaseUrl = "https://localhost:7108"
+const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 const categories = ["Flowers", "Text to image"]
 
 export class ArtRepository {
   public static async getArts(): Promise<Art[]> {
-    const url = `${artApiBaseUrl}/api/arts?artType=${Features.Txt2Img}`
-
+    const url = `${imagineApiBaseUrl}/api/arts?artType=${Features.Txt2Img}`
+    console.log(`fetching ${url} ...`)
     const response = await fetch(url)
     if (!response.ok) {
       throw new Error("Cannot get request")
@@ -23,7 +22,7 @@ export class ArtRepository {
   }
 
   public static async addArt(art: Art) {
-    const url = `${artApiBaseUrl}/api/arts`
+    const url = `${imagineApiBaseUrl}/api/arts`
 
     const body = JSON.stringify(art)
     const response = await fetch(url, {

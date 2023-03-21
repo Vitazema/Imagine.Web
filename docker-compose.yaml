@@ -4,3 +4,6 @@ services:
     image: ${DC_IMAGE_NAME}:${DC_IMAGE_TAG}
     ports:
       - 3000:3000
+    environment:
+      - REACT_APP_IMAGINE_API_URI=http://imagine-api:5000
+    restart: unless-stopped

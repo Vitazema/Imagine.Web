@@ -35,22 +35,6 @@ build:
     - chmod +x ./build-scripts/build.sh
     - ./build-scripts/build.sh
 
-# test_unit_tests:
-#   stage: test
-#   tags:
-#     - docker
-#     - windows
-#   before_script:
-#     - cd src
-#     - npm install
-#   script:
-#     - npm test
-#   artifacts:
-#     when: always
-#     reports:
-#       junit: junit.xml
-
-
 build_image:
   stage: deploy
   needs:
@@ -72,22 +56,6 @@ build_image:
     reports:
       dotenv: build.env
 
-# push_image:
-#   stage: deploy
-#   tags:
-#     - shell
-#     - linux
-#   only:
-#     - master
-#   needs:
-#     - build_image
-#   before_script:
-#     - echo "Logging into docker registry... $CI_REGISTRY"
-#     - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
-#   script:
-#     - echo "Pushing image to registry $IMAGE_NAME:$VERSION"
-#     - docker push $IMAGE_NAME:$VERSION
-
 deploy:
   stage: deploy
   tags:
@@ -101,7 +69,5 @@ deploy:
   before_script:
     - export DC_IMAGE_NAME=$IMAGE_NAME
     - export DC_IMAGE_TAG=$VERSION
-    # - echo "Logging into docker registry... $CI_REGISTRY \n and updating containers with image $IMAGE_NAME:$VERSION"
-    # - docker login -u $CI_REGISTRY_USER -p $CI_REGISTRY_PASSWORD $CI_REGISTRY
   script:
     - docker compose up -d
