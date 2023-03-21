@@ -7,10 +7,8 @@ services:
     environment:
       - REACT_APP_IMAGINE_API_URI=http://localhost:5000
     restart: unless-stopped
-    networks:
-      - imagine-api
 
 networks:
-  imagine-api:
-    external:
-      name: imagine-api
+  default:
+    external: true
+    name: imagine-api
