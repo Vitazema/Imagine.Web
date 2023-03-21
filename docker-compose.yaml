@@ -5,5 +5,12 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_IMAGINE_API_URI=http://imagine-api:5000
+      - REACT_APP_IMAGINE_API_URI=http://localhost:5000
     restart: unless-stopped
+    networks:
+      - imagine-api
+
+networks:
+  imagine-api:
+    external:
+      name: imagine-api
