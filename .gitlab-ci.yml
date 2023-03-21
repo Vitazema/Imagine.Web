@@ -32,8 +32,8 @@ build:
     - docker
     - windows
   script:
-    - chmod +x ./build-scripts/build.sh
-    - ./build-scripts/build.sh
+    - npm install
+    - npm run build
 
 build_image:
   stage: deploy
