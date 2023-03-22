@@ -2,13 +2,16 @@ version: '3.9'
 services:
   web:
     image: ${DC_IMAGE_NAME}:${DC_IMAGE_TAG}
+    container_name: imagine-web
     ports:
       - 3000:3000
     environment:
       - REACT_APP_IMAGINE_API_URI=http://localhost:5000
     restart: unless-stopped
+    networks:
+      - imagine-api
 
 networks:
-  default:
+  imagine-api:
     external: true
     name: imagine-api
