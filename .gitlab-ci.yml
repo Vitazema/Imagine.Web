@@ -27,6 +27,12 @@ cache:
 variables:
   IMAGE_NAME: imagine-ui
 
+sast:
+  stage: test
+  tags:
+    - docker
+    - windows
+
 build:
   stage: build
   tags:
@@ -34,7 +40,7 @@ build:
     - windows
   script:
     - npm install
-    - npm run build
+    - npm run build  
 
 build_image:
   stage: deploy
@@ -72,3 +78,6 @@ deploy:
     - export DC_IMAGE_TAG=$VERSION
   script:
     - docker compose up -d
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
