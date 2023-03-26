@@ -36,6 +36,9 @@ build:
     - npm install
     - npm run build
 
+sast:
+  stage: test
+
 build_image:
   stage: deploy
   needs:
@@ -72,3 +75,6 @@ deploy:
     - export DC_IMAGE_TAG=$VERSION
   script:
     - docker compose up -d
+
+include:
+  - template: Jobs/SAST.gitlab-ci.yml
