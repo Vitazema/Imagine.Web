@@ -27,6 +27,12 @@ cache:
 variables:
   IMAGE_NAME: imagine-ui
 
+sast:
+  stage: test
+  tags:
+    - docker
+    - windows
+
 build:
   stage: build
   tags:
@@ -34,10 +40,7 @@ build:
     - windows
   script:
     - npm install
-    - npm run build
-
-sast:
-  stage: test
+    - npm run build  
 
 build_image:
   stage: deploy
