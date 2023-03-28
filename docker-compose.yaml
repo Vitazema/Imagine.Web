@@ -6,7 +6,7 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_IMAGINE_API_URI=http://95.30.222.161:52346
+      - REACT_APP_IMAGINE_API_URI=http://imaginearts.net
     restart: unless-stopped
 
 networks:
