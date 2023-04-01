@@ -18,7 +18,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "CI=false react-scripts start",
+    "start": "react-scripts start",
     "build": "CI=false react-scripts build",
     "test": "react-scripts test --ci --reporters=default --reporters=jest-junit",
     "eject": "react-scripts eject"

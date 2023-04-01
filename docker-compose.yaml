@@ -8,8 +8,3 @@ services:
     environment:
       - REACT_APP_IMAGINE_API_URI=http://imaginearts.net
     restart: unless-stopped
-
-networks:
-  default:
-    external: true
-    name: imagine
