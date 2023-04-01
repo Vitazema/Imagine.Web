@@ -6,7 +6,7 @@ const categories = ["Flowers", "Text to image"]
 
 export class ArtRepository {
   public static async getArts(): Promise<Art[]> {
-    const url = `${imagineApiBaseUrl}/api/arts?artType=${Features.Txt2Img}`
+    const url = `${imagineApiBaseUrl}/arts?artType=${Features.Txt2Img}`
     console.log(`fetching ${url} ...`)
     const response = await fetch(url)
     if (!response.ok) {
