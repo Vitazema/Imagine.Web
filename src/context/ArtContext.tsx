@@ -1,7 +1,7 @@
 import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { Features } from "../@types/shared"
-import { Art, Prompt } from "../models/Art"
+import { Art, Prompt } from "../@types/Art"
 import { ArtRepository } from "./ArtRepository"
 
 export const ArtContext = React.createContext<IArtDbContext>({

@@ -1,4 +1,4 @@
-import { Art } from "../models/Art";
+import { Art } from "../@types/Art";
 
 export type ArtContextType = {
     arts: Art[];

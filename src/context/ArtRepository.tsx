@@ -1,5 +1,5 @@
 import { Features } from "../@types/shared"
-import { Art } from "../models/Art"
+import { Art } from "../@types/Art"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 const categories = ["Flowers", "Text to image"]

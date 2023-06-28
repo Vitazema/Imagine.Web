@@ -3,7 +3,7 @@ import ArtItem from "./ArtItem";
 import { IArtDbContext } from "../../@types/context";
 import { ArtContext } from "../../context/ArtContext";
 import React from "react";
-import { Art } from "../../models/Art";
+import { Art } from "../../@types/Art";
 
 function ArtGrid(props: {arts: Art[], artsContext: IArtDbContext}) {
   const artContext = React.useContext(ArtContext)

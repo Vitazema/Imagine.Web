@@ -1,7 +1,6 @@
 import React from "react";
-import { useRef } from "react";
 import { ArtContext } from "../../context/ArtContext";
-import { Prompt } from "../../models/Art";
+import { Prompt } from "../../@types/Art";
 import classes from "./ArtForm.module.css";
 
 const NewArt: React.FC = () => {
