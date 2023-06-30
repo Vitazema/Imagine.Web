@@ -1,74 +1,84 @@
-import React from "react"
+import React, { useCallback } from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { Features } from "../@types/shared"
 import { Art, Prompt } from "../@types/Art"
-import { ArtRepository } from "./ArtRepository"
+import { useAddArt, useGetArts } from "./ArtRepository"
+import { Status } from "../components/Common/ApiStatus"
 
-export const ArtContext = React.createContext<IArtDbContext>({
+export const ArtContextDefaultValues: IArtDbContext = {
   arts: [],
   features: [Features.Flowers, Features.Txt2Img],
-  isLoading: false,
-  error: null,
-  getArts: () => [],
-  addArt: () => {},
-  cancelArt: (id: number) => {},
-})
+  getApiStatus: () => ({ status: Status.Idle, isSuccess: false, error: null }),
+  getArts: () => null,
+  addArt: () => null,
+  cancelArt: (id: number) => null,
+}
+
+export const ArtContext = React.createContext<IArtDbContext>(
+  ArtContextDefaultValues
+)
 
 const ArtProvider = ({ children }: ContextProps) => {
   const [arts, setArts] = React.useState<Art[]>([])
-  const [features, setFeatures] = React.useState<Features[]>([Features.Flowers, Features.Txt2Img])
-  const [isLoading, setIsLoading] = React.useState(false)
   const [error, setError] = React.useState(null)
+  const { data, status, isSuccess } = useGetArts()
+  const features = [Features.Flowers, Features.Txt2Img]
 
-  const getArtsHandler = React.useCallback(async () => {
-    setIsLoading(true)
+  const getApiStatus = () => {
+    return { status: status as Status, isSuccess, error }
+  }
+
+  const getArts = useCallback(() => {
     setError(null)
 
     try {
-      const arts = await ArtRepository.getArts()
+      if (isSuccess) {
+        const arts = data.data?.map((artJson: any) => {
+          const art = new Art(artJson.title, false)
+          return art
+        })
 
-      setArts(arts)
+        setArts(arts)
+      }
     } catch (error: any) {
       setError(error.message)
     }
-    setIsLoading(false)
-  }, [])
+  }, [data])
 
-  const addArtHandler = (prompt: Prompt) => {
+  const addArt = (prompt: Prompt) => {
     const newArt = new Art(prompt.textPrompt, false)
     newArt.SetSettings(prompt)
 
     setError(null)
 
     try {
-      ArtRepository.addArt(newArt)
+      // useAddArt(newArt)
       // update state
-      setArts((currentArts) => {
-        return currentArts.concat(newArt)
-      })
+      // setArts((currentArts) => {
+      //   return currentArts.concat(newArt)
+      // })
     } catch (error: any) {
       console.log(error.message)
     }
   }
 
-  const cancelArtHandler = (artId: number) => {
+  const cancelArt = (artId: number) => {
     setArts((currentArts) => {
       return currentArts.filter((art) => art.id !== artId)
     })
   }
 
   React.useEffect(() => {
-    getArtsHandler()
-  }, [getArtsHandler])
+    getArts()
+  }, [getArts])
 
-  const contextValue: IArtDbContext = {
-    arts: arts,
-    features: features,
-    getArts: getArtsHandler,
-    addArt: addArtHandler,
-    cancelArt: cancelArtHandler,
-    isLoading: isLoading,
-    error: error,
+  const contextValue = {
+    arts,
+    features,
+    getApiStatus,
+    getArts,
+    addArt,
+    cancelArt,
   }
 
   return (

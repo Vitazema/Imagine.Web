@@ -1,27 +1,18 @@
-import { Features } from "../@types/shared"
+import { ArtRequest, Features } from "../@types/shared"
 import { Art } from "../@types/Art"
+import axios, { AxiosError } from "axios"
+import { useQuery } from "react-query"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
-const categories = ["Flowers", "Text to image"]
 
-export class ArtRepository {
-  public static async getArts(): Promise<Art[]> {
+  const useGetArts = () => {
     const url = `${imagineApiBaseUrl}/arts?artType=${Features.Txt2Img}`
-    console.log(`fetching ${url} ...`)
-    const response = await fetch(url)
-    if (!response.ok) {
-      throw new Error("Cannot get request")
-    }
-    const responseJson = await response.json()
-
-    const mappedArts = responseJson?.data.map((artJson: any) => {
-      const art = new Art(artJson.title, false)
-      return art
-    })
-    return mappedArts
+    return useQuery<ArtRequest, AxiosError>("arts", () => 
+      axios.get(url).then((response) => response.data)
+    )
   }
 
-  public static async addArt(art: Art) {
+const useAddArt  = async (art: Art) => {
     const url = `${imagineApiBaseUrl}/api/arts`
 
     const body = JSON.stringify(art)
@@ -39,4 +30,5 @@ export class ArtRepository {
     const data = await response.json()
     console.log(data)
   }
-}
+
+export { useGetArts, useAddArt}

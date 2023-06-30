@@ -2,14 +2,13 @@ export interface ContextProps {
   children?: React.ReactNode;
 }
 
-export type IArtDbContext = {
+export interface IArtDbContext {
   arts: Art[]
   features: Features[]
+  getApiStatus(): { status: Status; isSuccess: boolean; error: string | null };
   getArts: () => void
   addArt: (prompt: Prompt) => void
   cancelArt: (id: number) => void
-  isLoading: boolean
-  error: string | null
 }
 
 export type CurrentUser = {

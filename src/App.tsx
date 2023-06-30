@@ -4,11 +4,14 @@ import ArtProvider from "./context/ArtContext"
 import ArtGallery from "./components/Arts/ArtGallery"
 import ArtForm from "./components/ArtForm/ArtForm"
 import MainHeader from "./components/Header/MainHeader"
+import { QueryClient, QueryClientProvider } from "react-query"
+
+const queryClient = new QueryClient()
 
 function App() {
   return (
-    <>
-      <ArtProvider>
+    <QueryClientProvider client={queryClient}>
+      <ArtProvider >
         <section>
           <MainHeader />
         </section>
@@ -19,7 +22,7 @@ function App() {
           <ArtGallery />
         </section>
       </ArtProvider>
-    </>
+    </QueryClientProvider>
   )
 }
 
