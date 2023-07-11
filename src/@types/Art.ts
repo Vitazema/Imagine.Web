@@ -3,10 +3,11 @@ export class Art {
   title: string
   progress: number
   createdAt: Date
+  url: string | undefined
   prompt: Prompt | undefined
   favourite: boolean
 
-  constructor(title: string, favourite: boolean) {
+  constructor(id: number, title: string, favourite: boolean) {
     this.id = Math.floor(Math.random() * 100)
     this.title = title
     this.progress = Math.floor(Math.random() * 100)

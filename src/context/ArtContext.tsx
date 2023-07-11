@@ -2,7 +2,7 @@ import React, { useCallback } from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { Features } from "../@types/shared"
 import { Art, Prompt } from "../@types/Art"
-import { useAddArt, useGetArts } from "./ArtRepository"
+import { useAddArt, useGetArt, useGetArts } from "./ArtRepository"
 import { Status } from "../components/Common/ApiStatus"
 
 export const ArtContextDefaultValues: IArtDbContext = {
@@ -33,8 +33,8 @@ const ArtProvider = ({ children }: ContextProps) => {
 
     try {
       if (isSuccess) {
-        const arts = data.data?.map((artJson: any) => {
-          const art = new Art(artJson.title, false)
+        const arts = data.data?.map((artJson: Art) => {
+          const art = new Art(artJson.id, artJson.title, false)
           return art
         })
 
@@ -46,8 +46,8 @@ const ArtProvider = ({ children }: ContextProps) => {
   }, [data])
 
   const addArt = (prompt: Prompt) => {
-    const newArt = new Art(prompt.textPrompt, false)
-    newArt.SetSettings(prompt)
+    // const newArt = new Art(prompt.textPrompt, false)
+    // newArt.SetSettings(prompt)
 
     setError(null)
 

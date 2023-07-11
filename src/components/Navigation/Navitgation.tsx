@@ -16,7 +16,7 @@ function Navigation() {
         return (
           <button
             onClick={() => selectCategoryHandler(feature)}
-            className={selected == feature ? "clicked" : ""}
+            className={selected === feature ? "clicked" : ""}
             key={Math.random().toString()}
           >
             {feature}

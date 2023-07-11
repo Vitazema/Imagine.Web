@@ -34,15 +34,14 @@ function ArtGallery() {
     content = <h1>"Arts not found."</h1>
   }
 
-
   return (
-    <>
+    <section>
       <ArtFilter
         isFavourites={onlyFavourites.toString()}
         onChangeFilter={filterChangeHandler}
       />
       {content}
-    </>
+    </section>
   )
 }
 
