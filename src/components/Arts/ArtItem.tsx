@@ -1,12 +1,17 @@
 import React from "react"
 import classes from "./ArtItem.module.css"
+import { Link } from "react-router-dom"
 
-const ArtItem: React.FC<{
+type Args = {
+  id: number
   title: string
   progress: number
   createdAt: Date
   onCancelPrompt: () => void
-}> = (props) => {
+  onEdit: () => void
+}
+
+const ArtItem: React.FC<Args> = (props) => {
   const createdAt = props.createdAt.toLocaleDateString()
 
   const [progress, setProgress] = React.useState(props.progress)
@@ -27,6 +32,11 @@ const ArtItem: React.FC<{
       <button onClick={onRecreateHandler}>
         Recreate
       </button>
+      <Link 
+        className="btn btn-primary w-100"
+        to={`/gallery/${props.id}`}>
+        Edit
+      </Link>
       <button onClick={props.onCancelPrompt}>
         Cancel
       </button>

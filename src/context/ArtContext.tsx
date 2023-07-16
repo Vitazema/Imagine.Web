@@ -1,28 +1,34 @@
 import React, { useCallback } from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { Features } from "../@types/shared"
-import { Art, Prompt } from "../@types/Art"
-import { useAddArt, useGetArt, useGetArts } from "./ArtRepository"
+import { Art, ArtSettings } from "../@types/Art"
+import { useAddArt, useDeleteArt, useGetArt, useGetArts } from "./ArtHooks"
 import { Status } from "../components/Common/ApiStatus"
+import { AuthContext } from "./AuthContext"
 
-export const ArtContextDefaultValues: IArtDbContext = {
-  arts: [],
-  features: [Features.Flowers, Features.Txt2Img],
-  getApiStatus: () => ({ status: Status.Idle, isSuccess: false, error: null }),
-  getArts: () => null,
-  addArt: () => null,
-  cancelArt: (id: number) => null,
-}
+// export const ArtContextDefaultValues: IArtDbContext = {
+//   artSettings: undefined,
+//   arts: [],
+//   features: [Features.Flowers, Features.Txt2Img],
+//   getApiStatus: () => ({ status: Status.Idle, isSuccess: false, error: null }),
+//   getArts: () => null,
+//   addArt: () => null,
+//   cancelArt: (id: number) => null,
+//   submitArt: (art: Art) => null
+// }
 
 export const ArtContext = React.createContext<IArtDbContext>(
-  ArtContextDefaultValues
+  {} as IArtDbContext
 )
 
-const ArtProvider = ({ children }: ContextProps) => {
+const ArtProvider: React.FC<ContextProps> = ({ children }) => {
+  const authContext = React.useContext(AuthContext)
   const [arts, setArts] = React.useState<Art[]>([])
   const [error, setError] = React.useState(null)
   const { data, status, isSuccess } = useGetArts()
   const features = [Features.Flowers, Features.Txt2Img]
+  const addArtMutation = useAddArt()
+  const deleteArtMutation = useDeleteArt()
 
   const getApiStatus = () => {
     return { status: status as Status, isSuccess, error }
@@ -34,9 +40,14 @@ const ArtProvider = ({ children }: ContextProps) => {
     try {
       if (isSuccess) {
         const arts = data.data?.map((artJson: Art) => {
-          const art = new Art(artJson.id, artJson.title, false)
+          const art = new Art(artJson.id, artJson.user, artJson.title, false)
+          if (artJson.settings !== undefined) {
+            art.settings = artJson.settings
+          }
           return art
         })
+
+        // todo: maybe arts перекрывают new arts
 
         setArts(arts)
       }
@@ -45,24 +56,36 @@ const ArtProvider = ({ children }: ContextProps) => {
     }
   }, [data])
 
-  const addArt = (prompt: Prompt) => {
-    // const newArt = new Art(prompt.textPrompt, false)
-    // newArt.SetSettings(prompt)
-
-    setError(null)
-
+  const submitArt = (settings: ArtSettings) => {
+    const art = new Art(
+      undefined,
+      authContext.userName,
+      settings.textPrompt,
+      false
+    )
     try {
-      // useAddArt(newArt)
-      // update state
-      // setArts((currentArts) => {
-      //   return currentArts.concat(newArt)
-      // })
+      addArtMutation.mutate(art)
+
+      if (addArtMutation.isSuccess) {
+        setArts((currentArts) => {
+          return currentArts.concat(art)
+        })
+      }
     } catch (error: any) {
-      console.log(error.message)
+      setError(error.message)
+    }
+  }
+
+  const editArt = () => {
+    try {
+      
+    } catch (error: any) {
+      setError(error.message)
     }
   }
 
   const cancelArt = (artId: number) => {
+    deleteArtMutation.mutate(artId)
     setArts((currentArts) => {
       return currentArts.filter((art) => art.id !== artId)
     })
@@ -77,7 +100,8 @@ const ArtProvider = ({ children }: ContextProps) => {
     features,
     getApiStatus,
     getArts,
-    addArt,
+    submitArt,
+    editArt,
     cancelArt,
   }
 

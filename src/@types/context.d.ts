@@ -1,3 +1,5 @@
+import { ArtSettings } from "./Art";
+
 export interface ContextProps {
   children?: React.ReactNode;
 }
@@ -7,7 +9,8 @@ export interface IArtDbContext {
   features: Features[]
   getApiStatus(): { status: Status; isSuccess: boolean; error: string | null };
   getArts: () => void
-  addArt: (prompt: Prompt) => void
+  submitArt: (art: Art) => void
+  editArt: (id: number) => void
   cancelArt: (id: number) => void
 }
 

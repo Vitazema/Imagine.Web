@@ -18,7 +18,7 @@ function App() {
             <MainHeader />
           <Routes>
             <Route path="/" element={[<ArtForm />, <ArtGallery />]}></Route>
-            <Route path="/gallery/:id" element={<ArtDetail />}></Route>
+            <Route path="/gallery/:id" element={<ArtDetail art={undefined} submitted={() => {}} />}></Route>
           </Routes>
         </ArtProvider>
       </BrowserRouter>

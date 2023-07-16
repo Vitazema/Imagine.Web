@@ -1,29 +1,27 @@
 export class Art {
   id: number
-  title: string
+  title?: string | undefined
   progress: number
   createdAt: Date
-  url: string | undefined
-  prompt: Prompt | undefined
+  url?: string | undefined
+  settings?: ArtSettings
   favourite: boolean
+  user: string
 
-  constructor(id: number, title: string, favourite: boolean) {
-    this.id = Math.floor(Math.random() * 100)
+  constructor(id: number | undefined, user: string, title: string | undefined, favourite: boolean) {
+    this.id = id || 0
+    this.user = user
     this.title = title
-    this.progress = Math.floor(Math.random() * 100)
-    this.createdAt = new Date()
+    this.progress = 0
     this.favourite = favourite
-  }
-
-  SetSettings = (prompt: Prompt) => {
-    this.prompt = prompt
+    this.createdAt = new Date()
   }
 }
 
-export class Prompt {
+export class ArtSettings {
   textPrompt: string
   negativePrompt: string
-  amount: number
+  amount: number  
 
   constructor(textPrompt: string, negativePrompt: string, amount: number) {
     this.textPrompt = textPrompt

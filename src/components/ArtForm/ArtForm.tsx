@@ -1,38 +1,42 @@
 import React from "react"
 import { ArtContext } from "../../context/ArtContext"
-import { Prompt } from "../../@types/Art"
 import classes from "./ArtForm.module.css"
+import { Art, ArtSettings } from "../../@types/Art"
+import { useAddArt } from "../../context/ArtHooks"
 
-const NewArt: React.FC = () => {
+const ArtForm: React.FC = () => {
   const artsContext = React.useContext(ArtContext)
 
-  const promptRef = React.useRef<HTMLInputElement>(null)
-  const negativePromptRef = React.useRef<HTMLInputElement>(null)
-  const amountRef = React.useRef<HTMLInputElement>(null)
+  const [settingsState, setSettingsState] = React.useState<ArtSettings>(
+    new ArtSettings("", "", 0)
+  )
+
+  // const promptRef = React.useRef<HTMLInputElement>(null)
+  // const negativePromptRef = React.useRef<HTMLInputElement>(null)
+  // const amountRef = React.useRef<HTMLInputElement>(null)
 
   const [showAdvanced, setShowAdvanced] = React.useState(true)
 
-  const submitHandler = (event: React.FormEvent) => {
+  const onSubmit: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
     // don't reload page on submit
-    event.preventDefault()
+    e.preventDefault()
+    artsContext.submitArt(settingsState)
 
-    const enteredPrompt = new Prompt(
-      promptRef.current!.value,
-      negativePromptRef.current?.value ?? "",
-      Number(amountRef.current?.value)
-    )
+    // const enteredPrompt = new ArtSettings(
+    //   promptRef.current!.value,
+    //   negativePromptRef.current?.value ?? "",
+    //   Number(amountRef.current?.value)
+    // )
 
-    if (enteredPrompt.textPrompt.trim().length === 0) {
+    if (settingsState?.textPrompt.trim().length === 0) {
       // throw an error
       return
     }
 
-    artsContext.addArt(enteredPrompt)
-
     // refresh user input
-    if (promptRef.current != null) promptRef.current.value = ""
+    // if (promptRef.current != null) promptRef.current.value = ""
 
-    if (negativePromptRef.current != null) negativePromptRef.current.value = ""
+    // if (negativePromptRef.current != null) negativePromptRef.current.value = ""
   }
 
   const showAdvancedHandler = () => {
@@ -41,10 +45,24 @@ const NewArt: React.FC = () => {
 
   return (
     <section>
-      <form onSubmit={submitHandler} className={classes.form}>
+      <form className={classes.form}>
         <label htmlFor="text">Promtp</label>
-        <input type="text" id="text" ref={promptRef} />
-        <button type="submit">Create</button>
+        <input
+          type="text"
+          id="text"
+          value={settingsState.textPrompt}
+          onChange={(e) =>
+            setSettingsState({...settingsState, textPrompt : e.target.value})}
+        />
+        <button
+          type="submit"
+          disabled={
+            settingsState.textPrompt.trim().length === 0
+          }
+          onClick={onSubmit}
+        >
+          Create
+        </button>
         <button
           onClick={showAdvancedHandler}
           className={showAdvanced === true ? "clicked" : ""}
@@ -60,10 +78,10 @@ const NewArt: React.FC = () => {
               min="1"
               step="1"
               max="4"
-              ref={amountRef}
+              // ref={amountRef}
             ></input>
             <label>Negatives</label>
-            <input type="text" ref={negativePromptRef}></input>
+            {/* <input type="text" ref={negativePromptRef}></input> */}
           </div>
         )}
       </form>
@@ -71,4 +89,4 @@ const NewArt: React.FC = () => {
   )
 }
 
-export default NewArt
+export default ArtForm
