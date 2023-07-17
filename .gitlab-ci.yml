@@ -37,7 +37,6 @@ build:
   stage: build
   tags:
     - docker
-    - windows
   script:
     - npm install
     - npm run build  
