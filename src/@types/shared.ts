@@ -1,8 +1,8 @@
 import { Art } from "./Art"
 
-export const enum Features {
-  Flowers = "Flowers",
-  Txt2Img = "Txt2Img"
+export enum Features {
+  Flowers,
+  Txt2Img 
 }
 
 export type ArtRequest = {

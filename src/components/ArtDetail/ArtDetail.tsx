@@ -8,18 +8,14 @@ import { useGetArt } from "../../context/ArtHooks"
 import { dateFormatter } from "../../utils/DateFormatter"
 import { defaultImage } from "../../config"
 
-type Args = {
-  art: Art | undefined
-  submitted: (art: Art) => void
-}
-
-const ArtDetail = ({art, submitted} : Args) => {
+const ArtDetail = () => {
   const artContext = React.useContext(ArtContext)
   const { id } = useParams()
-  const artId = id ? parseInt(id) : 0
+  const artId = id ? parseInt(id) : -1
   const { data, status, isSuccess, error } = useGetArt(artId)
-  if (!id) {
-    return <ErrorModule message="Invalid id" />
+
+  if (!artId) {
+    return <ErrorModule message={`Invalid id: ${id}`} />
   }
 
   if (!isSuccess) {
@@ -74,7 +70,7 @@ const ArtDetail = ({art, submitted} : Args) => {
             </h3>
           </div>
           <div className="row">
-            <div className="col-12 mt-3">{data.settings?.textPrompt}</div>
+            <div className="col-12 mt-3">{data.artSetting?.prompt}</div>
           </div>
         </div>
       </div>

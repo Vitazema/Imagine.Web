@@ -3,10 +3,10 @@ import { ContextProps, CurrentUser } from "../@types/context"
 
 const DUMMY_USER = "System"
 
-export const AuthContext = React.createContext<CurrentUser>({
+const AuthContext = React.createContext<CurrentUser>({
 } as CurrentUser)
 
-const AuthProvider = ({ children }: ContextProps) => {
+const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   const [isLoggedIn, setLoggedIn] = React.useState(true)
   const [userName, setUserName] = React.useState(DUMMY_USER)
 
@@ -15,11 +15,11 @@ const AuthProvider = ({ children }: ContextProps) => {
     if (isLoggedIn) {
       setUserName(DUMMY_USER)
     } else {
-      setUserName("")
+      setUserName("Mudk")
     }
   }
 
-  const contextValue: CurrentUser = {
+  const contextValue = {
     userName: userName,
     isLoggedIn: isLoggedIn,
     login: loginHandler,
@@ -30,4 +30,4 @@ const AuthProvider = ({ children }: ContextProps) => {
   )
 }
 
-export default AuthProvider
+export {AuthContext, AuthProvider}

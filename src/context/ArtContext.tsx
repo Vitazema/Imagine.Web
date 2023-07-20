@@ -1,66 +1,46 @@
-import React, { useCallback } from "react"
+import React, { useCallback, useEffect } from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
-import { Features } from "../@types/shared"
+import { ArtRequest, Features } from "../@types/shared"
 import { Art, ArtSettings } from "../@types/Art"
-import { useAddArt, useDeleteArt, useGetArt, useGetArts } from "./ArtHooks"
-import { Status } from "../components/Common/ApiStatus"
+import {
+  RequestFilter,
+  useAddArt,
+  useDeleteArt,
+  useEditArt,
+  useGetArts,
+} from "./ArtHooks"
 import { AuthContext } from "./AuthContext"
+import { UseMutationResult, UseQueryResult } from "react-query"
+import { AxiosError, AxiosResponse } from "axios"
+import Problem from "../@types/problem"
 
-// export const ArtContextDefaultValues: IArtDbContext = {
-//   artSettings: undefined,
-//   arts: [],
-//   features: [Features.Flowers, Features.Txt2Img],
-//   getApiStatus: () => ({ status: Status.Idle, isSuccess: false, error: null }),
-//   getArts: () => null,
-//   addArt: () => null,
-//   cancelArt: (id: number) => null,
-//   submitArt: (art: Art) => null
-// }
-
-export const ArtContext = React.createContext<IArtDbContext>(
-  {} as IArtDbContext
-)
+const ArtContext = React.createContext<IArtDbContext>({} as IArtDbContext)
 
 const ArtProvider: React.FC<ContextProps> = ({ children }) => {
   const authContext = React.useContext(AuthContext)
+  const [aiType, setAiType] = React.useState<Features>(Features.Flowers)
   const [arts, setArts] = React.useState<Art[]>([])
-  const [error, setError] = React.useState(null)
-  const { data, status, isSuccess } = useGetArts()
-  const features = [Features.Flowers, Features.Txt2Img]
+  const [error, setError] = React.useState("")
   const addArtMutation = useAddArt()
+  const editArtMutation = useEditArt()
   const deleteArtMutation = useDeleteArt()
 
-  const getApiStatus = () => {
-    return { status: status as Status, isSuccess, error }
-  }
-
-  const getArts = useCallback(() => {
-    setError(null)
-
-    try {
-      if (isSuccess) {
-        const arts = data.data?.map((artJson: Art) => {
-          const art = new Art(artJson.id, artJson.user, artJson.title, false)
-          if (artJson.settings !== undefined) {
-            art.settings = artJson.settings
-          }
-          return art
-        })
-
-        // todo: maybe arts перекрывают new arts
-
-        setArts(arts)
-      }
-    } catch (error: any) {
-      setError(error.message)
-    }
-  }, [data])
-
-  const submitArt = (settings: ArtSettings) => {
+  const addArt = (
+    settings: ArtSettings
+  ):
+    | UseMutationResult<
+        AxiosResponse<any, any>,
+        AxiosError<Problem, any>,
+        Art,
+        unknown
+      >
+    | undefined => {
     const art = new Art(
       undefined,
       authContext.userName,
-      settings.textPrompt,
+      aiType,
+      settings,
+      settings.prompt,
       false
     )
     try {
@@ -71,14 +51,18 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
           return currentArts.concat(art)
         })
       }
+      return addArtMutation
     } catch (error: any) {
       setError(error.message)
     }
   }
 
-  const editArt = () => {
+  const editArt = (artId: number) => {
     try {
-      
+      const art = arts.find((art) => art.id === artId)
+      if (art !== undefined) {
+        editArtMutation.mutate(art)
+      }
     } catch (error: any) {
       setError(error.message)
     }
@@ -91,16 +75,12 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
     })
   }
 
-  React.useEffect(() => {
-    getArts()
-  }, [getArts])
-
   const contextValue = {
     arts,
-    features,
-    getApiStatus,
-    getArts,
-    submitArt,
+    setArts,
+    aiType,
+    setAiType,
+    addArt,
     editArt,
     cancelArt,
   }
@@ -110,4 +90,4 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
   )
 }
 
-export default ArtProvider
+export { ArtProvider, ArtContext }

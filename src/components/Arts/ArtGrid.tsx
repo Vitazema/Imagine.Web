@@ -12,10 +12,7 @@ function ArtGrid(props: {arts: Art[], artsContext: IArtDbContext}) {
       {props.arts.map((art) => (
         <ArtItem
           key={art.id}
-          id={art.id}
-          title={art.title || ""}
-          progress={art.progress}
-          createdAt={art.createdAt}
+          art={art}
           onCancelPrompt={artContext.cancelArt.bind(null, art.id)}
           onEdit={artContext.editArt.bind(null, art.id)}
         />

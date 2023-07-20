@@ -1,20 +1,19 @@
 import React from "react"
 import classes from "./ArtItem.module.css"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
+import { Art } from "../../@types/Art"
+import { defaultImage } from "../../config"
 
 type Args = {
-  id: number
-  title: string
-  progress: number
-  createdAt: Date
+  art: Art
   onCancelPrompt: () => void
   onEdit: () => void
 }
 
 const ArtItem: React.FC<Args> = (props) => {
-  const createdAt = props.createdAt.toLocaleDateString()
-
-  const [progress, setProgress] = React.useState(props.progress)
+  const createdAt = props.art.createdAt.toString()
+  const nav = useNavigate()
+  const [progress, setProgress] = React.useState(props.art.progress)
 
   const onRecreateHandler = () => {
     setProgress(0)
@@ -25,19 +24,30 @@ const ArtItem: React.FC<Args> = (props) => {
       <div className={classes.artDate}>
         <div>{createdAt}</div>
       </div>
-      <h3>{props.title}</h3>
+      <div>
+        <img 
+          className="img-fluid"
+          src={props.art.url ? props.art.url : defaultImage}
+          alt=""
+          width="200"
+          height="100"
+          onClick={() => nav(`/gallery/${props.art.id}`)}
+        />
+      </div>
+      <h3>{props.art.title}</h3>
       <div className={classes.artProgress}>
         <p>Progress: {progress}</p>
       </div>
-      <button onClick={onRecreateHandler}>
-        Recreate
-      </button>
-      <Link 
-        className="btn btn-primary w-100"
-        to={`/gallery/${props.id}`}>
+      <button onClick={onRecreateHandler}>Recreate</button>
+      <Link className="btn btn-primary w-100" to={`/gallery/${props.art.id}`}>
         Edit
       </Link>
-      <button onClick={props.onCancelPrompt}>
+      <button
+        className="btn btn-danger w-100"
+        onClick={() => {
+          if (window.confirm("Are you sure?")) props.onCancelPrompt()
+        }}
+      >
         Cancel
       </button>
     </li>
