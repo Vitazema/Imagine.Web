@@ -6,16 +6,20 @@ import { useAddArt } from "../../context/ArtHooks"
 import ValidationSummary from "../Common/ValidationSummary"
 import { AxiosError } from "axios"
 import Problem from "../../@types/problem"
+import toBase64 from "../Common/utils"
 
 const ArtForm: React.FC = () => {
   const artsContext = React.useContext(ArtContext)
   const [settingsState, setSettingsState] = React.useState<ArtSettings>(
-    new ArtSettings("", "", 1)
+    new ArtSettings("", 1)
   )
-  const [validationErrors, setValidationErrors] = React.useState<AxiosError<Problem>>()
+  const [validationErrors, setValidationErrors] =
+    React.useState<AxiosError<Problem>>()
   const [showAdvanced, setShowAdvanced] = React.useState(true)
 
-  const onCreateHandler: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+  const onCreateHandler: React.MouseEventHandler<HTMLButtonElement> = async (
+    e
+  ) => {
     // don't reload page on submit
     e.preventDefault()
 
@@ -23,15 +27,28 @@ const ArtForm: React.FC = () => {
 
     if (addArtMutationResult?.isError) {
       setValidationErrors(addArtMutationResult.error)
-    }
-    else {
-      setSettingsState(new ArtSettings("", "", 1))
+    } else {
+      setSettingsState(new ArtSettings("", 1))
     }
   }
 
-  const showAdvancedHandler: React.MouseEventHandler<HTMLButtonElement> = async (e) => {
+  const showAdvancedHandler: React.MouseEventHandler<
+    HTMLButtonElement
+  > = async (e) => {
     e.preventDefault()
     setShowAdvanced(!showAdvanced)
+  }
+
+  const onFileSelected = async (
+    e: React.ChangeEvent<HTMLInputElement>
+  ): Promise<void> => {
+    e.preventDefault()
+    e.target.files &&
+      e.target.files[0] &&
+      setSettingsState({
+        ...settingsState,
+        image: await toBase64(e.target.files[0]),
+      })
   }
 
   return (
@@ -78,7 +95,7 @@ const ArtForm: React.FC = () => {
             <label>Negatives</label>
             <input
               type="text"
-              value={settingsState.negativePrompt}
+              value={settingsState.negativePrompt || ""}
               onChange={(e) =>
                 setSettingsState({
                   ...settingsState,
@@ -86,9 +103,24 @@ const ArtForm: React.FC = () => {
                 })
               }
             ></input>
+            <div className="form-group mt-2">
+              <label htmlFor="image">Image</label>
+              <input
+                id="image"
+                type="file"
+                className="form-control"
+                onChange={onFileSelected}
+              />
+            </div>
+            <div className="mt-2">
+              <img src={settingsState.image} alt="preview" 
+              width={200}
+              height={200}
+              />
+            </div>
           </div>
         )}
-      {validationErrors && <ValidationSummary error={validationErrors} />}
+        {validationErrors && <ValidationSummary error={validationErrors} />}
       </form>
     </section>
   )

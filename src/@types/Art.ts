@@ -6,10 +6,10 @@ export class Art {
   progress: number
   createdAt: Date
   url?: string | undefined
-  artSetting: ArtSettings
   favourite: boolean
   artType: Features
   user: string
+  artSetting: ArtSettings
 
   constructor(
     id: number | undefined,
@@ -32,12 +32,12 @@ export class Art {
 
 export class ArtSettings {
   prompt: string
-  negativePrompt: string
+  negativePrompt: string | undefined
   amount: number
+  image: string | undefined
 
-  constructor(prompt: string, negativePrompt: string, amount: number) {
+  constructor(prompt: string, amount: number) {
     this.prompt = prompt
-    this.negativePrompt = negativePrompt
     this.amount = amount
   }
 }
