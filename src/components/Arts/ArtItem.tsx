@@ -3,6 +3,7 @@ import classes from "./ArtItem.module.css"
 import { Link, useNavigate } from "react-router-dom"
 import { Art } from "../../@types/Art"
 import { defaultImage } from "../../config"
+import ProgressBar from "./ProgressBar"
 
 type Args = {
   art: Art
@@ -16,7 +17,7 @@ const ArtItem: React.FC<Args> = (props) => {
   const [progress, setProgress] = React.useState(props.art.progress)
 
   const onRecreateHandler = () => {
-    setProgress(0)
+    setProgress(Math.floor(Math.random() * 101))
   }
 
   return (
@@ -25,19 +26,20 @@ const ArtItem: React.FC<Args> = (props) => {
         <div>{createdAt}</div>
       </div>
       <div>
-        <img 
-          className="img-fluid"
+        <img
+          className={classes.artPreview}
           src={props.art.url ? props.art.url : defaultImage}
           alt=""
-          width="200"
-          height="100"
           onClick={() => nav(`/gallery/${props.art.id}`)}
         />
       </div>
       <h3>{props.art.title}</h3>
-      <div className={classes.artProgress}>
-        <p>Progress: {progress}</p>
-      </div>
+      {progress !== 100 && (
+        <ProgressBar
+          status={progress === 0 ? "starting" : "loading"}
+          progress={progress}
+        />
+      )}
       <button onClick={onRecreateHandler}>Recreate</button>
       <Link className="btn btn-primary w-100" to={`/gallery/${props.art.id}`}>
         Edit

@@ -20,14 +20,37 @@
   font-size: 1rem;
 }
 
-.artProgress {
-  font-size: 1rem;
-  font-weight: bold;
-  color: white;
-  background-color: #40005d;
-  border: 1px solid white;
-  padding: 0.5rem;
+.artPreview {
+  width: 10rem;
+  height: 10rem;
   border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #ececec;
+}
+
+.artProgress {
+  width: 10rem;
+  height: 20;
+  border-radius: 20;
+  background-color: #ececec;
+  margin: 50;
+  background-color: #e0e0de;
+  border-radius: 12px;
+}
+
+.artProgressFill {
+  height: 100%;
+  background-color: #b6954d;
+  border-radius: inherit;
+  transition: width 0.5s ease-in-out;
+  text-align: right;
+}
+
+.artProgressLabel {
+  padding: 5;
+  color: white;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
 }
 
 .artDate {
