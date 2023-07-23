@@ -13,7 +13,7 @@ function Navigation() {
   }
 
   return (
-    <>
+    <div>
       {features.map((feature) => {
         return (
           <button
@@ -26,7 +26,7 @@ function Navigation() {
           </button>
         )
       })}
-    </>
+    </div>
   )
 }
 

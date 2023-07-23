@@ -7,10 +7,21 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background: #741188;
+  background: #6c6c6c;
   padding: 0 2rem;
 }
 
 .main-header h1 {
+  color: white;
+}
+
+.userManagement {
+  display: flex;
+  justify-content: space-between;
+  width: 25%;
+}
+
+.userManagement p {
+  display: flex;
   color: white;
 }

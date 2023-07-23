@@ -2,12 +2,15 @@ import React, { useEffect } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import { useGetPermissions, useGetUser } from "../../context/UserHooks"
 import { ArtContext } from "../../context/ArtContext"
+import classes from "./MainHeader.module.css"
 
 const UserManagement: React.FC = () => {
   const authContext = React.useContext(AuthContext)
   const artContext = React.useContext(ArtContext)
   const [creds, setCreds] = React.useState(0)
-  const userResponse = useGetUser(authContext.currentUser?.id, { enabled: !!authContext.currentUser })
+  const userResponse = useGetUser(authContext.currentUser?.id, {
+    enabled: !!authContext.currentUser,
+  })
 
   const userPermissionResponse = useGetPermissions(authContext.currentUser, {
     enabled: !!authContext.currentUser,
@@ -15,7 +18,6 @@ const UserManagement: React.FC = () => {
 
   if (userResponse.isSuccess) {
     authContext.currentUser = userResponse.data
-    // authContext.login()
   }
 
   useEffect(() => {
@@ -33,9 +35,11 @@ const UserManagement: React.FC = () => {
 
   if (authContext.isLoggedIn) {
     return (
-      <div>
-        <p>Logged in as: {authContext.currentUser?.fullName}</p>
-        <p>Permissions: {creds}</p>
+      <div className={classes.userManagement}>
+        <p>Logged in as: {authContext.currentUser?.fullName}
+        <br/>
+        Permissions: {creds}
+        </p>
         <button onClick={authContext.login}>Logout</button>
       </div>
     )
