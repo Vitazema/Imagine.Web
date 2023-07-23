@@ -17,9 +17,3 @@ export interface IArtDbContext {
   editArt: (id: number) => void
   cancelArt: (id: number) => void
 }
-
-export interface CurrentUser {
-  userName: string
-  isLoggedIn: boolean
-  login: () => void
-}

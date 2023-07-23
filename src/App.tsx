@@ -7,27 +7,27 @@ import { QueryClient, QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import ArtDetail from "./components/ArtDetail/ArtDetail"
 import { ArtProvider } from "./context/ArtContext"
+import { AuthProvider } from "./context/AuthContext"
 
 const queryClient = new QueryClient()
 
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <BrowserRouter>
-        <ArtProvider>
-          <MainHeader />
-          <Routes>
-            <Route
-              path="/"
-              element={[<ArtForm key={1} />, <ArtGallery key={2} />]}
-            ></Route>
-            <Route
-              path="/gallery/:id"
-              element={<ArtDetail />}
-            ></Route>
-          </Routes>
-        </ArtProvider>
-      </BrowserRouter>
+      <AuthProvider>
+        <BrowserRouter>
+          <ArtProvider>
+            <MainHeader />
+            <Routes>
+              <Route
+                path="/"
+                element={[<ArtForm key={1} />, <ArtGallery key={2} />]}
+              ></Route>
+              <Route path="/gallery/:id" element={<ArtDetail />}></Route>
+            </Routes>
+          </ArtProvider>
+        </BrowserRouter>
+      </AuthProvider>
     </QueryClientProvider>
   )
 }

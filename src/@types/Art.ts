@@ -8,12 +8,12 @@ export class Art {
   url?: string | undefined
   favourite: boolean
   artType: Features
-  user: string
+  user?: string
   artSetting: ArtSettings
 
   constructor(
     id: number | undefined,
-    user: string,
+    user: string | undefined,
     artType: Features,
     artSetting: ArtSettings,
     title: string | undefined,

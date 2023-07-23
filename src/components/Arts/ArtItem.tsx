@@ -47,7 +47,8 @@ const ArtItem: React.FC<Args> = (props) => {
       <button
         className="btn btn-danger w-100"
         onClick={() => {
-          if (window.confirm("Are you sure?")) props.onCancelPrompt()
+          // if (window.confirm("Are you sure?"))
+          props.onCancelPrompt()
         }}
       >
         Cancel

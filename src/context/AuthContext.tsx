@@ -1,27 +1,44 @@
-import React from "react"
-import { ContextProps, CurrentUser } from "../@types/context"
+import React, { useEffect } from "react"
+import { ContextProps } from "../@types/context"
+import { useGetUser } from "./UserHooks"
+import { IAuthContext } from "./IAuthContext"
+import { User } from "../@types/User"
 
-const DUMMY_USER = "System"
+const SYSTEM_USER_ID = 1
+const GUEST_USER_ID = 2
 
-const AuthContext = React.createContext<CurrentUser>({
-} as CurrentUser)
+const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
+  const systemUser = useGetUser(SYSTEM_USER_ID)
+  const guestUser = useGetUser(GUEST_USER_ID)
   const [isLoggedIn, setLoggedIn] = React.useState(true)
-  const [userName, setUserName] = React.useState(DUMMY_USER)
+  const [currentUser, setUser] = React.useState<User>(systemUser.data as User)
+
+  useEffect(() => {
+    if (systemUser.isSuccess) {
+      setUser(systemUser.data)
+      setLoggedIn(true)
+    }
+  }, [systemUser.data])
 
   const loginHandler = () => {
-    setLoggedIn(!isLoggedIn)
-    if (isLoggedIn) {
-      setUserName(DUMMY_USER)
+    if (currentUser !== guestUser.data) {
+      if (guestUser.isSuccess) {
+        setUser(guestUser.data)
+        setLoggedIn(false)
+      }
     } else {
-      setUserName("Mudk")
+      if (systemUser.isSuccess) {
+        setUser(systemUser.data)
+        setLoggedIn(true)
+      }
     }
   }
 
-  const contextValue = {
-    userName: userName,
-    isLoggedIn: isLoggedIn,
+  const contextValue: IAuthContext = {
+    currentUser,
+    isLoggedIn,
     login: loginHandler,
   }
 
@@ -30,4 +47,4 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   )
 }
 
-export {AuthContext, AuthProvider}
+export { AuthContext, AuthProvider }

@@ -3,9 +3,9 @@ import { AuthContext } from "../../context/AuthContext"
 import Navigation from "../Navigation/Navitgation"
 import classes from "./MainHeader.module.css"
 import logo from "../../assets/logo192.png"
+import UserManagement from "./UserManagement"
 
 const MainHeader: React.FC = () => {
-  const authContext = React.useContext(AuthContext)
 
   return (
     <section>
@@ -15,8 +15,7 @@ const MainHeader: React.FC = () => {
         </div>
         <h1>Main</h1>
         <Navigation />
-        {authContext?.isLoggedIn && <p>Logged in as: {authContext.userName}</p>}
-        <button onClick={authContext?.login}>Login</button>
+        <UserManagement/>
       </header>
     </section>
   )
