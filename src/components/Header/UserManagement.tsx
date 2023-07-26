@@ -38,7 +38,7 @@ const UserManagement: React.FC = () => {
       <div className={classes.userManagement}>
         <p>Logged in as: {authContext.currentUser?.fullName}
         <br/>
-        Permissions: {creds}
+        {creds}
         </p>
         <button onClick={authContext.login}>Logout</button>
       </div>
