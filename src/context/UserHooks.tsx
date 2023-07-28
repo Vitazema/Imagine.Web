@@ -5,9 +5,9 @@ import { Permission, User } from "../@types/User"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
-const useGetUser = (id: number, config?:UseQueryOptions<User, AxiosError<Problem>>) => {  
-  return useQuery<User, AxiosError<Problem>>(["users", id], () =>
-    axios.get(`${imagineApiBaseUrl}/users?id=${id}`).then((response) => response.data),
+const useGetUser = (userName: string, config?:UseQueryOptions<User, AxiosError<Problem>>) => {  
+  return useQuery<User, AxiosError<Problem>>(["users", userName], () =>
+    axios.get(`${imagineApiBaseUrl}/users?username=${userName}`).then((response) => response.data),
     config
   )
 }

@@ -8,9 +8,9 @@ const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   
-  const [userId, setUserId] = React.useState(1)
+  const [userName, setUserName] = React.useState("System")
 
-  const user = useGetUser(userId)
+  const user = useGetUser(userName)
 
   const [isLoggedIn, setLoggedIn] = React.useState(true)
   const [currentUser, setUser] = React.useState<User>(user.data as User)
@@ -23,19 +23,19 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   }, [user.data])
 
   const loginHandler = () => {
-    if (userId >= 5){
-      setUserId(1)
+    if (userName != "System"){
+      setUserName("System")
       user.refetch()
       return
     }
     else{
-      setUserId(userId + 1)
+      setUserName("PaidUser")
       user.refetch()
     }
   }
 
   const contextValue: IAuthContext = {
-    userId,
+    userName,
     currentUser,
     isLoggedIn,
     login: loginHandler,

@@ -9,7 +9,7 @@ const UserManagement: React.FC = () => {
   const artContext = React.useContext(ArtContext)
   const [creds, setCreds] = React.useState(0)
 
-  const userResponse = useGetUser(authContext.currentUser?.id, {
+  const userResponse = useGetUser(authContext.currentUser?.userName, {
     enabled: !!authContext.currentUser,
   })
 
@@ -37,7 +37,7 @@ const UserManagement: React.FC = () => {
   if (authContext.isLoggedIn) {
     return (
       <div className={classes.userManagement}>
-        <p>Logged in as: {authContext.currentUser?.fullName}
+        <p>Logged in as: {authContext.currentUser?.userName}
         <br/>
         {creds}
         </p>

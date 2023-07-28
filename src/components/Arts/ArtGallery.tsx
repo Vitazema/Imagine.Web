@@ -24,7 +24,7 @@ function ArtGallery() {
     if (request.isSuccess) {
       artContext.setArts(request.data?.data as Art[])
     }
-  }, [request, artContext.aiType, onlyFavourites, authContext.currentUser?.fullName])
+  }, [request, artContext.aiType, onlyFavourites, authContext.currentUser?.userName])
 
   if (!request) {
     content = <ErrorModule message="Error while fetching arts." />
