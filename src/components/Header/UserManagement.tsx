@@ -8,6 +8,7 @@ const UserManagement: React.FC = () => {
   const authContext = React.useContext(AuthContext)
   const artContext = React.useContext(ArtContext)
   const [creds, setCreds] = React.useState(0)
+
   const userResponse = useGetUser(authContext.currentUser?.id, {
     enabled: !!authContext.currentUser,
   })
@@ -25,7 +26,7 @@ const UserManagement: React.FC = () => {
     if (userPermissionResponse.isSuccess) {
       setCreds(userPermissionResponse.data.credentials)
     }
-  }, [authContext.currentUser, userResponse.data, userPermissionResponse])
+  }, [authContext.currentUser, userPermissionResponse])
 
   useEffect(() => {
     if (authContext.currentUser) {

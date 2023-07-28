@@ -4,39 +4,38 @@ import { useGetUser } from "./UserHooks"
 import { IAuthContext } from "./IAuthContext"
 import { User } from "../@types/User"
 
-const SYSTEM_USER_ID = 1
-const GUEST_USER_ID = 2
-
 const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
-  const systemUser = useGetUser(SYSTEM_USER_ID)
-  const guestUser = useGetUser(GUEST_USER_ID)
+  
+  const [userId, setUserId] = React.useState(1)
+
+  const user = useGetUser(userId)
+
   const [isLoggedIn, setLoggedIn] = React.useState(true)
-  const [currentUser, setUser] = React.useState<User>(systemUser.data as User)
+  const [currentUser, setUser] = React.useState<User>(user.data as User)
 
   useEffect(() => {
-    if (systemUser.isSuccess) {
-      setUser(systemUser.data)
-      setLoggedIn(true)
+    if (user.isSuccess) {
+      setUser(user.data)
+      // setLoggedIn(true)
     }
-  }, [systemUser.data])
+  }, [user.data])
 
   const loginHandler = () => {
-    if (currentUser !== guestUser.data) {
-      if (guestUser.isSuccess) {
-        setUser(guestUser.data)
-        setLoggedIn(false)
-      }
-    } else {
-      if (systemUser.isSuccess) {
-        setUser(systemUser.data)
-        setLoggedIn(true)
-      }
+    if (userId >= 5){
+      setUserId(1)
+      user.refetch()
+      return
+    }
+    else{
+      setUserId(userId + 1)
+      user.refetch()
     }
   }
 
   const contextValue: IAuthContext = {
+    userId,
     currentUser,
     isLoggedIn,
     login: loginHandler,

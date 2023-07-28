@@ -9,7 +9,13 @@ import ArtDetail from "./components/ArtDetail/ArtDetail"
 import { ArtProvider } from "./context/ArtContext"
 import { AuthProvider } from "./context/AuthContext"
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+    }
+  }
+})
 
 function App() {
   return (

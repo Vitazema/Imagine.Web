@@ -14,7 +14,7 @@ const useGetUser = (id: number, config?:UseQueryOptions<User, AxiosError<Problem
 
 const useGetPermissions = (user: User, config?:UseQueryOptions<Permission, AxiosError<Problem>>) => {  
   return useQuery<Permission, AxiosError<Problem>>(["permission", user], () =>
-    axios.get(`${imagineApiBaseUrl}/permission?id=${user.fullName}`).then((response) => response.data),
+    axios.get(`${imagineApiBaseUrl}/users/permissions?userId=${user.id}`).then((response) => response.data),
     config
   )
 }
