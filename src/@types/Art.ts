@@ -1,7 +1,7 @@
 import { Features } from "./shared"
 
 export class Art {
-  id: number
+  id: string | undefined
   title?: string | undefined
   progress: number
   createdAt: Date
@@ -12,14 +12,14 @@ export class Art {
   artSetting: ArtSettings
 
   constructor(
-    id: number | undefined,
+    id: string | undefined,
     user: string | undefined,
     artType: Features,
     artSetting: ArtSettings,
     title: string | undefined,
     favourite: boolean
   ) {
-    this.id = id || 0
+    this.id = id
     this.user = user
     this.title = title
     this.progress = 0

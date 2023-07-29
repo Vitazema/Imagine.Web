@@ -13,8 +13,8 @@ function ArtGrid(props: {arts: Art[], artsContext: IArtDbContext}) {
         <ArtItem
           key={art.id}
           art={art}
-          onCancelPrompt={artContext.cancelArt.bind(null, art.id)}
-          onEdit={artContext.editArt.bind(null, art.id)}
+          onCancelPrompt={artContext.cancelArt.bind(null, art)}
+          onEdit={artContext.editArt.bind(null, art)}
         />
       ))}
     </ul>

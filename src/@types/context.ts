@@ -14,6 +14,6 @@ export interface IArtDbContext {
   aiType: Features
   setAiType: (aiType: Features) => void
   addArt: (art: ArtSettings) => UseMutationResult<AxiosResponse<any, any>, AxiosError<Problem, any>, Art, unknown> | undefined
-  editArt: (id: number) => void
-  cancelArt: (id: number) => void
+  editArt: (art: Art) => void
+  cancelArt: (art: Art) => void
 }

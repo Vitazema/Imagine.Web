@@ -1,16 +1,14 @@
-import React, { useCallback, useEffect } from "react"
+import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
-import { ArtRequest, Features } from "../@types/shared"
+import { Features } from "../@types/shared"
 import { Art, ArtSettings } from "../@types/Art"
 import {
-  RequestFilter,
   useAddArt,
   useDeleteArt,
   useEditArt,
-  useGetArts,
 } from "./ArtHooks"
 import { AuthContext } from "./AuthContext"
-import { UseMutationResult, UseQueryResult } from "react-query"
+import { UseMutationResult } from "react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import Problem from "../@types/problem"
 
@@ -57,9 +55,12 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
     }
   }
 
-  const editArt = (artId: number) => {
+  const editArt = (artInput: Art) => {
     try {
-      const art = arts.find((art) => art.id === artId)
+      if (artInput === undefined) {
+        return
+      }
+      const art = arts.find((art) => art.id === artInput.id)
       if (art !== undefined) {
         editArtMutation.mutate(art)
       }
@@ -68,10 +69,13 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
     }
   }
 
-  const cancelArt = (artId: number) => {
-    deleteArtMutation.mutate(artId)
+  const cancelArt = (artInput: Art) => {
+    if (artInput.id === undefined) {
+      return
+    }
+    deleteArtMutation.mutate(artInput.id)
     setArts((currentArts) => {
-      return currentArts.filter((art) => art.id !== artId)
+      return currentArts.filter((art) => art.id !== artInput.id)
     })
   }
 

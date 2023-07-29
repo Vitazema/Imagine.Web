@@ -5,6 +5,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
 import { ArtContext } from "./ArtContext"
 import Problem from "../@types/problem"
+import { AuthContext } from "./AuthContext"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
@@ -14,9 +15,18 @@ export class RequestFilter {
 
 const useGetArts = (filter: RequestFilter) => {
   const artContext = React.useContext(ArtContext)
+  const userContext = React.useContext(AuthContext)
   const url = `${imagineApiBaseUrl}/arts?artType=${Features[filter.aiType]}`
-  return useQuery<ArtRequest, AxiosError<Problem>>(["arts", artContext.aiType], () =>
-    axios.get(url).then((response) => response.data)
+  return useQuery<ArtRequest, AxiosError<Problem>>(
+    ["arts", artContext.aiType],
+    () =>
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${userContext.currentUser?.token}`,
+          },
+        })
+        .then((response) => response.data)
   )
 }
 
@@ -28,10 +38,20 @@ const useGetArt = (id: number) => {
 }
 
 const useAddArt = () => {
+  const userContext = React.useContext(AuthContext)
   const queryClient = useQueryClient()
   const url = `${imagineApiBaseUrl}/arts`
   return useMutation<AxiosResponse, AxiosError<Problem>, Art>(
-    (art) => axios.post(url, art),
+    (art) =>
+      axios.post(
+        url,
+        art,
+        {
+          headers: {
+            Authorization: `Bearer ${userContext.currentUser?.token}`,
+          }
+        }
+      ),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("arts")
@@ -56,7 +76,7 @@ const useEditArt = () => {
 const useDeleteArt = () => {
   const queryClient = useQueryClient()
   const url = `${imagineApiBaseUrl}/arts`
-  return useMutation<AxiosResponse, AxiosError<Problem>, number>(
+  return useMutation<AxiosResponse, AxiosError<Problem>, string>(
     (artId) => axios.delete(`${url}/${artId}`),
     {
       onSuccess: (_, art) => {

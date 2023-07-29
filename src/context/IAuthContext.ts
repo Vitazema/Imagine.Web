@@ -7,6 +7,5 @@ export interface ContextProps {
 export interface IAuthContext {
   userName: string
   currentUser: User
-  isLoggedIn: boolean
   login: () => void
 }

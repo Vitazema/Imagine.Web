@@ -1,18 +1,19 @@
 import React, { useEffect } from "react"
 import { ContextProps } from "../@types/context"
-import { useGetUser } from "./UserHooks"
+import { useLoginUser } from "./UserHooks"
 import { IAuthContext } from "./IAuthContext"
 import { User } from "../@types/User"
+
+const userNames = ["System", "Guest", "UserName", "TrialUser", "PaidUser"]
 
 const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   
-  const [userName, setUserName] = React.useState("System")
+  const [userName, setUserName] = React.useState(userNames[0])
 
-  const user = useGetUser(userName)
+  const user = useLoginUser(userName)
 
-  const [isLoggedIn, setLoggedIn] = React.useState(true)
   const [currentUser, setUser] = React.useState<User>(user.data as User)
 
   useEffect(() => {
@@ -23,21 +24,22 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
   }, [user.data])
 
   const loginHandler = () => {
-    if (userName != "System"){
-      setUserName("System")
+    var index = userNames.indexOf(userName)
+    if (index < userNames.length - 1){
+      setUserName(userNames[index + 1])
       user.refetch()
       return
     }
-    else{
-      setUserName("PaidUser")
+    else {
+      setUserName(userNames[0])
       user.refetch()
+      return
     }
   }
 
   const contextValue: IAuthContext = {
     userName,
     currentUser,
-    isLoggedIn,
     login: loginHandler,
   }
 
