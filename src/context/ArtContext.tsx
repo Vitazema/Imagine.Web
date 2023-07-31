@@ -35,7 +35,6 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
     | undefined => {
     const art = new Art(
       undefined,
-      authContext.currentUser?.userName,
       aiType,
       settings,
       settings.prompt,

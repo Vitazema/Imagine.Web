@@ -26,12 +26,23 @@ const ArtItem: React.FC<Args> = (props) => {
         <div>{createdAt}</div>
       </div>
       <div>
-        <img
+        { props.art.urls.length > 0 ?
+        props.art.urls.map((url, index) => (
+          <img
+            key={index}
+            className={classes.artPreview}
+            src={url}
+            alt=""
+            onClick={() => nav(`/gallery/${props.art.id}`)}
+          />
+        )) : (
+          <img
           className={classes.artPreview}
-          src={props.art.url ? props.art.url : defaultImage}
+          src={defaultImage}
           alt=""
           onClick={() => nav(`/gallery/${props.art.id}`)}
         />
+        )}
       </div>
       <h3>{props.art.title}</h3>
       {progress !== 100 && (

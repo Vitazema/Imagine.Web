@@ -30,7 +30,7 @@ const useGetArts = (filter: RequestFilter) => {
   )
 }
 
-const useGetArt = (id: number) => {
+const useGetArt = (id: string) => {
   const url = `${imagineApiBaseUrl}/arts/${id}`
   return useQuery<Art, AxiosError<Problem>>(["arts", id], () =>
     axios.get(url).then((response) => response.data)

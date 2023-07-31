@@ -5,7 +5,7 @@ export class Art {
   title?: string | undefined
   progress: number
   createdAt: Date
-  url?: string | undefined
+  urls: string[]
   favourite: boolean
   artType: Features
   user?: string
@@ -13,16 +13,15 @@ export class Art {
 
   constructor(
     id: string | undefined,
-    user: string | undefined,
     artType: Features,
     artSetting: ArtSettings,
     title: string | undefined,
     favourite: boolean
   ) {
     this.id = id
-    this.user = user
     this.title = title
     this.progress = 0
+    this.urls = []
     this.favourite = favourite
     this.createdAt = new Date()
     this.artType = artType

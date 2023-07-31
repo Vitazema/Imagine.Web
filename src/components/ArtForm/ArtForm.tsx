@@ -113,9 +113,10 @@ const ArtForm: React.FC = () => {
               />
             </div>
             <div className="mt-2">
-              <img src={settingsState.image} alt="preview" 
-              width={200}
-              height={200}
+              <img
+                src={settingsState.image}
+                width={200}
+                height={200}
               />
             </div>
           </div>

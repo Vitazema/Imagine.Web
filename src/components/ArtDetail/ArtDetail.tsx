@@ -11,7 +11,7 @@ import { defaultImage } from "../../config"
 const ArtDetail = () => {
   const artContext = React.useContext(ArtContext)
   const { id } = useParams()
-  const artId = id ? parseInt(id) : -1
+  const artId = id ? id : "none"
   const { data, status, isSuccess, error } = useGetArt(artId)
 
   if (!artId) {
@@ -20,23 +20,36 @@ const ArtDetail = () => {
 
   if (!isSuccess) {
     if (error) {
-      <ErrorModule message={error.message} />
+      ;<ErrorModule message={error.message} />
     }
     return <ApiStatus status={status as Status} />
   }
 
   if (!data) return <ErrorModule message="Art not found" />
 
+  function nav(arg0: string): void {
+    throw new Error("Function not implemented.")
+  }
+
   return (
     <section>
       <div className="row">
         <div className="col-6">
           <div className="row">
-            <img
-              className="img-fluid"
-              src={data.url ? data.url : defaultImage}
-              alt="Your art"
-            />
+            {data.urls.length > 0 ? (
+              data.urls.map((url, index) => (
+                <img
+                  key={index}
+                  src={url}
+                  alt=""
+                />
+              ))
+            ) : (
+              <img
+                src={defaultImage}
+                alt=""
+              />
+            )}
           </div>
           {/* <div className="row mt-3">
           <div className="col-2">
