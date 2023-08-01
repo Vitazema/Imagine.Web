@@ -6,5 +6,5 @@ services:
     ports:
       - 3000:3000
     environment:
-      - REACT_APP_IMAGINE_API_URI=http://api.aiexpression.net
+      - REACT_APP_IMAGINE_API_URI=http://192.168.1.211:5000
     restart: unless-stopped
