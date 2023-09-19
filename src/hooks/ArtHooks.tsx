@@ -3,9 +3,9 @@ import { Art } from "../@types/Art"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
-import { ArtContext } from "./ArtContext"
 import Problem from "../@types/problem"
-import { AuthContext } from "./AuthContext"
+import { ArtContext } from "../context/ArtContext"
+import { AuthContext } from "../context/AuthContext"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 

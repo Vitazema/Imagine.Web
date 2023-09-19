@@ -1,5 +1,3 @@
-import "./App.css"
-
 import ArtGallery from "./components/Arts/ArtGallery"
 import ArtForm from "./components/ArtForm/ArtForm"
 import MainHeader from "./components/Header/MainHeader"
