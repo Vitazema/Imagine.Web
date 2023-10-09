@@ -1,21 +1,60 @@
 import React from "react"
-import Navigation from "../Navigation/Navitgation"
-import classes from "./MainHeader.module.css"
 import logo from "../../assets/logo192.png"
 import UserManagement from "./UserManagement"
+import { ArtContext } from "../../context/ArtContext"
+import { features } from "../../config"
+import { Features } from "../../@types/shared"
+import {
+  AppBar,
+  Button,
+  Grid,
+  ToggleButton,
+  ToggleButtonGroup,
+  Toolbar,
+} from "@mui/material"
 
 const MainHeader: React.FC = () => {
+  const artContext = React.useContext(ArtContext)
+
+  const categoryChangedHandler = (
+    e: React.MouseEvent<HTMLElement>,
+    aiType: Features
+  ) => {
+    e.preventDefault()
+    artContext.setAiType(aiType)
+  }
+
   return (
-    <section>
-      <header className={classes["main-header"]}>
-        <div className="col-5">
-          <img src={logo} width={50} className="logo" alt="logo" />
-        </div>
-        <h1>Main</h1>
-        <Navigation />
-        <UserManagement />
-      </header>
-    </section>
+    <AppBar position="static">
+      <Toolbar>
+        <Grid  container alignItems={"center"} >
+          <Grid item>
+            <div className="col-5">
+              <img src={logo} width={50} className="logo" alt="logo" />
+            </div>
+            <h1>Main</h1>
+          </Grid>
+          <Grid item>
+            <ToggleButtonGroup
+              value={artContext.aiType}
+              exclusive
+              onChange={categoryChangedHandler}
+            >
+              {features.map((feature) => {
+                return (
+                  <ToggleButton value={feature}>
+                    {Features[feature]}
+                  </ToggleButton>
+                )
+              })}
+            </ToggleButtonGroup>
+          </Grid>
+          <Grid item justifyContent={"flex-end"}>
+            <UserManagement />
+          </Grid>
+        </Grid>
+      </Toolbar>
+    </AppBar>
   )
 }
 

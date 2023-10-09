@@ -2,11 +2,10 @@ import { useParams } from "react-router-dom"
 import ErrorModule from "../UI/ErrorModule"
 import React from "react"
 import { ArtContext } from "../../context/ArtContext"
-import { Art } from "../../@types/Art"
 import { ApiStatus, Status } from "../Common/ApiStatus"
-import { useGetArt } from "../../context/ArtHooks"
 import { dateFormatter } from "../../utils/DateFormatter"
 import { defaultImage } from "../../config"
+import { useGetArt } from "../../hooks/ArtHooks"
 
 const ArtDetail = () => {
   const artContext = React.useContext(ArtContext)

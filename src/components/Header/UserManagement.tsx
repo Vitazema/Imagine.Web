@@ -1,8 +1,9 @@
 import React, { useEffect } from "react"
 import { AuthContext } from "../../context/AuthContext"
-import { useGetPermissions, useLoginUser } from "../../context/UserHooks"
+import { useGetPermissions, useLoginUser } from "../../hooks/UserHooks"
 import { ArtContext } from "../../context/ArtContext"
 import classes from "./MainHeader.module.css"
+import { Button } from "@mui/material"
 
 const UserManagement: React.FC = () => {
   const authContext = React.useContext(AuthContext)
@@ -37,15 +38,20 @@ const UserManagement: React.FC = () => {
   if (authContext.currentUser) {
     return (
       <div className={classes.userManagement}>
-        <p>Logged in as: {authContext.currentUser?.userName}
-        <br/>
-        {creds}
+        <p>
+          Logged in as: {authContext.currentUser?.userName}
+          <br />
+          {creds}
         </p>
         <button onClick={authContext.login}>Logout</button>
       </div>
     )
   } else {
-    return <button onClick={authContext.login}>Login</button>
+    return (
+      <Button variant="contained" onClick={authContext.login}>
+        Login
+      </Button>
+    )
   }
 }
 

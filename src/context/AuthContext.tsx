@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { ContextProps } from "../@types/context"
-import { useLoginUser } from "./UserHooks"
+import { useLoginUser } from "../hooks/UserHooks"
 import { IAuthContext } from "./IAuthContext"
 import { User } from "../@types/User"
 

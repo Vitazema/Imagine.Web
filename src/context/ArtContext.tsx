@@ -2,15 +2,11 @@ import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { Features } from "../@types/shared"
 import { Art, ArtSettings } from "../@types/Art"
-import {
-  useAddArt,
-  useDeleteArt,
-  useEditArt,
-} from "./ArtHooks"
 import { AuthContext } from "./AuthContext"
 import { UseMutationResult } from "react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import Problem from "../@types/problem"
+import { useAddArt, useDeleteArt, useEditArt } from "../hooks/ArtHooks"
 
 const ArtContext = React.createContext<IArtDbContext>({} as IArtDbContext)
 
