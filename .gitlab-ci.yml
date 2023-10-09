@@ -55,7 +55,6 @@ build_image:
     - echo "Image tag version is $APP_VERSION"
     # - export APP_VERSION=$APP_VERSION-$CI_PIPELINE_IID
     - echo "VERSION=$APP_VERSION" >> build.env
-    - export REACT_APP_IMAGINE_API_URI=https://api.aiexpression.net
   script: 
     - echo "Building and tagging docker image $IMAGE_NAME:$APP_VERSION"
     - docker build -t $IMAGE_NAME:$APP_VERSION -f Dockerfile.prod .
