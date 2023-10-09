@@ -1,5 +1,7 @@
 FROM node:lts-alpine AS builder
 
+ARG REACT_APP_IMAGINE_API_URI
+
 WORKDIR /app
 
 COPY package*.json ./

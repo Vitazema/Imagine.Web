@@ -43,6 +43,8 @@ build:
 
 build_image:
   stage: deploy
+  variables: 
+    REACT_APP_IMAGINE_API_URI: "https://api.aiexpression.net"
   needs:
     - build
   tags:
