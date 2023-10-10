@@ -6,7 +6,6 @@ import { features } from "../../config"
 import { Features } from "../../@types/shared"
 import {
   AppBar,
-  Button,
   Grid,
   ToggleButton,
   ToggleButtonGroup,
@@ -42,7 +41,7 @@ const MainHeader: React.FC = () => {
             >
               {features.map((feature) => {
                 return (
-                  <ToggleButton value={feature}>
+                  <ToggleButton key={feature} value={feature}>
                     {Features[feature]}
                   </ToggleButton>
                 )
