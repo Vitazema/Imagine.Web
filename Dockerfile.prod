@@ -1,7 +1,5 @@
 FROM node:lts-alpine AS builder
 
-ARG REACT_APP_IMAGINE_API_URI
-
 WORKDIR /app
 
 COPY package*.json ./
@@ -18,5 +16,4 @@ RUN rm -rf *
 
 # Copy static assets from builder stage
 COPY --from=builder /app/build /usr/share/nginx/html
-EXPOSE 80
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
