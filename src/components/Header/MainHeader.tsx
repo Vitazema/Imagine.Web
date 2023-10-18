@@ -3,7 +3,7 @@ import logo from "../../assets/logo192.png"
 import UserManagement from "./UserManagement"
 import { ArtContext } from "../../context/ArtContext"
 import { features } from "../../config"
-import { Features } from "../../@types/shared"
+import { AiTypes as AiType } from "../../@types/shared"
 import {
   AppBar,
   Grid,
@@ -15,9 +15,9 @@ import {
 const MainHeader: React.FC = () => {
   const artContext = React.useContext(ArtContext)
 
-  const categoryChangedHandler = (
+  const featureChangedHandler = (
     e: React.MouseEvent<HTMLElement>,
-    aiType: Features
+    aiType: AiType
   ) => {
     e.preventDefault()
     artContext.setAiType(aiType)
@@ -26,23 +26,28 @@ const MainHeader: React.FC = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Grid  container alignItems={"center"} >
+        <Grid
+          container
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            width: "100%",
+          }}
+        >
           <Grid item>
-            <div className="col-5">
-              <img src={logo} width={50} className="logo" alt="logo" />
-            </div>
-            <h1>Main</h1>
+            <img src={logo} width={50} alt="logo" />
           </Grid>
           <Grid item>
             <ToggleButtonGroup
               value={artContext.aiType}
               exclusive
-              onChange={categoryChangedHandler}
+              onChange={featureChangedHandler}
             >
               {features.map((feature) => {
                 return (
                   <ToggleButton key={feature} value={feature}>
-                    {Features[feature]}
+                    {AiType[feature]}
                   </ToggleButton>
                 )
               })}

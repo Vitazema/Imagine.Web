@@ -1,4 +1,4 @@
-import { ArtRequest, Features as Feature, Features } from "../@types/shared"
+import { ArtRequest, AiTypes as Feature, AiTypes } from "../@types/shared"
 import { Art } from "../@types/Art"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
@@ -16,7 +16,7 @@ export class RequestFilter {
 const useGetArts = (filter: RequestFilter) => {
   const artContext = React.useContext(ArtContext)
   const userContext = React.useContext(AuthContext)
-  const url = `${imagineApiBaseUrl}/arts?artType=${Features[filter.aiType]}`
+  const url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
   return useQuery<ArtRequest, AxiosError<Problem>>(
     ["arts", artContext.aiType],
     () =>

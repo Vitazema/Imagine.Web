@@ -1,6 +1,6 @@
 import { UseMutationResult, UseQueryResult } from "react-query";
 import { Art, ArtSettings } from "./Art";
-import { ArtRequest, Features } from "./shared";
+import { ArtRequest, AiTypes } from "./shared";
 import { AxiosError, AxiosResponse } from "axios";
 import Problem from "./problem";
 
@@ -11,8 +11,8 @@ export interface ContextProps {
 export interface IArtDbContext {
   arts: Art[]
   setArts: (arts: Art[]) => void
-  aiType: Features
-  setAiType: (aiType: Features) => void
+  aiType: AiTypes
+  setAiType: (aiType: AiTypes) => void
   addArt: (art: ArtSettings) => UseMutationResult<AxiosResponse<any, any>, AxiosError<Problem, any>, Art, unknown> | undefined
   editArt: (art: Art) => void
   cancelArt: (art: Art) => void

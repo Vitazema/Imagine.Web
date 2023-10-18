@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import { AuthContext } from "../../context/AuthContext"
 import { useGetPermissions, useLoginUser } from "../../hooks/UserHooks"
 import { ArtContext } from "../../context/ArtContext"
-import classes from "./MainHeader.module.css"
 import { Button } from "@mui/material"
 
 const UserManagement: React.FC = () => {
@@ -37,7 +36,7 @@ const UserManagement: React.FC = () => {
 
   if (authContext.currentUser) {
     return (
-      <div className={classes.userManagement}>
+      <div>
         <p>
           Logged in as: {authContext.currentUser?.userName}
           <br />

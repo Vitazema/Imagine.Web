@@ -1,6 +1,6 @@
 import { Art } from "./Art"
 
-export enum Features {
+export enum AiTypes {
   Flowers,
   Txt2Img 
 }

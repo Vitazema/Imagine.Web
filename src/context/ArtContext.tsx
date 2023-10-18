@@ -1,6 +1,6 @@
 import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
-import { Features } from "../@types/shared"
+import { AiTypes } from "../@types/shared"
 import { Art, ArtSettings } from "../@types/Art"
 import { AuthContext } from "./AuthContext"
 import { UseMutationResult } from "react-query"
@@ -12,7 +12,7 @@ const ArtContext = React.createContext<IArtDbContext>({} as IArtDbContext)
 
 const ArtProvider: React.FC<ContextProps> = ({ children }) => {
   const authContext = React.useContext(AuthContext)
-  const [aiType, setAiType] = React.useState<Features>(Features.Flowers)
+  const [aiType, setAiType] = React.useState<AiTypes>(AiTypes.Flowers)
   const [arts, setArts] = React.useState<Art[]>([])
   const [error, setError] = React.useState("")
   const addArtMutation = useAddArt()

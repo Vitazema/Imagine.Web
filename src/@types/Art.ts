@@ -1,4 +1,4 @@
-import { Features } from "./shared"
+import { AiTypes } from "./shared"
 
 export class Art {
   id: string | undefined
@@ -7,13 +7,13 @@ export class Art {
   createdAt: Date
   urls: string[]
   favourite: boolean
-  artType: Features
+  artType: AiTypes
   user?: string
   artSetting: ArtSettings
 
   constructor(
     id: string | undefined,
-    artType: Features,
+    artType: AiTypes,
     artSetting: ArtSettings,
     title: string | undefined,
     favourite: boolean
