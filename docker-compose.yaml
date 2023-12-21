@@ -4,5 +4,5 @@ services:
     image: ${DC_IMAGE_NAME}:${DC_IMAGE_TAG}
     container_name: imagine-web
     ports:
-      - 80:80
+      - 50000:80
     restart: unless-stopped
