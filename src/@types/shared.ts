@@ -1,8 +1,8 @@
 import { Art } from "./Art"
 
 export enum AiTypes {
-  Flowers,
-  Txt2Img 
+  Txt2Img,
+  Flowers
 }
 
 export type ArtRequest = {

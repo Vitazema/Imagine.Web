@@ -12,7 +12,7 @@ const ArtContext = React.createContext<IArtDbContext>({} as IArtDbContext)
 
 const ArtProvider: React.FC<ContextProps> = ({ children }) => {
   const authContext = React.useContext(AuthContext)
-  const [aiType, setAiType] = React.useState<AiTypes>(AiTypes.Flowers)
+  const [aiType, setAiType] = React.useState<AiTypes>(AiTypes.Txt2Img)
   const [arts, setArts] = React.useState<Art[]>([])
   const [error, setError] = React.useState("")
   const addArtMutation = useAddArt()
