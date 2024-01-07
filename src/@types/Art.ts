@@ -40,3 +40,28 @@ export class ArtSettings {
     this.amount = amount
   }
 }
+
+export class ArtStatus {
+  id: string
+  workerId: number
+  status: string
+  progress: number
+  relativeEstimation: number
+  urls: string[]
+
+  constructor(
+    id: string,
+    workerId: number,
+    status: string,
+    progress: number,
+    relativeEstimation: number,
+    urls: string[]
+  ) {
+    this.id = id
+    this.workerId = workerId
+    this.status = status
+    this.progress = progress
+    this.relativeEstimation = relativeEstimation
+    this.urls = urls
+  }
+}

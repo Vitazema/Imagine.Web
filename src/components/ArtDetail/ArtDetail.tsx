@@ -4,7 +4,7 @@ import React from "react"
 import { ArtContext } from "../../context/ArtContext"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { dateFormatter } from "../../utils/DateFormatter"
-import { defaultImage } from "../../config"
+import defaultImage from "../../assets/default-image.jpg"
 import { useGetArt } from "../../hooks/ArtHooks"
 
 const ArtDetail = () => {

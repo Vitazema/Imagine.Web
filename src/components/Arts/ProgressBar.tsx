@@ -1,11 +1,12 @@
+import { ArtStatus } from "../../@types/Art"
 import classes from "./ArtItem.module.css"
 
-interface ProgressBarProps {
-  status: string
-  progress: number
+interface ArtStatusProps {
+  artStatus: ArtStatus
 }
 
-const ProgressBar = ({ status, progress }: ProgressBarProps) => {
+const ProgressBar: React.FC<ArtStatusProps> = ({artStatus}) => {
+  const progress = artStatus.progress > 0 && artStatus.progress <= 1 ? artStatus.progress * 100 : artStatus.progress
   return (
     <div className={classes.artProgress}>
       <div
@@ -13,7 +14,7 @@ const ProgressBar = ({ status, progress }: ProgressBarProps) => {
         style={{ width: `${progress}%` }}
       >
         <span className={classes.artProgressLabel}>
-          {progress === 0 ? status : progress + "%"}
+          {artStatus.progress === 0 || artStatus.progress === 100 ? artStatus.status : progress  + "%"}
         </span>
       </div>
     </div>

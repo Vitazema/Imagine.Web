@@ -1,5 +1,5 @@
 import { ArtRequest, AiTypes as Feature, AiTypes } from "../@types/shared"
-import { Art } from "../@types/Art"
+import { Art, ArtStatus } from "../@types/Art"
 import axios, { AxiosError, AxiosResponse } from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
@@ -86,4 +86,21 @@ const useDeleteArt = () => {
   )
 }
 
-export { useGetArts, useGetArt, useAddArt, useEditArt, useDeleteArt }
+const useGetProgress = (id: string, shouldCheckProgress: boolean) => {
+  const url = `${imagineApiBaseUrl}/progress/${id}`
+  const queryClient = useQueryClient()
+  return useQuery<ArtStatus, AxiosError<Problem>>(["arts", id, "progress"], () =>
+    axios.get(url).then((response) => response.data),
+    {
+      refetchInterval: shouldCheckProgress ? 1000 : false,
+      enabled: shouldCheckProgress
+      // onSuccess: (data) => {
+      //   if (data.progress === 100 && !shouldCheckProgress) {
+      //     queryClient.invalidateQueries("arts")
+      //   }
+      // }
+    }
+  )
+}
+
+export { useGetArts, useGetArt, useAddArt, useEditArt, useDeleteArt, useGetProgress }
