@@ -1,13 +1,13 @@
 import React, { useEffect } from "react"
 import { ArtContext } from "../../context/ArtContext"
-import ErrorModule from "../UI/ErrorModule"
+import ErrorModule from "../Common/ErrorModule"
 
 import ArtFilter from "./ArtFilter"
 import ArtGrid from "./ArtGrid"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { Art } from "../../@types/Art"
 import { AuthContext } from "../../context/AuthContext"
-import { RequestFilter, useGetArts } from "../../hooks/ArtHooks"
+import { RequestFilter, useGetArts } from "../../context/ArtHooks"
 
 function ArtGallery() {
   const artContext = React.useContext(ArtContext)

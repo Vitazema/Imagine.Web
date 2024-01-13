@@ -6,7 +6,7 @@ import { AuthContext } from "./AuthContext"
 import { UseMutationResult } from "react-query"
 import { AxiosError, AxiosResponse } from "axios"
 import Problem from "../@types/problem"
-import { useAddArt, useDeleteArt, useEditArt } from "../hooks/ArtHooks"
+import { useAddArt, useDeleteArt, useEditArt } from "./ArtHooks"
 
 const ArtContext = React.createContext<IArtDbContext>({} as IArtDbContext)
 

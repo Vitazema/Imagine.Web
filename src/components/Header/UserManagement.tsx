@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import { AuthContext } from "../../context/AuthContext"
-import { useGetPermissions, useLoginUser } from "../../hooks/UserHooks"
+import { useGetPermissions, useLoginUser } from "../../context/UserHooks"
 import { ArtContext } from "../../context/ArtContext"
 import { Button } from "@mui/material"
 

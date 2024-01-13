@@ -1,11 +1,11 @@
 import ArtGallery from "./components/Arts/ArtGallery"
 import ArtForm from "./components/ArtForm/ArtForm"
-import MainHeader from "./components/Header/MainHeader"
+import Header from "./components/Header/Header"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
-import ArtDetail from "./components/ArtDetail/ArtDetail"
 import { ArtProvider } from "./context/ArtContext"
 import { AuthProvider } from "./context/AuthContext"
+import ArtDetail from "./components/Arts/ArtDetail"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -21,12 +21,9 @@ function App() {
       <AuthProvider>
         <BrowserRouter>
           <ArtProvider>
-            <MainHeader />
+            <Header />
             <Routes>
-              <Route
-                path="/"
-                element={[<ArtForm key={1} />, <ArtGallery key={2} />]}
-              ></Route>
+              <Route path="/" element={[<ArtForm key={1} />, <ArtGallery key={2} />]}></Route>
               <Route path="/gallery/:id" element={<ArtDetail />}></Route>
             </Routes>
           </ArtProvider>

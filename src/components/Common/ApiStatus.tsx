@@ -1,4 +1,4 @@
-import ErrorModule from "../UI/ErrorModule";
+import ErrorModule from "./ErrorModule";
 
 export enum Status {
   Idle = "idle",

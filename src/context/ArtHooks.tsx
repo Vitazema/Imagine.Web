@@ -4,8 +4,8 @@ import axios, { AxiosError, AxiosResponse } from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
 import Problem from "../@types/problem"
-import { ArtContext } from "../context/ArtContext"
-import { AuthContext } from "../context/AuthContext"
+import { ArtContext } from "./ArtContext"
+import { AuthContext } from "./AuthContext"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 

@@ -12,7 +12,7 @@ import {
   Toolbar,
 } from "@mui/material"
 
-const MainHeader: React.FC = () => {
+const Header: React.FC = () => {
   const artContext = React.useContext(ArtContext)
 
   const featureChangedHandler = (
@@ -62,4 +62,4 @@ const MainHeader: React.FC = () => {
   )
 }
 
-export default MainHeader
+export default Header

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom"
 import { Art, ArtStatus } from "../../@types/Art"
 import defaultImage from "../../assets/default-image.jpg"
 import renderAnimation from "../../assets/rendering.gif"
-import { useGetArt, useGetProgress } from "../../hooks/ArtHooks"
+import { useGetArt, useGetProgress } from "../../context/ArtHooks"
 import ProgressBar from "./ProgressBar"
 import { useQueryClient } from "react-query"
 

@@ -5,7 +5,7 @@ import { Art, ArtSettings } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
 import { AxiosError } from "axios"
 import Problem from "../../@types/problem"
-import toBase64 from "../Common/utils"
+import toBase64 from "../../utils/utils"
 
 const ArtForm: React.FC = () => {
   const artsContext = React.useContext(ArtContext)
