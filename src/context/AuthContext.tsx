@@ -1,46 +1,69 @@
 import React, { useEffect } from "react"
-import { ContextProps } from "../@types/context"
-import { useLoginUser } from "./UserHooks"
-import { IAuthContext } from "./IAuthContext"
+import { authenticateUser, getCurrentUser, useLoginUser } from "./UserHooks"
 import { User } from "../@types/User"
 
-const userNames = ["System", "Guest", "UserName", "TrialUser", "PaidUser"]
+export interface ContextProps {
+  children?: React.ReactNode
+}
+
+export interface IAuthContext {
+  currentUser: User | undefined
+  token: string | undefined
+  login: (userName: string) => Promise<boolean>
+  logout: () => void
+}
 
 const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
 
 const AuthProvider: React.FC<ContextProps> = ({ children }) => {
-  
-  const [userName, setUserName] = React.useState(userNames[0])
-
-  const user = useLoginUser(userName)
-
-  const [currentUser, setUser] = React.useState<User>(user.data as User)
-
-  useEffect(() => {
-    if (user.isSuccess) {
-      setUser(user.data)
-      // setLoggedIn(true)
-    }
-  }, [user.data])
-
-  const loginHandler = () => {
-    var index = userNames.indexOf(userName)
-    if (index < userNames.length - 1){
-      setUserName(userNames[index + 1])
-      user.refetch()
-      return
+  async function fetchUser(): Promise<User | undefined> {
+    if (user) return user
+    const token = localStorage.getItem("token")
+    if (token) {
+      getCurrentUser(token).then((user) => {
+        user.token = token
+        setUser(user)
+        setToken(token)
+      })
     }
     else {
-      setUserName(userNames[0])
-      user.refetch()
-      return
+      const isLoggedIn = await loginAction("Guest")
+      if (isLoggedIn) {
+        return user
+      }
     }
+  }
+  
+  const [user, setUser] = React.useState<User | undefined>()
+  const [token, setToken] = React.useState<string>(localStorage.getItem("token") ?? "")
+
+  useEffect(() => {
+    fetchUser()
+  }, [])
+
+  const loginAction = async (userName: string) => {
+    const user = await authenticateUser(userName)
+    if (user)
+    {
+      setUser(user) 
+      setToken(user.token)
+      localStorage.setItem("token", user.token)
+      return true
+    }
+    return false
+  }
+
+  const logoutAction = () => {
+    setUser(undefined)
+    setToken("")
+    localStorage.removeItem("token")
   }
 
   const contextValue: IAuthContext = {
-    userName,
-    currentUser,
-    login: loginHandler,
+    currentUser: user,
+    token: token,
+    login: loginAction,
+    logout: logoutAction,
   }
 
   return (
@@ -49,3 +72,4 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
 }
 
 export { AuthContext, AuthProvider }
+
