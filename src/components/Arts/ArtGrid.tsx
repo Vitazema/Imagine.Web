@@ -5,6 +5,8 @@ import { ArtContext } from "../../context/ArtContext";
 import React from "react";
 import { Art } from "../../@types/Art";
 
+const ITEMS_PER_PAGE = 5
+
 function ArtGrid(props: {arts: Art[], artsContext: IArtDbContext}) {
   const artContext = React.useContext(ArtContext)
   return (

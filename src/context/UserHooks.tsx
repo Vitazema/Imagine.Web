@@ -49,11 +49,6 @@ async function authenticateUser(userName: string): Promise<User> {
     console.error(error)
     throw error
   }
-  // Promise chaining style:
-  // return await axios.post(url).then((response) => {
-  //   console.log("res data", response.data)
-  //   response.data
-  // })
 }
 
 function getCurrentUser(token: string): Promise<User> {
