@@ -40,7 +40,7 @@ function ArtGallery() {
     )
 
     if (filteredArts && filteredArts.length > 0) {
-      content = <ArtGrid arts={filteredArts} artsContext={artContext} />
+      content = <ArtGrid />
     } else {
       content = <h1>"Arts not found."</h1>
     }
