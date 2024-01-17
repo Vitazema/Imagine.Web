@@ -4,7 +4,7 @@ import Header from "./components/Header/Header"
 import { QueryClient, QueryClientProvider } from "react-query"
 import { BrowserRouter, Route, Routes } from "react-router-dom"
 import { ArtProvider } from "./context/ArtContext"
-import { AuthProvider } from "./context/AuthContext"
+import { UserProvider } from "./context/UserContext"
 import ArtDetail from "./components/Arts/ArtDetail"
 
 const queryClient = new QueryClient({
@@ -18,7 +18,7 @@ const queryClient = new QueryClient({
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
+      <UserProvider>
         <BrowserRouter>
           <ArtProvider>
             <Header />
@@ -28,7 +28,7 @@ function App() {
             </Routes>
           </ArtProvider>
         </BrowserRouter>
-      </AuthProvider>
+      </UserProvider>
     </QueryClientProvider>
   )
 }

@@ -1,21 +1,25 @@
 import React, { useEffect } from "react"
 import { authenticateUser, getCurrentUser, useLoginUser } from "./UserHooks"
 import { User } from "../@types/User"
+import { UserConfig } from "../@types/UserConfig"
+import { AiTypes } from "../@types/shared"
 
 export interface ContextProps {
   children?: React.ReactNode
 }
 
-export interface IAuthContext {
+export interface IUserContext {
   currentUser: User | undefined
   token: string | undefined
+  config: UserConfig
+  setConfig: (config: UserConfig) => void
   login: (userName: string) => Promise<boolean>
   logout: () => void
 }
 
-const AuthContext = React.createContext<IAuthContext>({} as IAuthContext)
+const UserContext = React.createContext<IUserContext>({} as IUserContext)
 
-const AuthProvider: React.FC<ContextProps> = ({ children }) => {
+const UserProvider: React.FC<ContextProps> = ({ children }) => {
   async function fetchUser(): Promise<User | undefined> {
     if (user) return user
     const token = localStorage.getItem("token")
@@ -33,12 +37,21 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
       }
     }
   }
+
+  async function fetchConfig(): Promise<UserConfig | undefined> {
+    if (config) return config
+    else {
+      setConfig(new UserConfig({selectedFeature: AiTypes.Txt2Img}))
+    }
+  }
   
   const [user, setUser] = React.useState<User | undefined>()
   const [token, setToken] = React.useState<string>(localStorage.getItem("token") ?? "")
+  const [config, setConfig] = React.useState<UserConfig>()
 
   useEffect(() => {
     fetchUser()
+    fetchConfig()    
   }, [])
 
   const loginAction = async (userName: string) => {
@@ -59,17 +72,19 @@ const AuthProvider: React.FC<ContextProps> = ({ children }) => {
     localStorage.removeItem("token")
   }
 
-  const contextValue: IAuthContext = {
+  const contextValue: IUserContext = {
     currentUser: user,
     token: token,
+    config: config ?? new UserConfig(),
+    setConfig: setConfig,
     login: loginAction,
     logout: logoutAction,
   }
 
   return (
-    <AuthContext.Provider value={contextValue}>{children}</AuthContext.Provider>
+    <UserContext.Provider value={contextValue}>{children}</UserContext.Provider>
   )
 }
 
-export { AuthContext, AuthProvider }
+export { UserContext, UserProvider }
 

@@ -6,25 +6,25 @@ import ArtFilter from "./ArtFilter"
 import ArtGrid from "./ArtGrid"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { Art } from "../../@types/Art"
-import { AuthContext } from "../../context/AuthContext"
+import { UserContext } from "../../context/UserContext"
 import { RequestFilter, useGetArts } from "../../context/ArtHooks"
 
 function ArtGallery() {
   const artContext = React.useContext(ArtContext)
-  const authContext = React.useContext(AuthContext)
+  const userContext = React.useContext(UserContext)
   const [onlyFavourites, setFilter] = React.useState(false)
   const filterChangeHandler = (isFavourites: string) => {
     setFilter(isFavourites === "false" ? false : true)
   }
 
   let content = <></>
-  const request = useGetArts(new RequestFilter(artContext.aiType))
+  const request = useGetArts(new RequestFilter(userContext.config.selectedFeature))
   
   useEffect(() => {
     if (request.isSuccess) {
       artContext.setArts(request.data?.data as Art[])
     }
-  }, [request, artContext.aiType, onlyFavourites, authContext.currentUser?.userName])
+  }, [request, userContext.config.selectedFeature, onlyFavourites, userContext.currentUser?.userName])
 
   if (!request) {
     content = <ErrorModule message="Error while fetching arts." />

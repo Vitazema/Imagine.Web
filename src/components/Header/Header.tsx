@@ -1,8 +1,6 @@
 import React from "react"
 import logo from "../../assets/logo192.png"
 import UserManagement from "./UserManagement"
-import { ArtContext } from "../../context/ArtContext"
-import { features } from "../../config"
 import { AiTypes as AiType } from "../../@types/shared"
 import {
   AppBar,
@@ -11,16 +9,19 @@ import {
   ToggleButtonGroup,
   Toolbar,
 } from "@mui/material"
+import { features } from "../../@types/UserConfig"
+import { UserContext } from "../../context/UserContext"
 
 const Header: React.FC = () => {
-  const artContext = React.useContext(ArtContext)
+  const userContext = React.useContext(UserContext)
 
-  const featureChangedHandler = (
+  const featureChangeHandler = (
     e: React.MouseEvent<HTMLElement>,
     aiType: AiType
   ) => {
     e.preventDefault()
-    artContext.setAiType(aiType)
+    const newConfig = { ...userContext.config, selectedFeature: aiType}
+    userContext.setConfig(newConfig)
   }
 
   return (
@@ -40,9 +41,9 @@ const Header: React.FC = () => {
           </Grid>
           <Grid item>
             <ToggleButtonGroup
-              value={artContext.aiType}
+              value={userContext.config.selectedFeature}
               exclusive
-              onChange={featureChangedHandler}
+              onChange={featureChangeHandler}
             >
               {features.map((feature) => {
                 return (

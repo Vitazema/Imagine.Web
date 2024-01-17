@@ -1,19 +1,19 @@
 import React, { useEffect } from "react"
-import { AuthContext } from "../../context/AuthContext"
+import { UserContext } from "../../context/UserContext"
 import { useGetPermissions } from "../../context/UserHooks"
 import { ArtContext } from "../../context/ArtContext"
 import { Button } from "@mui/material"
 
 const UserManagement: React.FC = () => {
-  const authContext = React.useContext(AuthContext)
+  const userContext = React.useContext(UserContext)
   const artContext = React.useContext(ArtContext)
 
   const [username, setUsername] = React.useState<string>("")
   const [password, setPassword] = React.useState<string>("")
   const [creds, setCreds] = React.useState<number>()
 
-  const userPermissionResponse = useGetPermissions(authContext.currentUser, {
-    enabled: !!authContext.currentUser,
+  const userPermissionResponse = useGetPermissions(userContext.currentUser, {
+    enabled: !!userContext.currentUser,
   })
 
   useEffect(() => {
@@ -21,17 +21,17 @@ const UserManagement: React.FC = () => {
       userPermissionResponse.refetch()
       setCreds(userPermissionResponse.data?.credentials)
     }
-  }, [userPermissionResponse.data, authContext.currentUser, artContext.arts])
+  }, [userPermissionResponse.data, userContext.currentUser, artContext.arts])
 
   const loginHandler = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
-    const isLoggenIn = await authContext.login(username)
+    const isLoggenIn = await userContext.login(username)
     if (isLoggenIn) {
       setCreds(userPermissionResponse.data?.credentials)
     }
   }
 
-  if (!authContext.currentUser) {
+  if (!userContext.currentUser) {
     return (
       <div>
         <input
@@ -49,11 +49,11 @@ const UserManagement: React.FC = () => {
     return (
       <div>
         <p>
-          Logged in as: {authContext.currentUser.userName}
+          Logged in as: {userContext.currentUser.userName}
           <br />
           Credentials: {creds}
         </p>
-        <Button variant="contained" onClick={authContext.logout}>
+        <Button variant="contained" onClick={userContext.logout}>
           Logout
         </Button>
       </div>

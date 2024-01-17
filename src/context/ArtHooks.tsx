@@ -4,8 +4,7 @@ import axios, { AxiosError, AxiosResponse } from "axios"
 import { useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
 import Problem from "../@types/problem"
-import { ArtContext } from "./ArtContext"
-import { AuthContext } from "./AuthContext"
+import { UserContext } from "./UserContext"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
@@ -13,12 +12,11 @@ export class RequestFilter {
   constructor(public aiType: Feature) {}
 }
 
-const useGetArts = (filter: RequestFilter) => {
-  const artContext = React.useContext(ArtContext)
-  const userContext = React.useContext(AuthContext)
+const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
+  const userContext = React.useContext(UserContext)
   const url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
   return useQuery<ArtRequest, AxiosError<Problem>>(
-    ["arts", artContext.aiType],
+    "arts",
     () =>
       axios
         .get(url, {
@@ -26,7 +24,8 @@ const useGetArts = (filter: RequestFilter) => {
             Authorization: `Bearer ${userContext.currentUser?.token}`,
           },
         })
-        .then((response) => response.data)
+        .then((response) => response.data),
+    { enabled: enabled }
   )
 }
 
@@ -38,7 +37,7 @@ const useGetArt = (id: string) => {
 }
 
 const useAddArt = () => {
-  const userContext = React.useContext(AuthContext)
+  const userContext = React.useContext(UserContext)
   const queryClient = useQueryClient()
   const url = `${imagineApiBaseUrl}/arts`
   return useMutation<AxiosResponse, AxiosError<Problem>, Art>(

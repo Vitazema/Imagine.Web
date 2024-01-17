@@ -11,8 +11,6 @@ export interface ContextProps {
 export interface IArtDbContext {
   arts: Art[]
   setArts: (arts: Art[]) => void
-  aiType: AiTypes
-  setAiType: (aiType: AiTypes) => void
   addArt: (art: ArtSettings) => UseMutationResult<AxiosResponse<any, any>, AxiosError<Problem, any>, Art, unknown> | undefined
   editArt: (art: Art) => void
   cancelArt: (art: Art) => void
