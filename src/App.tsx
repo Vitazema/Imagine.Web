@@ -6,6 +6,7 @@ import { ArtProvider } from "./context/ArtContext"
 import { UserProvider } from "./context/UserContext"
 import ArtDetail from "./components/Arts/ArtDetail"
 import ArtGrid from "./components/Arts/ArtGrid"
+import ArtGallery from "./components/Arts/ArtGallery"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -24,6 +25,7 @@ function App() {
             <Header />
             <Routes>
               <Route path="/" element={[<ArtForm key={1} />, <ArtGrid key={2} />]}></Route>
+              <Route path="/gallery" element={<ArtGallery />}></Route> 
               <Route path="/gallery/:id" element={<ArtDetail />}></Route>
             </Routes>
           </ArtProvider>

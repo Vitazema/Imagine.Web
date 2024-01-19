@@ -1,7 +1,7 @@
 import { ArtRequest, AiTypes as Feature, AiTypes } from "../@types/shared"
 import { Art, ArtStatus } from "../@types/Art"
 import axios, { AxiosError, AxiosResponse } from "axios"
-import { useMutation, useQuery, useQueryClient } from "react-query"
+import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query"
 import React from "react"
 import Problem from "../@types/problem"
 import { UserContext } from "./UserContext"
@@ -9,23 +9,38 @@ import { UserContext } from "./UserContext"
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
 export class RequestFilter {
-  constructor(public aiType: Feature) {}
+  constructor(
+    public aiType: Feature,
+    public limit?: number
+  ) {}
 }
 
 const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
   const userContext = React.useContext(UserContext)
-  const url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
-  return useQuery<ArtRequest, AxiosError<Problem>>(
+  const buildUrl = (pageParam: number) => {
+    let url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
+    url += `&page=${pageParam}&limit=${filter.limit}`
+    return url
+  }
+  return useInfiniteQuery<ArtRequest, AxiosError<Problem>>(
     "arts",
-    () =>
+    ({ pageParam = 1}) =>
       axios
-        .get(url, {
+        .get(buildUrl(pageParam), {
           headers: {
             Authorization: `Bearer ${userContext.currentUser?.token}`,
           },
         })
         .then((response) => response.data),
-    { enabled: enabled }
+    {
+      getNextPageParam: (lastPage, loadedPages) => {
+        const totalItemsLoaded = loadedPages.length * filter.limit!
+        if (totalItemsLoaded < lastPage.count) {
+          return loadedPages.length + 1
+        }
+      },
+      enabled: enabled
+    }
   )
 }
 

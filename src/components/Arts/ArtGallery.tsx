@@ -20,11 +20,11 @@ function ArtGallery() {
   let content = <></>
   const request = useGetArts(new RequestFilter(userContext.config.selectedFeature))
   
-  useEffect(() => {
-    if (request.isSuccess) {
-      artContext.setArts(request.data?.data as Art[])
-    }
-  }, [request, userContext.config.selectedFeature, onlyFavourites, userContext.currentUser?.userName])
+  // useEffect(() => {
+  //   if (request.isSuccess) {
+  //     artContext.setArts(request.data?.data as Art[])
+  //   }
+  // }, [request, userContext.config.selectedFeature, onlyFavourites, userContext.currentUser?.userName])
 
   if (!request) {
     content = <ErrorModule message="Error while fetching arts." />
