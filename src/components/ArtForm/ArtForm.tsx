@@ -6,6 +6,8 @@ import ValidationSummary from "../Common/ValidationSummary"
 import { AxiosError } from "axios"
 import Problem from "../../@types/problem"
 import toBase64 from "../../utils/utils"
+import { useUpsertAttachment } from "../../context/AttachmentHooks"
+import { Attachment } from "../../@types/Attachment"
 
 const ArtForm: React.FC = () => {
   const artsContext = React.useContext(ArtContext)
@@ -15,6 +17,8 @@ const ArtForm: React.FC = () => {
   const [validationErrors, setValidationErrors] =
     React.useState<AxiosError<Problem>>()
   const [showAdvanced, setShowAdvanced] = React.useState(true)
+
+  const upsertAttachments = useUpsertAttachment()
 
   const onCreateHandler: React.MouseEventHandler<HTMLButtonElement> = async (
     e
@@ -42,12 +46,27 @@ const ArtForm: React.FC = () => {
     e: React.ChangeEvent<HTMLInputElement>
   ): Promise<void> => {
     e.preventDefault()
-    e.target.files &&
-      e.target.files[0] &&
+    if (e.target.files && e.target.files.length > 0) {
+      const selectedFile = e.target.files[0]
+      const image = await toBase64(selectedFile)
+      let attachment = new Attachment(
+        selectedFile.name,
+        selectedFile.type,
+        selectedFile.type,
+        image
+        )
+      let response = await upsertAttachments.mutateAsync(attachment)
+      if (response.data) {
+        attachment = response.data
+      }
+      else {
+        setValidationErrors(response.data)
+      }
       setSettingsState({
         ...settingsState,
-        image: await toBase64(e.target.files[0]),
+        image: image,
       })
+    }
   }
 
   return (
@@ -112,11 +131,7 @@ const ArtForm: React.FC = () => {
               />
             </div>
             <div className="mt-2">
-              <img
-                src={settingsState.image}
-                width={200}
-                height={200}
-              />
+              <img src={settingsState.image} width={200} height={200} />
             </div>
           </div>
         )}

@@ -30,7 +30,7 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
     | undefined => {
     const art = new Art(
       undefined,
-      userContext.config?.selectedFeature,
+      userContext.settings?.selectedFeature,
       settings,
       settings.prompt,
       false

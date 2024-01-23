@@ -1,10 +1,15 @@
+import { Configuration } from "./Configuration"
+import { UserSettings as UserSettings } from "./UserSettings"
+
 export type User = {
   id: string
   userName: string
   token: string
   role: Role
-  permissions: Permission[] | undefined
-  subscription: Subscription | undefined
+  userSettings?: UserSettings
+  permissions?: Permission[]
+  subscription?: Subscription
+  configurations?: Configuration[]
 }
 
 export type Permission = {  

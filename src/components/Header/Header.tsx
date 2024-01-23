@@ -9,7 +9,7 @@ import {
   ToggleButtonGroup,
   Toolbar,
 } from "@mui/material"
-import { features } from "../../@types/UserConfig"
+import { features } from "../../@types/UserSettings"
 import { UserContext } from "../../context/UserContext"
 
 const Header: React.FC = () => {
@@ -20,8 +20,8 @@ const Header: React.FC = () => {
     aiType: AiType
   ) => {
     e.preventDefault()
-    const newConfig = { ...userContext.config, selectedFeature: aiType}
-    userContext.setConfig(newConfig)
+    const newSettings = { ...userContext.settings, selectedFeature: aiType}
+    userContext.setUserSettings(newSettings)
   }
 
   return (
@@ -41,7 +41,7 @@ const Header: React.FC = () => {
           </Grid>
           <Grid item>
             <ToggleButtonGroup
-              value={userContext.config.selectedFeature}
+              value={userContext.settings.selectedFeature}
               exclusive
               onChange={featureChangeHandler}
             >

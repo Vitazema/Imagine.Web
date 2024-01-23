@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
-import { authenticateUser, getCurrentUser, useLoginUser } from "./UserHooks"
+import { authenticateUser, getCurrentUser, useLoginUser, useSetUserSettings } from "./UserHooks"
 import { User } from "../@types/User"
-import { UserConfig } from "../@types/UserConfig"
+import { UserSettings } from "../@types/UserSettings"
 import { AiTypes } from "../@types/shared"
 
 export interface ContextProps {
@@ -11,8 +11,9 @@ export interface ContextProps {
 export interface IUserContext {
   currentUser: User | undefined
   token: string | undefined
-  config: UserConfig
-  setConfig: (config: UserConfig) => void
+  settings: UserSettings
+  setConfig: (config: UserSettings) => void
+  setUserSettings(settings: UserSettings): void
   login: (userName: string) => Promise<boolean>
   logout: () => void
 }
@@ -28,6 +29,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         user.token = token
         setUser(user)
         setToken(token)
+        setUserSettings(user.userSettings ?? new UserSettings())
       })
     }
     else {
@@ -38,20 +40,22 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     }
   }
 
-  async function fetchConfig(): Promise<UserConfig | undefined> {
-    if (config) return config
+  async function getConfigurations(): Promise<UserSettings | undefined> {
+    if (settings) return settings
     else {
-      setConfig(new UserConfig({selectedFeature: AiTypes.Txt2Img}))
+      setSettings(new UserSettings({selectedFeature: AiTypes.Txt2Img}))
     }
   }
-  
+
   const [user, setUser] = React.useState<User | undefined>()
   const [token, setToken] = React.useState<string>(localStorage.getItem("token") ?? "")
-  const [config, setConfig] = React.useState<UserConfig>()
+  const [settings, setSettings] = React.useState<UserSettings>()
+
+  const setUserSettingsMutation = useSetUserSettings(token)
 
   useEffect(() => {
     fetchUser()
-    fetchConfig()    
+    getConfigurations()
   }, [])
 
   const loginAction = async (userName: string) => {
@@ -72,11 +76,17 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     localStorage.removeItem("token")
   }
 
+  const setUserSettings = (settings: UserSettings) => {
+    setSettings(settings)
+    setUserSettingsMutation.mutateAsync(settings)
+  }
+
   const contextValue: IUserContext = {
     currentUser: user,
     token: token,
-    config: config ?? new UserConfig(),
-    setConfig: setConfig,
+    settings: settings ?? new UserSettings(),
+    setConfig: setSettings,
+    setUserSettings: setUserSettings,
     login: loginAction,
     logout: logoutAction,
   }

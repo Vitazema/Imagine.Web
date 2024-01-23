@@ -10,7 +10,6 @@ import ErrorModule from "../Common/ErrorModule"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { Container, Grid } from "@mui/material"
 import InfiniteScroll from "react-infinite-scroll-component"
-import { useQueryClient } from "react-query"
 
 const ITEMS_PER_PAGE = 4
 
@@ -30,7 +29,7 @@ function ArtGrid() {
     fetchNextPage,
     hasNextPage,
   } = useGetArts(
-    new RequestFilter(userContext.config.selectedFeature, ITEMS_PER_PAGE),
+    new RequestFilter(userContext.settings.selectedFeature, ITEMS_PER_PAGE),
     userContext.currentUser !== undefined
   )
 
@@ -38,7 +37,7 @@ function ArtGrid() {
   useEffect(() => {
     if (isSuccess)
       refetch()
-  }, [userContext.currentUser, userContext.config])
+  }, [userContext.currentUser, userContext.settings])
 
   if (isError) {
     content = <ErrorModule message={error.message} />

@@ -1,11 +1,9 @@
 import { AiTypes } from "./shared"
 
-export class UserConfig {
-  userId?: string
+export class UserSettings {
   selectedFeature: AiTypes = AiTypes.Txt2Img
-  isFavorite?: boolean
   
-  constructor(init?: Partial<UserConfig>) {
+  constructor(init?: Partial<UserSettings>) {
     Object.assign(this, init)    
   }
 }

@@ -34,6 +34,7 @@ export class ArtSettings {
   negativePrompt: string | undefined
   amount: number
   image: string | undefined
+  attachmentId?: string
 
   constructor(prompt: string, amount: number) {
     this.prompt = prompt
