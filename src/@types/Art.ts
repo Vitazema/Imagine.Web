@@ -9,12 +9,12 @@ export class Art {
   favourite: boolean
   artType: AiTypes
   user?: string
-  artSetting: ArtSettings
+  artSetting: ArtConfiguration
 
   constructor(
     id: string | undefined,
     artType: AiTypes,
-    artSetting: ArtSettings,
+    artSetting: ArtConfiguration,
     title: string | undefined,
     favourite: boolean
   ) {
@@ -29,11 +29,11 @@ export class Art {
   }
 }
 
-export class ArtSettings {
+export class ArtConfiguration {
   prompt: string
   negativePrompt: string | undefined
   amount: number
-  image: string | undefined
+  image?: string | undefined
   attachmentId?: string
 
   constructor(prompt: string, amount: number) {

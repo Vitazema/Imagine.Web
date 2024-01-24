@@ -1,7 +1,7 @@
 import React from "react"
 import { IArtDbContext, ContextProps } from "../@types/context"
 import { AiTypes } from "../@types/shared"
-import { Art, ArtSettings } from "../@types/Art"
+import { Art, ArtConfiguration } from "../@types/Art"
 import { UserContext } from "./UserContext"
 import { UseMutationResult } from "react-query"
 import { AxiosError, AxiosResponse } from "axios"
@@ -19,7 +19,7 @@ const ArtProvider: React.FC<ContextProps> = ({ children }) => {
   const deleteArtMutation = useDeleteArt()
 
   const addArt = (
-    settings: ArtSettings
+    settings: ArtConfiguration
   ):
     | UseMutationResult<
         AxiosResponse<any, any>,

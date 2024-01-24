@@ -1,5 +1,10 @@
 import React, { useEffect } from "react"
-import { authenticateUser, getCurrentUser, useLoginUser, useSetUserSettings } from "./UserHooks"
+import {
+  authenticateUser,
+  getCurrentUser,
+  useLoginUser,
+  useSetUserSettings,
+} from "./UserHooks"
 import { User } from "../@types/User"
 import { UserSettings } from "../@types/UserSettings"
 import { AiTypes } from "../@types/shared"
@@ -12,7 +17,6 @@ export interface IUserContext {
   currentUser: User | undefined
   token: string | undefined
   settings: UserSettings
-  setConfig: (config: UserSettings) => void
   setUserSettings(settings: UserSettings): void
   login: (userName: string) => Promise<boolean>
   logout: () => void
@@ -31,8 +35,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         setToken(token)
         setUserSettings(user.userSettings ?? new UserSettings())
       })
-    }
-    else {
+    } else {
       const isLoggedIn = await loginAction("Guest")
       if (isLoggedIn) {
         return user
@@ -40,29 +43,22 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     }
   }
 
-  async function getConfigurations(): Promise<UserSettings | undefined> {
-    if (settings) return settings
-    else {
-      setSettings(new UserSettings({selectedFeature: AiTypes.Txt2Img}))
-    }
-  }
-
   const [user, setUser] = React.useState<User | undefined>()
-  const [token, setToken] = React.useState<string>(localStorage.getItem("token") ?? "")
+  const [token, setToken] = React.useState<string>(
+    localStorage.getItem("token") ?? ""
+  )
   const [settings, setSettings] = React.useState<UserSettings>()
 
   const setUserSettingsMutation = useSetUserSettings(token)
 
   useEffect(() => {
     fetchUser()
-    getConfigurations()
   }, [])
 
   const loginAction = async (userName: string) => {
     const user = await authenticateUser(userName)
-    if (user)
-    {
-      setUser(user) 
+    if (user) {
+      setUser(user)
       setToken(user.token)
       localStorage.setItem("token", user.token)
       return true
@@ -85,7 +81,6 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     currentUser: user,
     token: token,
     settings: settings ?? new UserSettings(),
-    setConfig: setSettings,
     setUserSettings: setUserSettings,
     login: loginAction,
     logout: logoutAction,
@@ -97,4 +92,3 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
 }
 
 export { UserContext, UserProvider }
-

@@ -1,4 +1,4 @@
-import { ArtSettings } from "./Art";
+import { ArtConfiguration } from "./Art";
 import { AiTypes } from "./shared";
 
 export interface Configuration {
@@ -10,7 +10,7 @@ export class Txt2ImgConfig implements Configuration {
   public aiType: AiTypes = AiTypes.Txt2Img;
   constructor(
     public jsonConfig: string,
-    public configuration: ArtSettings,
+    public configuration: ArtConfiguration,
     public isFavorite: boolean
   ) {}
 }

@@ -1,24 +1,50 @@
-import React from "react"
+import React, { useEffect } from "react"
 import { ArtContext } from "../../context/ArtContext"
 import classes from "./ArtForm.module.css"
-import { Art, ArtSettings } from "../../@types/Art"
+import { Art, ArtConfiguration } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
 import { AxiosError } from "axios"
 import Problem from "../../@types/problem"
 import toBase64 from "../../utils/utils"
-import { useUpsertAttachment } from "../../context/AttachmentHooks"
+import {
+  getAttachment,
+  useUpsertAttachment,
+} from "../../context/AttachmentHooks"
 import { Attachment } from "../../@types/Attachment"
+import { UserContext } from "../../context/UserContext"
 
 const ArtForm: React.FC = () => {
   const artsContext = React.useContext(ArtContext)
-  const [settingsState, setSettingsState] = React.useState<ArtSettings>(
-    new ArtSettings("", 1)
-  )
+  const userContext = React.useContext(UserContext)
   const [validationErrors, setValidationErrors] =
     React.useState<AxiosError<Problem>>()
   const [showAdvanced, setShowAdvanced] = React.useState(true)
 
   const upsertAttachments = useUpsertAttachment()
+
+  const [configuration, setConfiguration] = React.useState<ArtConfiguration>(
+    new ArtConfiguration("", 1)
+  )
+
+  useEffect(() => {
+    localStorage.setItem(
+      userContext.settings.selectedFeature.toString(),
+      JSON.stringify(configuration)
+    )
+  }, [configuration])
+
+  useEffect(() => {
+    const storedConfiguration = fetchConfiguration()
+    if (storedConfiguration) setConfiguration(storedConfiguration)
+  }, [userContext.settings.selectedFeature])
+
+  function fetchConfiguration(): ArtConfiguration | undefined {
+    const selectedFeature = userContext.settings.selectedFeature
+    const config = localStorage.getItem(selectedFeature.toString())
+    if (config) {
+      return JSON.parse(config)
+    }
+  }
 
   const onCreateHandler: React.MouseEventHandler<HTMLButtonElement> = async (
     e
@@ -26,12 +52,12 @@ const ArtForm: React.FC = () => {
     // don't reload page on submit
     e.preventDefault()
 
-    const addArtMutationResult = artsContext.addArt(settingsState)
+    const addArtMutationResult = artsContext.addArt(configuration)
 
     if (addArtMutationResult?.isError) {
       setValidationErrors(addArtMutationResult.error)
     } else {
-      setSettingsState(new ArtSettings("", 1))
+      setConfiguration(new ArtConfiguration("", 1))
     }
   }
 
@@ -54,17 +80,17 @@ const ArtForm: React.FC = () => {
         selectedFile.type,
         selectedFile.type,
         image
-        )
+      )
       let response = await upsertAttachments.mutateAsync(attachment)
       if (response.data) {
         attachment = response.data
-      }
-      else {
+      } else {
         setValidationErrors(response.data)
       }
-      setSettingsState({
-        ...settingsState,
+      setConfiguration({
+        ...configuration,
         image: image,
+        attachmentId: attachment.id,
       })
     }
   }
@@ -76,14 +102,14 @@ const ArtForm: React.FC = () => {
         <input
           type="text"
           id="text"
-          value={settingsState.prompt}
+          value={configuration.prompt}
           onChange={(e) =>
-            setSettingsState({ ...settingsState, prompt: e.target.value })
+            setConfiguration({ ...configuration, prompt: e.target.value })
           }
         />
         <button
           type="submit"
-          disabled={settingsState.prompt.trim().length === 0}
+          disabled={configuration.prompt.trim().length === 0}
           onClick={onCreateHandler}
         >
           Create
@@ -102,10 +128,10 @@ const ArtForm: React.FC = () => {
               min="1"
               step="1"
               max="4"
-              value={settingsState.amount}
+              value={configuration.amount}
               onChange={(e) =>
-                setSettingsState({
-                  ...settingsState,
+                setConfiguration({
+                  ...configuration,
                   amount: Number(e.target.value),
                 })
               }
@@ -113,10 +139,10 @@ const ArtForm: React.FC = () => {
             <label>Negatives</label>
             <input
               type="text"
-              value={settingsState.negativePrompt || ""}
+              value={configuration.negativePrompt || ""}
               onChange={(e) =>
-                setSettingsState({
-                  ...settingsState,
+                setConfiguration({
+                  ...configuration,
                   negativePrompt: e.target.value,
                 })
               }
@@ -131,7 +157,7 @@ const ArtForm: React.FC = () => {
               />
             </div>
             <div className="mt-2">
-              <img src={settingsState.image} width={200} height={200} />
+              <img src={configuration.image} width={200} height={200} />
             </div>
           </div>
         )}
