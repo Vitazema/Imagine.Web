@@ -5,6 +5,11 @@ export enum AiTypes {
   Flowers
 }
 
+export enum Languages {
+  En,
+  Ru
+}
+
 export type ArtRequest = {
   pageIndex: number,
   pageSize: number,

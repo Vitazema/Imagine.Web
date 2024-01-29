@@ -2,12 +2,13 @@ import React, { useEffect } from "react"
 import {
   authenticateUser,
   getCurrentUser,
-  useLoginUser,
+  registerUser,
   useSetUserSettings,
 } from "./UserHooks"
 import { User } from "../@types/User"
 import { UserSettings } from "../@types/UserSettings"
-import { AiTypes } from "../@types/shared"
+import { UserCredentials } from "../@types/UserCredentials"
+import { UserRegistration } from "../@types/UserRegistration"
 
 export interface ContextProps {
   children?: React.ReactNode
@@ -18,8 +19,9 @@ export interface IUserContext {
   token: string | undefined
   settings: UserSettings
   setUserSettings(settings: UserSettings): void
-  login: (userName: string) => Promise<boolean>
+  login: (credentials: UserCredentials) => Promise<boolean>
   logout: () => void
+  register: (registration: UserRegistration) => Promise<boolean>
 }
 
 const UserContext = React.createContext<IUserContext>({} as IUserContext)
@@ -36,7 +38,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         setUserSettings(user.userSettings ?? new UserSettings())
       })
     } else {
-      const isLoggedIn = await loginAction("Guest")
+      const isLoggedIn = await loginAction(new UserCredentials("Guest", ""))
       if (isLoggedIn) {
         return user
       }
@@ -55,21 +57,34 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     fetchUser()
   }, [])
 
-  const loginAction = async (userName: string) => {
-    const user = await authenticateUser(userName)
+  const loginAction = async (credentials: UserCredentials) => {
+    const user = await authenticateUser(credentials)
     if (user) {
-      setUser(user)
-      setToken(user.token)
-      localStorage.setItem("token", user.token)
+      login(user)
       return true
     }
     return false
   }
 
-  const logoutAction = () => {
+  const login = (user: User) => {
+    setUser(user)
+    setToken(user.token)
+    localStorage.setItem("token", user.token)
+  }
+
+  const logout = () => {
     setUser(undefined)
     setToken("")
     localStorage.removeItem("token")
+  }
+
+  const register = async (registration: UserRegistration) => {
+    const user = await registerUser(registration)
+    if (user) {
+      login(user)
+      return true
+    }
+    return false
   }
 
   const setUserSettings = (settings: UserSettings) => {
@@ -83,7 +98,8 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     settings: settings ?? new UserSettings(),
     setUserSettings: setUserSettings,
     login: loginAction,
-    logout: logoutAction,
+    logout: logout,
+    register: register,
   }
 
   return (

@@ -12,6 +12,12 @@ export type User = {
   configurations?: Configuration[]
 }
 
+export type Credentials = {
+  userName: string
+  email: string
+  password: string
+}
+
 export type Permission = {  
   userName: string
   action: string

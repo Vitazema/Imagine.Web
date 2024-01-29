@@ -2,9 +2,9 @@ import axios, { AxiosError, AxiosResponse } from "axios"
 import { UseQueryOptions, useMutation, useQuery } from "react-query"
 import Problem from "../@types/problem"
 import { Permission, User } from "../@types/User"
-import React from "react"
-import { UserContext } from "./UserContext"
 import { UserSettings } from "../@types/UserSettings"
+import { UserCredentials } from "../@types/UserCredentials"
+import { UserRegistration } from "../@types/UserRegistration"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
@@ -16,7 +16,7 @@ const useLoginUser = (
     ["users", userName],
     () =>
       axios
-        .post(`${imagineApiBaseUrl}/users/login?username=${userName}`)
+        .post(`${imagineApiBaseUrl}/account/login?username=${userName}`)
         .then((response) => response.data),
     config
   )
@@ -31,7 +31,7 @@ const useGetPermissions = (
     () =>
       axios
         .get(
-          `${imagineApiBaseUrl}/users/permissions?username=${user!.userName}`,
+          `${imagineApiBaseUrl}/account/permissions?username=${user!.userName}`,
           {
             headers: {
               Authorization: `Bearer ${user!.token}`,
@@ -43,10 +43,27 @@ const useGetPermissions = (
   )
 }
 
-async function authenticateUser(userName: string): Promise<User> {
-  const url = `${imagineApiBaseUrl}/users/login?username=${userName}`
+async function authenticateUser(credentials: UserCredentials): Promise<User> {
+  const url = `${imagineApiBaseUrl}/account/login`
   try {
-    const response = await axios.post(url)
+    const response = await axios.post(url, 
+      credentials)
+    return response.data
+  } catch (error) {
+    console.error(error)
+    throw error
+  }
+}
+
+async function registerUser(registration: UserRegistration): Promise<User> {
+  const url = `${imagineApiBaseUrl}/account/register`
+  try {
+    const response = await axios.post(url, 
+      {
+        userName: registration.userName,
+        email: registration.email,
+        password: registration.password
+      })
     return response.data
   } catch (error) {
     console.error(error)
@@ -55,7 +72,7 @@ async function authenticateUser(userName: string): Promise<User> {
 }
 
 function getCurrentUser(token: string): Promise<User> {
-  const url = `${imagineApiBaseUrl}/users/current`
+  const url = `${imagineApiBaseUrl}/account/current`
   try {
     return axios
       .get(url, { headers: { Authorization: `Bearer ${token}` } })
@@ -69,7 +86,7 @@ function getCurrentUser(token: string): Promise<User> {
 }
 
 const useSetUserSettings = (token: string) => {
-  const url = `${imagineApiBaseUrl}/users/settings`
+  const url = `${imagineApiBaseUrl}/account/settings`
   return useMutation<AxiosResponse, AxiosError<Problem>, UserSettings>((settings) => 
     axios.put(url, settings, {
       headers: {
@@ -79,4 +96,4 @@ const useSetUserSettings = (token: string) => {
   )
 }
 
-export { useLoginUser, useGetPermissions, authenticateUser, getCurrentUser, useSetUserSettings }
+export { useLoginUser, useGetPermissions, authenticateUser, getCurrentUser, useSetUserSettings, registerUser }

@@ -54,9 +54,7 @@ const Header: React.FC = () => {
               })}
             </ToggleButtonGroup>
           </Grid>
-          <Grid item justifyContent={"flex-end"}>
-            <UserManagement />
-          </Grid>
+          <UserManagement />
         </Grid>
       </Toolbar>
     </AppBar>

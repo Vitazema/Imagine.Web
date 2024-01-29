@@ -1,6 +1,7 @@
-import { AiTypes } from "./shared"
+import { AiTypes, Languages } from "./shared"
 
 export class UserSettings {
+  language: Languages = Languages.En
   selectedFeature: AiTypes = AiTypes.Txt2Img
   
   constructor(init?: Partial<UserSettings>) {
