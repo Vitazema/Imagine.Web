@@ -55,20 +55,11 @@ async function authenticateUser(credentials: UserCredentials): Promise<User> {
   }
 }
 
-async function registerUser(registration: UserRegistration): Promise<User> {
+const useRegisterUser = () => {
   const url = `${imagineApiBaseUrl}/account/register`
-  try {
-    const response = await axios.post(url, 
-      {
-        userName: registration.userName,
-        email: registration.email,
-        password: registration.password
-      })
-    return response.data
-  } catch (error) {
-    console.error(error)
-    throw error
-  }
+  return useMutation<AxiosResponse<User>, AxiosError<Problem>, UserRegistration>((registration) => 
+    axios.post(url, registration)
+  )
 }
 
 function getCurrentUser(token: string): Promise<User> {
@@ -96,4 +87,4 @@ const useSetUserSettings = (token: string) => {
   )
 }
 
-export { useLoginUser, useGetPermissions, authenticateUser, getCurrentUser, useSetUserSettings, registerUser }
+export { useLoginUser, useGetPermissions, authenticateUser, getCurrentUser, useSetUserSettings, useRegisterUser }

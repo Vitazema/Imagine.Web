@@ -13,29 +13,38 @@ import {
   Typography,
   createTheme,
 } from "@mui/material"
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import { Copyright } from "../Common/Copyright";
-import React from "react";
-import { UserContext } from "../../context/UserContext";
-import { UserRegistration } from "../../@types/UserRegistration";
-import { useNavigate } from "react-router-dom";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import { Copyright } from "../Common/Copyright"
+import React from "react"
+import { UserContext } from "../../context/UserContext"
+import { UserRegistration } from "../../@types/UserRegistration"
+import { useNavigate } from "react-router-dom"
+import ValidationSummary from "../Common/ValidationSummary"
+import { useRegisterUser } from "../../context/UserHooks"
 
-const defaultTheme = createTheme();
+const defaultTheme = createTheme()
 
 export default function SignUp() {
-  const userContext = React.useContext(UserContext);
+  const userContext = React.useContext(UserContext)
+  const nav = useNavigate()
+  const registeration = useRegisterUser()
 
-  const nav = useNavigate();
-
-  const registerUserHandler = async (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const registrationCredentials = new UserRegistration(data.get("userName") as string, data.get("email") as string, data.get("password") as string);
-    const user = await userContext.register(registrationCredentials);
-    if (user){
-      nav(-1)
+  const registerUserHandler = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault()
+    const data = new FormData(event.currentTarget)
+    const creds = new UserRegistration(
+      data.get("userName") as string,
+      data.get("email") as string,
+      data.get("password") as string
+    )
+    const respones = await registeration.mutateAsync(creds)
+    if (respones.status === 200 && respones.data) {
+      userContext.setUser(respones.data)
+      // nav(-1)
     }
-  };
+  }
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -44,18 +53,23 @@ export default function SignUp() {
         <Box
           sx={{
             marginTop: 8,
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+          <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
             Sign up
           </Typography>
-          <Box component="form" noValidate onSubmit={registerUserHandler} sx={{ mt: 3 }}>
+          <Box
+            component="form"
+            noValidate
+            onSubmit={registerUserHandler}
+            sx={{ mt: 3 }}
+          >
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
@@ -70,7 +84,6 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <TextField
-                  required
                   fullWidth
                   id="email"
                   label="Email Address"
@@ -91,7 +104,9 @@ export default function SignUp() {
               </Grid>
               <Grid item xs={12}>
                 <FormControlLabel
-                  control={<Checkbox value="allowExtraEmails" color="primary" />}
+                  control={
+                    <Checkbox value="allowExtraEmails" color="primary" />
+                  }
                   label="I want to receive inspiration, marketing promotions and updates via email."
                 />
               </Grid>
@@ -111,10 +126,15 @@ export default function SignUp() {
                 </Link>
               </Grid>
             </Grid>
+            <Grid>
+              {registeration.isError && (
+                <ValidationSummary error={registeration.error} />
+              )}
+            </Grid>
           </Box>
+          <Copyright sx={{ mt: 5 }} />
         </Box>
-        <Copyright sx={{ mt: 5 }} />
       </Container>
     </ThemeProvider>
-  );
+  )
 }

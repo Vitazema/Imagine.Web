@@ -2,7 +2,6 @@ import React, { useEffect } from "react"
 import {
   authenticateUser,
   getCurrentUser,
-  registerUser,
   useSetUserSettings,
 } from "./UserHooks"
 import { User } from "../@types/User"
@@ -21,7 +20,7 @@ export interface IUserContext {
   setUserSettings(settings: UserSettings): void
   login: (credentials: UserCredentials) => Promise<boolean>
   logout: () => void
-  register: (registration: UserRegistration) => Promise<boolean>
+  setUser: (user: User) => void
 }
 
 const UserContext = React.createContext<IUserContext>({} as IUserContext)
@@ -38,7 +37,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         setUserSettings(user.userSettings ?? new UserSettings())
       })
     } else {
-      const isLoggedIn = await loginAction(new UserCredentials("Guest", ""))
+      const isLoggedIn = await login(new UserCredentials("Guest", ""))
       if (isLoggedIn) {
         return user
       }
@@ -56,35 +55,26 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
   useEffect(() => {
     fetchUser()
   }, [])
-
-  const loginAction = async (credentials: UserCredentials) => {
-    const user = await authenticateUser(credentials)
-    if (user) {
-      login(user)
-      return true
-    }
-    return false
-  }
-
-  const login = (user: User) => {
+  
+  const setAsCurrentUser = (user: User) => {
     setUser(user)
     setToken(user.token)
     localStorage.setItem("token", user.token)
+  }
+
+  const login = async (credentials: UserCredentials) => {
+    const user = await authenticateUser(credentials)
+    if (user) {
+      setAsCurrentUser(user)
+      return true
+    }
+    return false
   }
 
   const logout = () => {
     setUser(undefined)
     setToken("")
     localStorage.removeItem("token")
-  }
-
-  const register = async (registration: UserRegistration) => {
-    const user = await registerUser(registration)
-    if (user) {
-      login(user)
-      return true
-    }
-    return false
   }
 
   const setUserSettings = (settings: UserSettings) => {
@@ -97,9 +87,9 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     token: token,
     settings: settings ?? new UserSettings(),
     setUserSettings: setUserSettings,
-    login: loginAction,
-    logout: logout,
-    register: register,
+    setUser: setAsCurrentUser,
+    login: login,
+    logout: logout
   }
 
   return (
