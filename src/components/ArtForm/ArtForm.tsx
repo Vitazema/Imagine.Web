@@ -56,7 +56,8 @@ const ArtForm: React.FC = () => {
 
     if (addArtMutationResult?.isError) {
       setValidationErrors(addArtMutationResult.error)
-    } else {
+    }
+    else if (addArtMutationResult?.isSuccess) {
       setConfiguration(new ArtConfiguration("", 1))
     }
   }
