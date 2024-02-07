@@ -48,7 +48,7 @@ export default function Account() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={() => { nav("/profile")}}>
           Profile: {userContext.currentUser?.userName}
         </MenuItem>
         {userContext.currentUser === undefined ||

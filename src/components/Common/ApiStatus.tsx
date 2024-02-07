@@ -9,8 +9,8 @@ export enum Status {
   Error = "error",
 }
 
-export const ApiStatus = (props: { status: Status }) => {
-  switch (props.status) {
+export const ApiStatus = (props: { status: string }) => {
+  switch (props.status as Status) {
     case Status.Loading:
       return (
         <Box sx={{ display: "flex", alignItems: "center", justifyItems: "center"}}>

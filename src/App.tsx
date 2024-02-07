@@ -8,6 +8,7 @@ import ArtDetail from "./components/Arts/ArtDetail"
 import ArtGrid from "./components/Arts/ArtGrid"
 import ArtGallery from "./components/Arts/ArtGallery"
 import SignUp from "./components/Account/SignUp"
+import { Profile } from "./components/Account/Profile"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -29,6 +30,7 @@ function App() {
               <Route path="/signup" Component={SignUp}/>
               <Route path="/gallery" element={<ArtGallery />}></Route> 
               <Route path="/gallery/:id" element={<ArtDetail />}></Route>
+              <Route path="/profile" element={<Profile />}></Route>
             </Routes>
           </ArtProvider>
         </BrowserRouter>

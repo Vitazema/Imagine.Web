@@ -5,6 +5,7 @@ import { Permission, User } from "../@types/User"
 import { UserSettings } from "../@types/UserSettings"
 import { UserCredentials } from "../@types/UserCredentials"
 import { UserRegistration } from "../@types/UserRegistration"
+import { Order } from "../@types/Order"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
@@ -46,8 +47,7 @@ const useGetPermissions = (
 async function authenticateUser(credentials: UserCredentials): Promise<User> {
   const url = `${imagineApiBaseUrl}/account/login`
   try {
-    const response = await axios.post(url, 
-      credentials)
+    const response = await axios.post(url, credentials)
     return response.data
   } catch (error) {
     console.error(error)
@@ -57,9 +57,11 @@ async function authenticateUser(credentials: UserCredentials): Promise<User> {
 
 const useRegisterUser = () => {
   const url = `${imagineApiBaseUrl}/account/register`
-  return useMutation<AxiosResponse<User>, AxiosError<Problem>, UserRegistration>((registration) => 
-    axios.post(url, registration)
-  )
+  return useMutation<
+    AxiosResponse<User>,
+    AxiosError<Problem>,
+    UserRegistration
+  >((registration) => axios.post(url, registration))
 }
 
 function getCurrentUser(token: string): Promise<User> {
@@ -78,13 +80,36 @@ function getCurrentUser(token: string): Promise<User> {
 
 const useSetUserSettings = (token: string) => {
   const url = `${imagineApiBaseUrl}/account/settings`
-  return useMutation<AxiosResponse, AxiosError<Problem>, UserSettings>((settings) => 
-    axios.put(url, settings, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      }
-    })
+  return useMutation<AxiosResponse, AxiosError<Problem>, UserSettings>(
+    (settings) =>
+      axios.put(url, settings, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
   )
 }
 
-export { useLoginUser, useGetPermissions, authenticateUser, getCurrentUser, useSetUserSettings, useRegisterUser }
+const useGetUserOrders = (token: string) => {
+  const url = `${imagineApiBaseUrl}/order`
+  return useQuery<[Order], AxiosError<Problem>>(
+    ["orders", token],
+    () =>
+      axios.get(url, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }).then((response) => response.data),
+    { enabled: !!token }
+  )
+}
+
+export {
+  useLoginUser,
+  useGetPermissions,
+  authenticateUser,
+  getCurrentUser,
+  useSetUserSettings,
+  useRegisterUser,
+  useGetUserOrders,
+}
