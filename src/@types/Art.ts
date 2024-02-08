@@ -1,7 +1,7 @@
 import { AiTypes } from "./shared"
 
 export class Art {
-  id: string | undefined
+  id: string
   title?: string | undefined
   progress: number
   createdAt: Date
@@ -12,7 +12,7 @@ export class Art {
   artSetting: ArtConfiguration
 
   constructor(
-    id: string | undefined,
+    id: string,
     artType: AiTypes,
     artSetting: ArtConfiguration,
     title: string | undefined,
