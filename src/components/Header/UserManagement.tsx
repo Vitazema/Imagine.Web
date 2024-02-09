@@ -1,7 +1,7 @@
 import React, { useEffect } from "react"
 import { UserContext } from "../../context/UserContext"
 import { useGetPermissions } from "../../context/UserHooks"
-import { Button, Grid, Modal } from "@mui/material"
+import { Box, Button, Grid, Modal } from "@mui/material"
 import Account from "../Account/Account"
 import SignIn from "../Account/SignIn"
 
@@ -34,7 +34,9 @@ const UserManagement: React.FC = () => {
           aria-labelledby="modal-modal-title"
           aria-describedby="modal-modal-description"
         >
-          <SignIn/>
+          <Box>
+            <SignIn />
+          </Box>
         </Modal>
       </Grid>
     )
