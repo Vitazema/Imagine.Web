@@ -7,7 +7,6 @@ import {
 import { User } from "../@types/User"
 import { UserSettings } from "../@types/UserSettings"
 import { UserCredentials } from "../@types/UserCredentials"
-import { UserRegistration } from "../@types/UserRegistration"
 
 export interface ContextProps {
   children?: React.ReactNode
@@ -34,7 +33,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         user.token = token
         setUser(user)
         setToken(token)
-        setUserSettings(user.userSettings ?? new UserSettings())
+        setSettings(user.userSettings ?? new UserSettings())
       })
     } else {
       const isLoggedIn = await login(new UserCredentials("Guest", ""))
