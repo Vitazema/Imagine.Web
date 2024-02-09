@@ -4,8 +4,8 @@ import { Art } from "../../@types/Art"
 import { UserContext } from "../../context/UserContext"
 import { RequestFilter, useDeleteArt, useGetArts } from "../../context/ArtHooks"
 import ErrorModule from "../Common/ErrorModule"
-import { ApiStatus, Status } from "../Common/ApiStatus"
-import { CircularProgress, Container, Grid } from "@mui/material"
+import { ApiStatus } from "../Common/ApiStatus"
+import { Container, Grid } from "@mui/material"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 const ITEMS_PER_PAGE = 4
@@ -71,7 +71,6 @@ export const ArtGrid = ({ submitted }: Args) => {
                 key={art.id}
                 art={art}
                 onCancelPrompt={() => deleteArt.mutate(art.id)}
-                // onEdit={artContext.editArt.bind(null, art)}
               />
             ))}
         </Grid>

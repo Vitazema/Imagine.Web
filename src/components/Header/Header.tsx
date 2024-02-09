@@ -24,12 +24,6 @@ const Header: React.FC = () => {
     userContext.setUserSettings(newSettings)
   }
 
-  // if (
-  //   userContext.settings === undefined ||
-  //   !userContext.currentUser?.userSettings === undefined
-  // )
-  //   return null
-
   return (
     <AppBar position="static">
       <Toolbar>

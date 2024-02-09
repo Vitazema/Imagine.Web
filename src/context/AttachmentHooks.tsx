@@ -1,5 +1,5 @@
 import axios, { AxiosError, AxiosResponse } from "axios"
-import { useMutation, useQuery } from "react-query"
+import { useMutation } from "react-query"
 import Problem from "../@types/problem"
 import { Attachment } from "../@types/Attachment"
 

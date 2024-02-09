@@ -100,18 +100,12 @@ const useDeleteArt = () => {
 
 const useGetProgress = (id: string, shouldCheckProgress: boolean) => {
   const url = `${imagineApiBaseUrl}/progress/${id}`
-  const queryClient = useQueryClient()
   return useQuery<ArtStatus, AxiosError<Problem>>(
     ["arts", id, "progress"],
     () => axios.get(url).then((response) => response.data),
     {
       refetchInterval: shouldCheckProgress ? 1000 : false,
       enabled: shouldCheckProgress,
-      // onSuccess: (data) => {
-      //   if (data.progress === 100 && !shouldCheckProgress) {
-      //     queryClient.invalidateQueries("arts")
-      //   }
-      // }
     }
   )
 }

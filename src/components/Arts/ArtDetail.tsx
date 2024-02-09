@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom"
 import ErrorModule from "../Common/ErrorModule"
-import React from "react"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { dateFormatter } from "../../utils/DateFormatter"
 import defaultImage from "../../assets/default-image.jpg"
@@ -16,9 +15,7 @@ const ArtDetail = () => {
   }
 
   if (!isSuccess) {
-    if (error) {
-      ;<ErrorModule message={error.message} />
-    }
+    if (error) return <ErrorModule message={error.message} />
     return <ApiStatus status={status as Status} />
   }
 
@@ -35,40 +32,12 @@ const ArtDetail = () => {
           <div className="row">
             {data.urls.length > 0 ? (
               data.urls.map((url, index) => (
-                <img
-                  key={index}
-                  src={url}
-                  alt=""
-                />
+                <img key={index} src={url} alt="" />
               ))
             ) : (
-              <img
-                src={defaultImage}
-                alt=""
-              />
+              <img src={defaultImage} alt="" />
             )}
           </div>
-          {/* <div className="row mt-3">
-          <div className="col-2">
-            <Link
-              className="btn btn-primary w-100"
-              to={`/house/edit/${data.id}`}
-            >
-              Edit
-            </Link>
-          </div>
-          <div className="col-2">
-            <button
-              className="btn btn-danger w-100"
-              onClick={() => {
-                if (window.confirm("Are you sure?"))
-                  deleteHouseMutation.mutate(data);
-              }}
-            >
-              Delete
-            </button>
-          </div>
-        </div> */}
         </div>
         <div className="col-6">
           <div className="row mt-2">
