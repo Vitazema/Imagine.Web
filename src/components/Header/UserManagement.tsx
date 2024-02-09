@@ -1,14 +1,12 @@
 import React, { useEffect } from "react"
 import { UserContext } from "../../context/UserContext"
 import { useGetPermissions } from "../../context/UserHooks"
-import { ArtContext } from "../../context/ArtContext"
 import { Button, Grid, Modal } from "@mui/material"
 import Account from "../Account/Account"
 import SignIn from "../Account/SignIn"
 
 const UserManagement: React.FC = () => {
   const userContext = React.useContext(UserContext)
-  const artContext = React.useContext(ArtContext)
 
   const [creds, setCreds] = React.useState<number>()
   const [isOpenLogin, setOpenLogin] = React.useState<boolean>(false)
@@ -22,7 +20,7 @@ const UserManagement: React.FC = () => {
       userPermissionResponse.refetch()
       setCreds(userPermissionResponse.data?.credentials)
     }
-  }, [userPermissionResponse.data, userContext.currentUser, artContext.arts])
+  }, [userPermissionResponse.data, userContext.currentUser])
 
   if (!userContext.currentUser) {
     return (
