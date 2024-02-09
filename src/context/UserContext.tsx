@@ -54,7 +54,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
   useEffect(() => {
     fetchUser()
   }, [])
-  
+
   const setAsCurrentUser = (user: User) => {
     setUser(user)
     setToken(user.token)
@@ -88,7 +88,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     setUserSettings: setUserSettings,
     setUser: setAsCurrentUser,
     login: login,
-    logout: logout
+    logout: logout,
   }
 
   return (

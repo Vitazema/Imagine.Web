@@ -1,7 +1,12 @@
 import { ArtRequest, AiTypes as Feature, AiTypes } from "../@types/shared"
 import { Art, ArtStatus } from "../@types/Art"
 import axios, { AxiosError, AxiosResponse } from "axios"
-import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from "react-query"
+import {
+  useInfiniteQuery,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "react-query"
 import React from "react"
 import Problem from "../@types/problem"
 import { UserContext } from "./UserContext"
@@ -9,10 +14,7 @@ import { UserContext } from "./UserContext"
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
 export class RequestFilter {
-  constructor(
-    public aiType: Feature,
-    public limit?: number
-  ) {}
+  constructor(public aiType: Feature, public limit?: number) {}
 }
 
 const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
@@ -24,7 +26,7 @@ const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
   }
   return useInfiniteQuery<ArtRequest, AxiosError<Problem>>(
     "arts",
-    ({ pageParam = 1}) =>
+    ({ pageParam = 1 }) =>
       axios
         .get(buildUrl(pageParam), {
           headers: {
@@ -39,7 +41,7 @@ const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
           return loadedPages.length + 1
         }
       },
-      enabled: enabled
+      enabled: enabled,
     }
   )
 }
@@ -57,15 +59,11 @@ const useAddArt = () => {
   const url = `${imagineApiBaseUrl}/arts`
   return useMutation<AxiosResponse, AxiosError<Problem>, Art>(
     (art) =>
-      axios.post(
-        url,
-        art,
-        {
-          headers: {
-            Authorization: `Bearer ${userContext.currentUser?.token}`,
-          }
-        }
-      ),
+      axios.post(url, art, {
+        headers: {
+          Authorization: `Bearer ${userContext.currentUser?.token}`,
+        },
+      }),
     {
       onSuccess: () => {
         queryClient.invalidateQueries("arts")
@@ -103,11 +101,12 @@ const useDeleteArt = () => {
 const useGetProgress = (id: string, shouldCheckProgress: boolean) => {
   const url = `${imagineApiBaseUrl}/progress/${id}`
   const queryClient = useQueryClient()
-  return useQuery<ArtStatus, AxiosError<Problem>>(["arts", id, "progress"], () =>
-    axios.get(url).then((response) => response.data),
+  return useQuery<ArtStatus, AxiosError<Problem>>(
+    ["arts", id, "progress"],
+    () => axios.get(url).then((response) => response.data),
     {
       refetchInterval: shouldCheckProgress ? 1000 : false,
-      enabled: shouldCheckProgress
+      enabled: shouldCheckProgress,
       // onSuccess: (data) => {
       //   if (data.progress === 100 && !shouldCheckProgress) {
       //     queryClient.invalidateQueries("arts")
@@ -117,4 +116,11 @@ const useGetProgress = (id: string, shouldCheckProgress: boolean) => {
   )
 }
 
-export { useGetArts, useGetArt, useAddArt, useEditArt, useDeleteArt, useGetProgress }
+export {
+  useGetArts,
+  useGetArt,
+  useAddArt,
+  useEditArt,
+  useDeleteArt,
+  useGetProgress,
+}

@@ -38,9 +38,8 @@ export const ArtGrid = ({ submitted }: Args) => {
 
   // Refetch data when user configuration changes
   useEffect(() => {
-    if (isSuccess)
-      setArts([])
-      refetch()
+    if (isSuccess) setArts([])
+    refetch()
   }, [userContext.currentUser, userContext.settings])
 
   useEffect(() => {
@@ -52,7 +51,8 @@ export const ArtGrid = ({ submitted }: Args) => {
 
   if (isLoading) return <ApiStatus status={status} />
   if (isError) return <ErrorModule message={error.message} />
-  if (isSuccess && data.pages.flatMap((page) => page.data).length === 0) return <h1>"Arts not found."</h1>
+  if (isSuccess && data.pages.flatMap((page) => page.data).length === 0)
+    return <h1>"Arts not found."</h1>
 
   return (
     <Container maxWidth="lg">
