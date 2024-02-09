@@ -11,7 +11,7 @@ import { useQueryClient } from "react-query"
 type Args = {
   art: Art
   onCancelPrompt: () => void
-  onEdit: () => void
+  // onEdit: () => void
 }
 
 const ArtItem: React.FC<Args> = (props) => {

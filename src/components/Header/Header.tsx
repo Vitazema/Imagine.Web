@@ -20,9 +20,15 @@ const Header: React.FC = () => {
     aiType: AiType
   ) => {
     e.preventDefault()
-    const newSettings = { ...userContext.settings, selectedFeature: aiType}
+    const newSettings = { ...userContext.settings, selectedFeature: aiType }
     userContext.setUserSettings(newSettings)
   }
+
+  // if (
+  //   userContext.settings === undefined ||
+  //   !userContext.currentUser?.userSettings === undefined
+  // )
+  //   return null
 
   return (
     <AppBar position="static">
@@ -41,7 +47,7 @@ const Header: React.FC = () => {
           </Grid>
           <Grid item>
             <ToggleButtonGroup
-              value={userContext.settings.selectedFeature}
+              value={userContext.settings?.selectedFeature}
               exclusive
               onChange={featureChangeHandler}
             >
