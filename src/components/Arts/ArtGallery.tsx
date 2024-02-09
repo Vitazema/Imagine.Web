@@ -1,16 +1,14 @@
 import React, { useEffect } from "react"
-import { ArtContext } from "../../context/ArtContext"
 import ErrorModule from "../Common/ErrorModule"
 
 import ArtFilter from "./ArtFilter"
-import ArtGrid from "./ArtGrid"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { Art } from "../../@types/Art"
 import { UserContext } from "../../context/UserContext"
 import { RequestFilter, useGetArts } from "../../context/ArtHooks"
+import { ArtGrid } from "./ArtGrid"
 
 function ArtGallery() {
-  const artContext = React.useContext(ArtContext)
   const userContext = React.useContext(UserContext)
   const [onlyFavourites, setFilter] = React.useState(false)
   const filterChangeHandler = (isFavourites: string) => {
@@ -35,15 +33,15 @@ function ArtGallery() {
   }
 
   if (request.isSuccess) {
-    const filteredArts = artContext.arts?.filter((art) =>
-      onlyFavourites === false ? art : art.favourite === onlyFavourites
-    )
+    // const filteredArts = artContext.arts?.filter((art) =>
+    //   onlyFavourites === false ? art : art.favourite === onlyFavourites
+    // )
 
-    if (filteredArts && filteredArts.length > 0) {
-      content = <ArtGrid />
-    } else {
-      content = <h1>"Arts not found."</h1>
-    }
+    // if (filteredArts && filteredArts.length > 0) {
+    //   content = <ArtGrid submitted={() => {}} />
+    // } else {
+    //   content = <h1>"Arts not found."</h1>
+    // }
   } else {
     content = <ApiStatus status={request.status as Status} />
   }
