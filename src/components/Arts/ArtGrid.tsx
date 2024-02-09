@@ -1,22 +1,23 @@
-import classes from "./ArtGallery.module.css"
 import ArtItem from "./ArtItem"
-import { IArtDbContext } from "../../@types/context"
-import { ArtContext } from "../../context/ArtContext"
-import React, { useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { Art } from "../../@types/Art"
 import { UserContext } from "../../context/UserContext"
-import { RequestFilter, useGetArts } from "../../context/ArtHooks"
+import { RequestFilter, useDeleteArt, useGetArts } from "../../context/ArtHooks"
 import ErrorModule from "../Common/ErrorModule"
 import { ApiStatus, Status } from "../Common/ApiStatus"
-import { Container, Grid } from "@mui/material"
+import { CircularProgress, Container, Grid } from "@mui/material"
 import InfiniteScroll from "react-infinite-scroll-component"
 
 const ITEMS_PER_PAGE = 4
 
-function ArtGrid() {
+type Args = {
+  submitted: (art: Art) => void
+}
+
+export const ArtGrid = ({ submitted }: Args) => {
   const userContext = React.useContext(UserContext)
-  const artContext = React.useContext(ArtContext)
-  let content
+  const [arts, setArts] = useState<Art[]>([])
+  // const [optimisticArt, setOptimisticArt] = useOptimistic()
 
   const {
     data,
@@ -30,37 +31,28 @@ function ArtGrid() {
     hasNextPage,
   } = useGetArts(
     new RequestFilter(userContext.settings.selectedFeature, ITEMS_PER_PAGE),
-    userContext.currentUser !== undefined
+    userContext.token !== undefined
   )
+
+  const deleteArt = useDeleteArt()
 
   // Refetch data when user configuration changes
   useEffect(() => {
     if (isSuccess)
+      setArts([])
       refetch()
   }, [userContext.currentUser, userContext.settings])
 
-  if (isError) {
-    content = <ErrorModule message={error.message} />
-  }
-
-  if (isSuccess) {
-    if (data?.pages && data?.pages[0].count > 0) {
-      content = data.pages?.map((page) =>
-        page.data.map((art) => (
-          <ArtItem
-            key={art.id}
-            art={art}
-            onCancelPrompt={artContext.cancelArt.bind(null, art)}
-            onEdit={artContext.editArt.bind(null, art)}
-          />
-        ))
-      )
-    } else {
-      content = <h1>"Arts not found."</h1>
+  useEffect(() => {
+    if (isSuccess && data?.pages && data?.pages[0].count > 0) {
+      let arts = data.pages.flatMap((page) => page.data)
+      setArts(arts)
     }
-  } else {
-    content = <ApiStatus status={status as Status} />
-  }
+  }, [data, isSuccess])
+
+  if (isLoading) return <ApiStatus status={status} />
+  if (isError) return <ErrorModule message={error.message} />
+  if (isSuccess && data.pages.flatMap((page) => page.data).length === 0) return <h1>"Arts not found."</h1>
 
   return (
     <Container maxWidth="lg">
@@ -72,12 +64,18 @@ function ArtGrid() {
           data?.pages.reduce((total, page) => total + page.data.length, 0) || 0
         }
       >
-      <Grid container spacing={1}>
-        <ul className={classes.arts}>{content}</ul>
-      </Grid>
+        <Grid container spacing={1}>
+          {arts &&
+            arts.map((art) => (
+              <ArtItem
+                key={art.id}
+                art={art}
+                onCancelPrompt={() => deleteArt.mutate(art.id)}
+                // onEdit={artContext.editArt.bind(null, art)}
+              />
+            ))}
+        </Grid>
       </InfiniteScroll>
     </Container>
   )
 }
-
-export default ArtGrid

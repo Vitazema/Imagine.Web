@@ -1,30 +1,35 @@
 import React, { useEffect } from "react"
-import { ArtContext } from "../../context/ArtContext"
 import classes from "./ArtForm.module.css"
 import { Art, ArtConfiguration } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
-import { AxiosError } from "axios"
-import Problem from "../../@types/problem"
 import toBase64 from "../../utils/utils"
 import {
-  getAttachment,
   useUpsertAttachment,
 } from "../../context/AttachmentHooks"
 import { Attachment } from "../../@types/Attachment"
 import { UserContext } from "../../context/UserContext"
+import { ArtGrid } from "../Arts/ArtGrid"
+import { Role } from "../../@types/User"
+import { useAddArt } from "../../context/ArtHooks"
 
-const ArtForm: React.FC = () => {
-  const artsContext = React.useContext(ArtContext)
+const Txt2Img: React.FC = () => {
   const userContext = React.useContext(UserContext)
-  const [validationErrors, setValidationErrors] =
-    React.useState<AxiosError<Problem>>()
-  const [showAdvanced, setShowAdvanced] = React.useState(true)
-
-  const upsertAttachments = useUpsertAttachment()
-
+  const [artState, setArtState] = React.useState<Art>(new Art(
+    crypto.randomUUID(),
+    userContext.settings?.selectedFeature,
+    new ArtConfiguration("", 1),
+    undefined,
+    false
+  ))
   const [configuration, setConfiguration] = React.useState<ArtConfiguration>(
     new ArtConfiguration("", 1)
   )
+  const [showAdvanced, setShowAdvanced] = React.useState(
+    userContext.currentUser?.role === Role.System ? true : false
+  )
+
+  const upsertAttachments = useUpsertAttachment()
+  const addArtMutation = useAddArt()
 
   useEffect(() => {
     localStorage.setItem(
@@ -46,18 +51,22 @@ const ArtForm: React.FC = () => {
     }
   }
 
-  const onCreateHandler: React.MouseEventHandler<HTMLButtonElement> = async (
+  const onCreateArtHandler: React.MouseEventHandler<HTMLButtonElement> = async (
     e
   ) => {
-    // don't reload page on submit
     e.preventDefault()
 
-    const addArtMutationResult = artsContext.addArt(configuration)
+    const art = new Art(
+      crypto.randomUUID(),
+      userContext.settings?.selectedFeature,
+      configuration,
+      configuration.prompt,
+      false
+    )
 
-    if (addArtMutationResult?.isError) {
-      setValidationErrors(addArtMutationResult.error)
-    }
-    else if (addArtMutationResult?.isSuccess) {
+    const result = await addArtMutation.mutateAsync(art)
+
+    if (addArtMutation?.isSuccess) {
       setConfiguration(new ArtConfiguration("", 1))
     }
   }
@@ -85,14 +94,12 @@ const ArtForm: React.FC = () => {
       let response = await upsertAttachments.mutateAsync(attachment)
       if (response.data) {
         attachment = response.data
-      } else {
-        setValidationErrors(response.data)
+        setConfiguration({
+          ...configuration,
+          image: image,
+          attachmentId: attachment.id,
+        })
       }
-      setConfiguration({
-        ...configuration,
-        image: image,
-        attachmentId: attachment.id,
-      })
     }
   }
 
@@ -111,7 +118,7 @@ const ArtForm: React.FC = () => {
         <button
           type="submit"
           disabled={configuration.prompt.trim().length === 0}
-          onClick={onCreateHandler}
+          onClick={onCreateArtHandler}
         >
           Create
         </button>
@@ -162,10 +169,13 @@ const ArtForm: React.FC = () => {
             </div>
           </div>
         )}
-        {validationErrors && <ValidationSummary error={validationErrors} />}
       </form>
+      {addArtMutation.isError && (
+        <ValidationSummary error={addArtMutation.error} />
+      )}
+      <ArtGrid submitted={(a) => {addArtMutation.mutate(a)}} />
     </section>
   )
 }
 
-export default ArtForm
+export default Txt2Img
