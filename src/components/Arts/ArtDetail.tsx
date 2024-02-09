@@ -1,14 +1,12 @@
 import { useParams } from "react-router-dom"
 import ErrorModule from "../Common/ErrorModule"
 import React from "react"
-import { ArtContext } from "../../context/ArtContext"
 import { ApiStatus, Status } from "../Common/ApiStatus"
 import { dateFormatter } from "../../utils/DateFormatter"
 import defaultImage from "../../assets/default-image.jpg"
 import { useGetArt } from "../../context/ArtHooks"
 
 const ArtDetail = () => {
-  const artContext = React.useContext(ArtContext)
   const { id } = useParams()
   const artId = id ? id : "none"
   const { data, status, isSuccess, error } = useGetArt(artId)
