@@ -7,13 +7,15 @@ import ArtDetail from "./components/Arts/ArtDetail"
 import ArtGallery from "./components/Arts/ArtGallery"
 import SignUp from "./components/Account/SignUp"
 import { Profile } from "./components/Account/Profile"
+import { Footer } from "./components/Common/Footer"
+import { About } from "./components/Common/About"
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-    }
-  }
+    },
+  },
 })
 
 function App() {
@@ -21,14 +23,16 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <UserProvider>
         <BrowserRouter>
-            <Header />
-            <Routes>
-              <Route path="/" element={<Txt2Img />}/>
-              <Route path="/signup" Component={SignUp}/>
-              <Route path="/gallery" element={<ArtGallery />}></Route> 
-              <Route path="/gallery/:id" element={<ArtDetail />}></Route>
-              <Route path="/profile" element={<Profile />}></Route>
-            </Routes>
+          <Header />
+          <Routes>
+            <Route path="/" element={<Txt2Img />} />
+            <Route path="/signup" Component={SignUp} />
+            <Route path="/gallery" element={<ArtGallery />}></Route>
+            <Route path="/gallery/:id" element={<ArtDetail />}></Route>
+            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/about" element={<About />}></Route>
+          </Routes>
+          <Footer />
         </BrowserRouter>
       </UserProvider>
     </QueryClientProvider>
