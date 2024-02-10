@@ -1,0 +1,47 @@
+.steps {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.steps h1 {
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+.steps p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+.numbers {
+  display: flex;
+  justify-content: space-between;
+  width: 100px;
+  margin-bottom: 20px;
+}
+
+.numbers div {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #888;
+  background-color: #f0f0f0;
+  color: #888;
+}
+
+.numbers div.active {
+  background-color: #007bff;
+  color: white;
+  border-color: #007bff;
+}
+
+Button {
+  margin: 5px;
+}

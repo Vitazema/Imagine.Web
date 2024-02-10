@@ -9,6 +9,7 @@ import SignUp from "./components/Account/SignUp"
 import { Profile } from "./components/Account/Profile"
 import { Footer } from "./components/Common/Footer"
 import { About } from "./components/Common/About"
+import { Checkout } from "./components/Payment/Payment"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -30,6 +31,7 @@ function App() {
             <Route path="/gallery" element={<ArtGallery />}></Route>
             <Route path="/gallery/:id" element={<ArtDetail />}></Route>
             <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/checkout" element={<Checkout />}></Route>
             <Route path="/about" element={<About />}></Route>
           </Routes>
           <Footer />
