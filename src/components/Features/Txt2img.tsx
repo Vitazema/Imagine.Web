@@ -1,28 +1,29 @@
-import React, { useEffect } from "react"
+import React, { useContext, useEffect, useState } from "react"
 import classes from "./ArtForm.module.css"
-import { Art, ArtConfiguration } from "../../@types/Art"
+import { Art, Parameters as Parameters } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
 import toBase64 from "../../utils/utils"
-import {
-  useUpsertAttachment,
-} from "../../context/AttachmentHooks"
+import { useUpsertAttachment } from "../../context/AttachmentHooks"
 import { Attachment } from "../../@types/Attachment"
 import { UserContext } from "../../context/UserContext"
 import { ArtGrid } from "../Arts/ArtGrid"
 import { Role } from "../../@types/User"
-import { useAddArt } from "../../context/ArtHooks"
+import { RequestFilter, useAddArt, useGetArts } from "../../context/ArtHooks"
 
-const Txt2Img: React.FC = () => {
-  const userContext = React.useContext(UserContext)
-  const [artState, setArtState] = React.useState<Art>(new Art(
-    crypto.randomUUID(),
-    userContext.settings?.selectedFeature,
-    new ArtConfiguration("", 1),
-    undefined,
-    false
-  ))
-  const [configuration, setConfiguration] = React.useState<ArtConfiguration>(
-    new ArtConfiguration("", 1)
+export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
+  const userContext = useContext(UserContext)
+  const [artState, setArtState] = useState<Art>(
+    new Art(
+      crypto.randomUUID(),
+      userContext.settings?.selectedFeature,
+      fetchParameters(),
+      undefined,
+      false
+    )
+  )
+
+  const [configuration, setConfiguration] = React.useState<Parameters>(
+    fetchParameters()
   )
   const [showAdvanced, setShowAdvanced] = React.useState(
     userContext.currentUser?.role === Role.System ? true : false
@@ -39,19 +40,21 @@ const Txt2Img: React.FC = () => {
   }, [configuration])
 
   useEffect(() => {
-    const storedConfiguration = fetchConfiguration()
+    const storedConfiguration = fetchParameters()
     if (storedConfiguration) setConfiguration(storedConfiguration)
   }, [userContext.settings.selectedFeature])
 
-  function fetchConfiguration(): ArtConfiguration | undefined {
+  function fetchParameters(): Parameters {
     const selectedFeature = userContext.settings.selectedFeature
     const config = localStorage.getItem(selectedFeature.toString())
     if (config) {
       return JSON.parse(config)
+    } else {
+      return new Parameters("", 1)
     }
   }
 
-  const onCreateArtHandler: React.MouseEventHandler<HTMLButtonElement> = async (
+  const createArtHandler: React.MouseEventHandler<HTMLButtonElement> = async (
     e
   ) => {
     e.preventDefault()
@@ -64,11 +67,8 @@ const Txt2Img: React.FC = () => {
       false
     )
 
+    props.onAddArt(art)
     const result = await addArtMutation.mutateAsync(art)
-
-    if (addArtMutation?.isSuccess) {
-      setConfiguration(new ArtConfiguration("", 1))
-    }
   }
 
   const showAdvancedHandler: React.MouseEventHandler<
@@ -104,7 +104,7 @@ const Txt2Img: React.FC = () => {
   }
 
   return (
-    <section>
+    <>
       <form className={classes.form}>
         <label htmlFor="text">Promtp</label>
         <input
@@ -118,7 +118,7 @@ const Txt2Img: React.FC = () => {
         <button
           type="submit"
           disabled={configuration.prompt.trim().length === 0}
-          onClick={onCreateArtHandler}
+          onClick={createArtHandler}
         >
           Create
         </button>
@@ -173,9 +173,6 @@ const Txt2Img: React.FC = () => {
       {addArtMutation.isError && (
         <ValidationSummary error={addArtMutation.error} />
       )}
-      <ArtGrid submitted={(a) => {addArtMutation.mutate(a)}} />
-    </section>
+    </>
   )
 }
-
-export default Txt2Img

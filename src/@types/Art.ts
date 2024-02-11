@@ -9,12 +9,12 @@ export class Art {
   favourite: boolean
   artType: AiTypes
   user?: string
-  artSetting: ArtConfiguration
+  parameters: Parameters
 
   constructor(
     id: string,
     artType: AiTypes,
-    artSetting: ArtConfiguration,
+    parameters: Parameters,
     title: string | undefined,
     favourite: boolean
   ) {
@@ -25,11 +25,11 @@ export class Art {
     this.favourite = favourite
     this.createdAt = new Date()
     this.artType = artType
-    this.artSetting = artSetting
+    this.parameters = parameters
   }
 }
 
-export class ArtConfiguration {
+export class Parameters {
   prompt: string
   negativePrompt: string | undefined
   amount: number

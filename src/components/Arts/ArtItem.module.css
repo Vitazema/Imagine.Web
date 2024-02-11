@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  align-content: center;
   box-shadow: 0 2px 8px rgba(2, 2, 2, 0.25);
   padding: 0.5rem;
   margin: 1rem 0;
@@ -21,8 +22,8 @@
 }
 
 .artPreview {
-  width: 10rem;
-  height: 10rem;
+  width: 20rem;
+  height: 20rem;
   border-radius: 12px;
   overflow: hidden;
   border: 1px solid #ececec;

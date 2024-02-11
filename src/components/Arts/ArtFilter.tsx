@@ -1,21 +1,27 @@
-import "./ArtFilter.css";
+import { useState } from "react"
+import "./ArtFilter.css"
 
-function ArtFilter(props: {isFavourites: string, onChangeFilter: ((isFavourites: string) => void)}) {
+export default function ArtFilter() {
+  const [onlyFavourites, setFilter] = useState(false)
 
-  const markAsFavouriteHandler = (event: any) => {
-    props.onChangeFilter(event.target.value)
+  const filterChangeHandler: React.ChangeEventHandler<HTMLSelectElement> = (
+    event
+  ) => {
+    const isFavourites = event.target.value
+    setFilter(isFavourites === "false" ? false : true)
   }
 
   return (
     <div className="art-filter">
       <div className="art-filter__control">
-        <select value={props.isFavourites} onChange={markAsFavouriteHandler}>
+        <select
+          value={onlyFavourites.toString()}
+          onChange={filterChangeHandler}
+        >
           <option value="false">all</option>
           <option value="true">favourites</option>
         </select>
       </div>
     </div>
-  );
+  )
 }
-
-export default ArtFilter;

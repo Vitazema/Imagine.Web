@@ -49,7 +49,7 @@ const ArtDetail = () => {
             </h3>
           </div>
           <div className="row">
-            <div className="col-12 mt-3">{data.artSetting?.prompt}</div>
+            <div className="col-12 mt-3">{data.parameters?.prompt}</div>
           </div>
         </div>
       </div>

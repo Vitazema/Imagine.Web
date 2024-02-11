@@ -1,16 +1,16 @@
-import { ArtConfiguration } from "./Art";
-import { AiTypes } from "./shared";
+import { Parameters } from "./Art"
+import { AiTypes } from "./shared"
 
 export interface Configuration {
-  aiType: AiTypes,
+  aiType: AiTypes
   jsonConfig: string
 }
 
 export class Txt2ImgConfig implements Configuration {
-  public aiType: AiTypes = AiTypes.Txt2Img;
+  public aiType: AiTypes = AiTypes.Txt2Img
   constructor(
     public jsonConfig: string,
-    public configuration: ArtConfiguration,
+    public configuration: Parameters,
     public isFavorite: boolean
   ) {}
 }
