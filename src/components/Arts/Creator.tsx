@@ -68,11 +68,11 @@ export default function Creator() {
   if (isLoading) grid = <ApiStatus status={status} />
   if (isError) grid = <ErrorModule message={error.message} />
   if (isSuccess && data) {
-    // let artsList = data.pages.flatMap((page) => page.data)
+    let artsList = data.pages.flatMap((page) => page.data)
     // setArts((arts) => [...arts, ...artsList])
     grid = (
       <ArtGrid
-        arts={arts}
+        arts={artsList}
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         onDeleteArt={onDeleteArt}
