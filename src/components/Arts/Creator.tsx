@@ -33,6 +33,13 @@ export default function Creator() {
     userContext.token !== undefined
   )
 
+  function addArtsHandler() {
+    if (data) {
+      let artsList = data.pages.flatMap((page) => page.data)
+      setArts(artsList)
+    }
+  }
+
   function addArtHandler(art: Art) {
     setArts((arts) => [...arts, art])
   }
@@ -56,21 +63,21 @@ export default function Creator() {
     refetch()
   }, [userContext.currentUser, userContext.settings])
 
-  useEffect(() => {
-    if (isSuccess && data) {
-      let artsList = data.pages.flatMap((page) => page.data)
-      setArts(artsList)
-    }
-  }, [data])
+  // useEffect(() => {
+  //   if (isSuccess && data) {
+  //     let artsList = data.pages.flatMap((page) => page.data)
+  //     setArts(artsList)
+  //   }
+  // }, [data])
 
-  let grid
+  let content
 
-  if (isLoading) grid = <ApiStatus status={status} />
-  if (isError) grid = <ErrorModule message={error.message} />
+  if (isLoading) content = <ApiStatus status={status} />
+  if (isError) content = <ErrorModule message={error.message} />
   if (isSuccess && data) {
     let artsList = data.pages.flatMap((page) => page.data)
     // setArts((arts) => [...arts, ...artsList])
-    grid = (
+    content = (
       <ArtGrid
         arts={artsList}
         fetchNextPage={fetchNextPage}
@@ -87,7 +94,7 @@ export default function Creator() {
       <Paper>
         <ArtFilter />
       </Paper>
-      {grid}
+      {content}
     </Container>
   )
 }

@@ -6,7 +6,7 @@ import renderAnimation from "../../assets/rendering.gif"
 import { useGetProgress } from "../../context/ArtHooks"
 import ProgressBar from "./ProgressBar"
 import { useQueryClient } from "react-query"
-import { Button, IconButton } from "@mui/material"
+import { Button, FormGroup, IconButton, Paper } from "@mui/material"
 import { Favorite, Close } from "@mui/icons-material"
 
 type Args = {
@@ -59,23 +59,25 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
           ))
         )}
       </div>
-      <h3>{art.title}</h3>
-      {/* <span className={classes.artDate}>{createdAt}</span> */}
-      {isSuccess && data ? (
-        <ProgressBar artStatus={data} />
-      ) : (
-        <div>Undefined status</div>
-      )}
-      <IconButton onClick={() => onFavorite()}>
-        <Favorite color={art.favourite ? "error" : "inherit"} />
-      </IconButton>
-      <Button onClick={onRecreateHandler}>Recreate</Button>
-      <Link className="btn btn-primary w-100" to={`/gallery/${art.id}`}>
-        Edit
-      </Link>
-      <Button className="btn btn-danger w-100" onClick={onCancel}>
-        <Close />
-      </Button>
+      <Paper>
+        <IconButton onClick={() => onFavorite()}>
+          <Favorite color={art.favourite ? "error" : "inherit"} />
+        </IconButton>
+        <Button onClick={onRecreateHandler}>Recreate</Button>
+        <Button>
+          <Link to={`/gallery/${art.id}`}>Edit</Link>
+        </Button>
+        <Button className="btn btn-danger w-100" onClick={onCancel}>
+          <Close />
+        </Button>
+        {/* <span className={classes.artDate}>{createdAt}</span> */}
+        {isSuccess && data ? (
+          <ProgressBar artStatus={data} />
+        ) : (
+          <div>Undefined status</div>
+        )}
+        <h3>{art.title}</h3>
+      </Paper>
     </li>
   )
 }
