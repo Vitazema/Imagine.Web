@@ -48,7 +48,11 @@ export default function Account() {
           "aria-labelledby": "basic-button",
         }}
       >
-        <MenuItem onClick={() => { nav("/profile")}}>
+        <MenuItem
+          onClick={() => {
+            nav("/dashboard")
+          }}
+        >
           Profile: {userContext.currentUser?.userName}
         </MenuItem>
         {userContext.currentUser === undefined ||

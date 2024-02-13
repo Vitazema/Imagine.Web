@@ -6,7 +6,7 @@ import { UserProvider } from "./context/UserContext"
 import ArtDetail from "./components/Arts/ArtDetail"
 import Gallery from "./components/Arts/Gallery"
 import SignUp from "./components/Account/SignUp"
-import { Profile } from "./components/Account/Profile"
+import { Dashboard } from "./components/Account/Dashboard"
 import { Footer } from "./components/Common/Footer"
 import { About } from "./components/Common/About"
 import { Checkout } from "./components/Payment/Payment"
@@ -31,7 +31,7 @@ function App() {
             <Route path="/signup" Component={SignUp} />
             <Route path="/gallery" element={<Gallery />}></Route>
             <Route path="/gallery/:id" element={<ArtDetail />}></Route>
-            <Route path="/profile" element={<Profile />}></Route>
+            <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/checkout" element={<Checkout />}></Route>
             <Route path="/about" element={<About />}></Route>
           </Routes>

@@ -78,6 +78,7 @@ export default function Creator() {
   if (isError) content = <ErrorModule message={error.message} />
   if (isSuccess && data) {
     let artsList = data.pages.flatMap((page) => page.data)
+    // todo: why cause too many re-renders?
     // setArts((arts) => [...arts, ...artsList])
     content = (
       <ArtGrid
