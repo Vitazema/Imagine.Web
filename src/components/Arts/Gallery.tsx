@@ -18,7 +18,8 @@ function Gallery() {
 
   let content = <></>
   const request = useGetArts(
-    new RequestFilter(userContext.settings.selectedFeature)
+    new RequestFilter(userContext.settings.selectedFeature, 4),
+    false
   )
 
   // useEffect(() => {

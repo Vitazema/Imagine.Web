@@ -59,8 +59,10 @@ export default function Creator() {
 
   // Refetch data when user configuration changes
   useEffect(() => {
-    if (isSuccess) setArts([])
-    refetch()
+    if (isSuccess && data) {
+      setArts([])
+      refetch()
+    }
   }, [userContext.currentUser, userContext.settings])
 
   // useEffect(() => {

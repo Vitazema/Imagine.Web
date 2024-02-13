@@ -14,10 +14,10 @@ import { UserContext } from "./UserContext"
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
 export class RequestFilter {
-  constructor(public aiType: Feature, public limit?: number) {}
+  constructor(public aiType: Feature, public limit: number) {}
 }
 
-const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
+const useGetArts = (filter: RequestFilter, isEnabled: boolean) => {
   const userContext = React.useContext(UserContext)
   const buildUrl = (pageParam: number) => {
     let url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
@@ -41,7 +41,7 @@ const useGetArts = (filter: RequestFilter, enabled?: boolean) => {
           return loadedPages.length + 1
         }
       },
-      enabled: enabled,
+      enabled: isEnabled,
     }
   )
 }
