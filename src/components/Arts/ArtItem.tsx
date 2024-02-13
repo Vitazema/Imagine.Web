@@ -7,7 +7,12 @@ import { useGetProgress } from "../../context/ArtHooks"
 import ProgressBar from "./ProgressBar"
 import { useQueryClient } from "react-query"
 import { Button, FormGroup, IconButton, Paper } from "@mui/material"
-import { Favorite, Close } from "@mui/icons-material"
+import {
+  Favorite,
+  Close,
+  Info as InfoIcon,
+  FavoriteBorder,
+} from "@mui/icons-material"
 
 type Args = {
   art: Art
@@ -16,6 +21,7 @@ type Args = {
 }
 
 export default function ArtItem({ art, onCancel, onFavorite }: Args) {
+  const [expanded, setExpanded] = useState(true)
   const createdAt = art.createdAt.toString()
   const queryClient = useQueryClient()
   const nav = useNavigate()
@@ -24,6 +30,10 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
 
   const onRecreateHandler = () => {
     // Todo: recreate art
+  }
+
+  const expandInfoHandler = () => {
+    setExpanded(!expanded)
   }
 
   const { data, status, isSuccess, error } = useGetProgress(
@@ -60,8 +70,11 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
         )}
       </div>
       <Paper>
+        <IconButton onClick={expandInfoHandler}>
+          <InfoIcon />
+        </IconButton>
         <IconButton onClick={() => onFavorite()}>
-          <Favorite color={art.favourite ? "error" : "inherit"} />
+          {art.favourite ? <Favorite /> : <FavoriteBorder />}
         </IconButton>
         <Button onClick={onRecreateHandler}>Recreate</Button>
         <Button>
@@ -70,14 +83,36 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
         <Button className="btn btn-danger w-100" onClick={onCancel}>
           <Close />
         </Button>
-        {/* <span className={classes.artDate}>{createdAt}</span> */}
-        {isSuccess && data ? (
-          <ProgressBar artStatus={data} />
-        ) : (
-          <div>Undefined status</div>
-        )}
-        <h3>{art.title}</h3>
+        <Info expanded={expanded} art={art}>
+          {isSuccess && data ? (
+            <ProgressBar artStatus={data} />
+          ) : (
+            <div>Undefined status</div>
+          )}
+        </Info>
       </Paper>
     </li>
+  )
+}
+
+function Info({
+  expanded,
+  art,
+  children,
+}: {
+  expanded: boolean
+  art: Art
+  children: React.ReactNode
+}) {
+  return (
+    <>
+      {expanded && (
+        <div>
+          {/* <span className={classes.artDate}>{createdAt}</span> */}
+          <h3>{art.title}</h3>
+        </div>
+      )}
+      {children}
+    </>
   )
 }
