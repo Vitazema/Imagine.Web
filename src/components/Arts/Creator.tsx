@@ -30,7 +30,7 @@ export default function Creator() {
     hasNextPage,
   } = useGetArts(
     new RequestFilter(userContext.settings.selectedFeature, ITEMS_PER_PAGE),
-    userContext.token !== undefined
+    userContext.currentUser !== undefined
   )
 
   function addArtsHandler() {
