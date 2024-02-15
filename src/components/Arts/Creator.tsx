@@ -52,7 +52,7 @@ export default function Creator() {
   const onChangeFavourite = async (id: string) => {
     setArts((arts) =>
       arts.map((art) =>
-        art.id == id ? { ...art, favourite: !art.favourite } : art
+        art.id === id ? { ...art, favourite: !art.favourite } : art
       )
     )
   }

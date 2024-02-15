@@ -13,15 +13,16 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft"
 import NotificationsIcon from "@mui/icons-material/Notifications"
 import MenuIcon from "@mui/icons-material/Menu"
-import ToolBar from "@mui/material/Toolbar"
 import MuiDrawer from "@mui/material/Drawer"
-import DashboardIcon from "@mui/icons-material/Dashboard"
 import React, { useState } from "react"
 import { UserContext } from "../../context/UserContext"
-import { Orders } from "./Orders"
+import { OrderList } from "./OrderList"
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar"
 import DashboardNav from "./DashboardNav"
 import Profile from "./Profile"
+import { useGetUserOrders } from "../../context/UserHooks"
+import { signal } from "@preact/signals-react"
+import { Order } from "../../@types/Order"
 
 const drawerWidth: number = 200
 
@@ -73,9 +74,17 @@ const Drawer = styled(MuiDrawer, {
   },
 }))
 
+export const orders = signal<Order[]>([])
+
 export const Dashboard = () => {
+  const userContext = React.useContext(UserContext)
   const [selectedIndex, setSelectedIndex] = useState(0)
   const [open, setOpen] = useState(true)
+  const getOrders = useGetUserOrders(userContext.token ?? "")
+
+  if (getOrders.isSuccess && getOrders.data) {
+    orders.value = getOrders.data
+  }
 
   const toggleDrawer = () => {
     setOpen(!open)
@@ -86,7 +95,7 @@ export const Dashboard = () => {
       case 0:
         return <Profile />
       case 1:
-        return <Orders />
+        return <OrderList />
       default:
         return <Profile />
     }
