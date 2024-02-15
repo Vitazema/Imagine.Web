@@ -11,9 +11,9 @@ import {
 } from "@mui/material"
 import Link from "@mui/material/Link"
 import Title from "./Title"
-import { orders } from "./Dashboard"
+import { Order } from "../../@types/Order"
 
-export const OrderList = () => {
+export default function OrderList({ orders }: { orders: Order[] }) {
   return (
     <Grid item xs={12}>
       <Paper sx={{ p: 2, display: "flex", flexDirection: "column" }}>
@@ -28,7 +28,7 @@ export const OrderList = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {orders.value.map((o) => (
+            {orders.map((o) => (
               <TableRow key={o.id}>
                 <TableCell component="th" scope="row">
                   {o.id}

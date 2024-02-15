@@ -16,13 +16,13 @@ import MenuIcon from "@mui/icons-material/Menu"
 import MuiDrawer from "@mui/material/Drawer"
 import React, { useState } from "react"
 import { UserContext } from "../../context/UserContext"
-import { OrderList } from "./OrderList"
 import MuiAppBar, { AppBarProps as MuiAppBarProps } from "@mui/material/AppBar"
 import DashboardNav from "./DashboardNav"
 import Profile from "./Profile"
 import { useGetUserOrders } from "../../context/UserHooks"
 import { signal } from "@preact/signals-react"
 import { Order } from "../../@types/Order"
+import OrderList from "./OrderList"
 
 const drawerWidth: number = 200
 
@@ -95,7 +95,7 @@ export const Dashboard = () => {
       case 0:
         return <Profile />
       case 1:
-        return <OrderList />
+        return <OrderList orders={orders.value} />
       default:
         return <Profile />
     }
