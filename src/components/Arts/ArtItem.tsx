@@ -13,6 +13,7 @@ import {
   Info as InfoIcon,
   FavoriteBorder,
 } from "@mui/icons-material"
+import FeedbackRating from "./FeedbackRating"
 
 type Args = {
   art: Art
@@ -22,6 +23,7 @@ type Args = {
 
 export default function ArtItem({ art, onCancel, onFavorite }: Args) {
   const [expanded, setExpanded] = useState(true)
+  const [rating, setRating] = useState<number | undefined>()
   const createdAt = art.createdAt.toString()
   const queryClient = useQueryClient()
   const nav = useNavigate()
@@ -34,6 +36,10 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
 
   const expandInfoHandler = () => {
     setExpanded(!expanded)
+  }
+
+  const rateHandler = (index: number) => {
+    setRating(index)
   }
 
   const { data, status, isSuccess, error } = useGetProgress(
@@ -90,6 +96,7 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
             <div>Undefined status</div>
           )}
         </Info>
+        <FeedbackRating initialRating={art.rating} onRate={rateHandler} />
       </Paper>
     </li>
   )

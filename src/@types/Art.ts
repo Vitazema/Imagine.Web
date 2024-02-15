@@ -10,6 +10,7 @@ export class Art {
   artType: AiTypes
   user?: string
   parameters: Parameters
+  rating?: number
 
   constructor(
     id: string,
