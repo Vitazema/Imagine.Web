@@ -30,7 +30,7 @@ const useGetArts = (filter: RequestFilter, isEnabled: boolean) => {
       axios
         .get(buildUrl(pageParam), {
           headers: {
-            Authorization: `Bearer ${userContext.currentUser?.token}`,
+            Authorization: `Bearer ${userContext.token}`,
           },
         })
         .then((response) => response.data),

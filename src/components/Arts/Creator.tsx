@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = 4
 
 export default function Creator() {
   const userContext = useContext(UserContext)
-  const [arts, setArts] = useState<Art[]>([])
+  const [arts, setArts] = useState<Art[]>()
   // const [optimisticArt, setOptimisticArt] = useOptimistic()
 
   const deleteArt = useDeleteArt()
@@ -30,28 +30,23 @@ export default function Creator() {
     hasNextPage,
   } = useGetArts(
     new RequestFilter(userContext.settings.selectedFeature, ITEMS_PER_PAGE),
-    userContext.currentUser !== undefined
+    !!userContext.currentUser
   )
 
-  function addArtsHandler() {
-    if (data) {
-      let artsList = data.pages.flatMap((page) => page.data)
-      setArts(artsList)
-    }
-  }
-
   function addArtHandler(art: Art) {
-    setArts((arts) => [...arts, art])
+    setArts((arts) => {
+      if (arts) return [art, ...arts]
+    })
   }
 
   const onDeleteArt = async (id: string) => {
-    setArts((arts) => arts.filter((a) => a.id !== id))
+    setArts((arts) => arts?.filter((a) => a.id !== id))
     await deleteArt.mutateAsync(id)
   }
 
   const onChangeFavourite = async (id: string) => {
     setArts((arts) =>
-      arts.map((art) =>
+      arts?.map((art) =>
         art.id === id ? { ...art, favourite: !art.favourite } : art
       )
     )
@@ -59,37 +54,29 @@ export default function Creator() {
 
   // Refetch data when user configuration changes
   useEffect(() => {
-    if (isSuccess && data) {
-      setArts([])
-      refetch()
-    }
-  }, [userContext.currentUser, userContext.settings])
+    if (arts) refetch()
+  }, [userContext.settings, userContext.token])
 
-  // useEffect(() => {
-  //   if (isSuccess && data) {
-  //     let artsList = data.pages.flatMap((page) => page.data)
-  //     setArts(artsList)
-  //   }
-  // }, [data])
+  useEffect(() => {
+    if (isSuccess && data) {
+      setArts(data.pages.flatMap((page) => page.data))
+    }
+  }, [data])
 
   let content
 
   if (isLoading) content = <ApiStatus status={status} />
   if (isError) content = <ErrorModule message={error.message} />
-  if (isSuccess && data) {
-    let artsList = data.pages.flatMap((page) => page.data)
-    // todo: why cause too many re-renders?
-    // setArts((arts) => [...arts, ...artsList])
+  if (isSuccess && data && arts)
     content = (
       <ArtGrid
-        arts={artsList}
+        arts={arts}
         fetchNextPage={fetchNextPage}
         hasNextPage={hasNextPage}
         onDeleteArt={onDeleteArt}
         onFavorite={onChangeFavourite}
       />
     )
-  }
 
   return (
     <Container maxWidth="md">

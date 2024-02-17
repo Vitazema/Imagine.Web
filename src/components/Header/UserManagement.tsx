@@ -16,9 +16,8 @@ const UserManagement: React.FC = () => {
   })
 
   useEffect(() => {
-    if (userPermissionResponse.isSuccess) {
-      userPermissionResponse.refetch()
-      setCreds(userPermissionResponse.data?.credentials)
+    if (userPermissionResponse.isSuccess && userPermissionResponse.data) {
+      setCreds(userPermissionResponse.data.credentials)
     }
   }, [userPermissionResponse.data, userContext.currentUser])
 
