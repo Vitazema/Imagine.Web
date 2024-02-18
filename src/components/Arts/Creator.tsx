@@ -63,7 +63,7 @@ export default function Creator() {
     if (isSuccess && data) {
       setArts(data.pages.flatMap((page) => page.data))
     }
-  }, [data])
+  }, [isSuccess, data])
 
   let content
 
