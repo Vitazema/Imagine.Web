@@ -30,7 +30,7 @@ export default function Creator() {
     hasNextPage,
   } = useGetArts(
     new RequestFilter(userContext.settings.selectedFeature, ITEMS_PER_PAGE),
-    !!userContext.currentUser
+    !!userContext.token
   )
 
   function addArtHandler(art: Art) {
@@ -54,8 +54,10 @@ export default function Creator() {
 
   // Refetch data when user configuration changes
   useEffect(() => {
-    if (arts) refetch()
-  }, [userContext.settings, userContext.token])
+    if (isSuccess && userContext.token && userContext.settings) {
+      refetch()
+    }
+  }, [userContext.token, userContext.settings.selectedFeature])
 
   useEffect(() => {
     if (isSuccess && data) {
