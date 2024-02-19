@@ -6,7 +6,7 @@ import renderAnimation from "../../assets/rendering.gif"
 import { useGetProgress } from "../../context/ArtHooks"
 import ProgressBar from "./ProgressBar"
 import { useQueryClient } from "react-query"
-import { Button, FormGroup, IconButton, Paper } from "@mui/material"
+import { Button, IconButton, Paper } from "@mui/material"
 import {
   Favorite,
   Close,
@@ -14,16 +14,17 @@ import {
   FavoriteBorder,
 } from "@mui/icons-material"
 import FeedbackRating from "./FeedbackRating"
+import { ArtInfo } from "./ArtInfo"
 
 type Args = {
   art: Art
   onCancel: () => void
   onFavorite: () => void
+  onSelect: () => void
 }
 
-export default function ArtItem({ art, onCancel, onFavorite }: Args) {
+export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
   const [expanded, setExpanded] = useState(true)
-  const [rating, setRating] = useState<number | undefined>()
   const createdAt = art.createdAt.toString()
   const queryClient = useQueryClient()
   const nav = useNavigate()
@@ -36,10 +37,6 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
 
   const expandInfoHandler = () => {
     setExpanded(!expanded)
-  }
-
-  const rateHandler = (index: number) => {
-    setRating(index)
   }
 
   const { data, status, isSuccess, error } = useGetProgress(
@@ -70,7 +67,7 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
               className={classes.artPreview}
               src={url}
               alt=""
-              onClick={() => nav(`/gallery/${art.id}`)}
+              onClick={onSelect}
             />
           ))
         )}
@@ -89,37 +86,14 @@ export default function ArtItem({ art, onCancel, onFavorite }: Args) {
         <Button className="btn btn-danger w-100" onClick={onCancel}>
           <Close />
         </Button>
-        <Info expanded={expanded} art={art}>
+        <ArtInfo key={art.id} expanded={expanded} art={art}>
           {isSuccess && data ? (
             <ProgressBar artStatus={data} />
           ) : (
             <div>Undefined status</div>
           )}
-        </Info>
-        <FeedbackRating initialRating={art.rating} onRate={rateHandler} />
+        </ArtInfo>
       </Paper>
     </li>
-  )
-}
-
-function Info({
-  expanded,
-  art,
-  children,
-}: {
-  expanded: boolean
-  art: Art
-  children: React.ReactNode
-}) {
-  return (
-    <>
-      {expanded && (
-        <div>
-          {/* <span className={classes.artDate}>{createdAt}</span> */}
-          <h3>{art.title}</h3>
-        </div>
-      )}
-      {children}
-    </>
   )
 }

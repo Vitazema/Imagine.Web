@@ -38,12 +38,12 @@ export default function ArtFilter() {
         <FormGroup aria-label="position" row>
           <Button>Create</Button>
           <Button>Advanced</Button>
-          <IconButton>
+          {/* <IconButton>
             <Undo />
           </IconButton>
           <IconButton>
             <Redo />
-          </IconButton>
+          </IconButton> */}
           <IconButton onClick={deleteAllArtsHandler}>
             <DeleteForever />
           </IconButton>

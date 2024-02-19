@@ -13,7 +13,7 @@ const ITEMS_PER_PAGE = 4
 
 export default function Creator() {
   const userContext = useContext(UserContext)
-  const [arts, setArts] = useState<Art[]>()
+  const [arts, setArts] = useState<Art[]>([])
   // const [optimisticArt, setOptimisticArt] = useOptimistic()
 
   const deleteArt = useDeleteArt()
@@ -34,19 +34,17 @@ export default function Creator() {
   )
 
   function addArtHandler(art: Art) {
-    setArts((arts) => {
-      if (arts) return [art, ...arts]
-    })
+    setArts([art, ...arts])
   }
 
   const onDeleteArt = async (id: string) => {
-    setArts((arts) => arts?.filter((a) => a.id !== id))
+    setArts((arts) => arts.filter((a) => a.id !== id))
     await deleteArt.mutateAsync(id)
   }
 
   const onChangeFavourite = async (id: string) => {
     setArts((arts) =>
-      arts?.map((art) =>
+      arts.map((art) =>
         art.id === id ? { ...art, favourite: !art.favourite } : art
       )
     )
@@ -57,7 +55,7 @@ export default function Creator() {
     if (isSuccess && userContext.token && userContext.settings) {
       refetch()
     }
-  }, [userContext.token, userContext.settings.selectedFeature])
+  }, [userContext.token, userContext.settings])
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -69,7 +67,7 @@ export default function Creator() {
 
   if (isLoading) content = <ApiStatus status={status} />
   if (isError) content = <ErrorModule message={error.message} />
-  if (isSuccess && data && arts)
+  if (isSuccess && data)
     content = (
       <ArtGrid
         arts={arts}
