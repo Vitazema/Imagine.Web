@@ -55,13 +55,13 @@ export default function Creator() {
     if (isSuccess && userContext.token && userContext.settings) {
       refetch()
     }
-  }, [userContext.token, userContext.settings])
+  }, [userContext.token, userContext.settings.selectedFeature])
 
   useEffect(() => {
     if (isSuccess && data) {
       setArts(data.pages.flatMap((page) => page.data))
     }
-  }, [isSuccess, data])
+  }, [data])
 
   let content
 
