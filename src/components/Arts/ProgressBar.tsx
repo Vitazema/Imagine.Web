@@ -1,12 +1,12 @@
 import { ArtStatus } from "../../@types/Art"
 import classes from "./ArtItem.module.css"
 
-interface ArtStatusProps {
-  artStatus: ArtStatus
-}
-
-const ProgressBar: React.FC<ArtStatusProps> = ({artStatus}) => {
-  const progress = artStatus.progress > 0 && artStatus.progress <= 1 ? artStatus.progress * 100 : artStatus.progress
+export default function ProgressBar({ artStatus }: { artStatus: ArtStatus }) {
+  if (artStatus.progress === undefined) artStatus.progress = 0
+  const progress =
+    artStatus.progress > 0 && artStatus.progress <= 1
+      ? artStatus.progress * 100
+      : artStatus.progress
   return (
     <div className={classes.artProgress}>
       <div
@@ -14,10 +14,11 @@ const ProgressBar: React.FC<ArtStatusProps> = ({artStatus}) => {
         style={{ width: `${progress}%` }}
       >
         <span className={classes.artProgressLabel}>
-          {artStatus.progress === 0 || artStatus.progress === 100 ? artStatus.status : progress  + "%"}
+          {artStatus.progress === 0 || artStatus.progress === 100
+            ? artStatus.status
+            : progress + "%"}
         </span>
       </div>
     </div>
   )
 }
-export default ProgressBar

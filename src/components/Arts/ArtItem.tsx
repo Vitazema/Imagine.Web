@@ -27,7 +27,6 @@ export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
   const [expanded, setExpanded] = useState(true)
   const createdAt = art.createdAt.toString()
   const queryClient = useQueryClient()
-  const nav = useNavigate()
   const [artStatus, setProgress] = React.useState<ArtStatus | undefined>()
   const artUnfinished = art.urls.length === 0
 
@@ -48,7 +47,7 @@ export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
     if (artUnfinished) {
       if (isSuccess && data) {
         setProgress(data)
-        if (data.progress === 100) {
+        if (data.completed === true) {
           queryClient.invalidateQueries("arts")
         }
       }
