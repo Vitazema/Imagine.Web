@@ -101,6 +101,13 @@ export const Dashboard = () => {
     }
   }
 
+  useEffect(() => {
+    document.title = "AiExpression | Dashboard"
+    return () => {
+      document.title = "AiExpression"
+    }
+  }, [])
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
