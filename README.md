@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+## Usage
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+The application includes the following routes:
 
-## Available Scripts
+- `/` - The home page where the Creator component is rendered.
+- `/signup` - The signup page where new users can create an account.
+- `/gallery` - The gallery page where users can view all arts.
+- `/gallery/:id` - The art detail page where users can view details of a specific art.
+- `/dashboard` - The dashboard page where users can view their account details.
+- `/checkout` - The checkout page where users can complete their purchase.
+- `/about` - The about page where users can learn more about the application.
 
-In the project directory, you can run:
+## Running the tests
 
-### `npm start`
+Explain how to run the automated tests for this system.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+## Deployment
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Add additional notes about how to deploy this on a live system.
 
-### `npm test`
+## Built With
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- [React](https://reactjs.org/) - The web framework used
+- [React Router](https://reactrouter.com/) - Used for routing
+- [React Query](https://react-query.tanstack.com/) - Used for data fetching
 
-### `npm run build`
+## Contributing
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Authors
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- **Your Name** - _Initial work_ - [YourGithubUsername](https://github.com/yourusername)
 
-### `npm run eject`
+See also the list of [contributors](https://github.com/yourusername/your-repo/contributors) who participated in this project.
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## License
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+## Acknowledgments
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Hat tip to anyone whose code was used
+- Inspiration
+- etc
