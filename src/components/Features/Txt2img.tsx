@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useEffect, useRef, useState } from "react"
 import classes from "./ArtForm.module.css"
 import { Art, Parameters as Parameters } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
@@ -6,9 +6,8 @@ import toBase64 from "../../utils/utils"
 import { useUpsertAttachment } from "../../context/AttachmentHooks"
 import { Attachment } from "../../@types/Attachment"
 import { UserContext } from "../../context/UserContext"
-import { ArtGrid } from "../Arts/ArtGrid"
 import { Role } from "../../@types/User"
-import { RequestFilter, useAddArt, useGetArts } from "../../context/ArtHooks"
+import { useAddArt } from "../../context/ArtHooks"
 import { AiTypes } from "../../@types/shared"
 
 export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
@@ -23,15 +22,21 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
     )
   )
 
-  const [configuration, setConfiguration] = React.useState<Parameters>(
+  const [configuration, setConfiguration] = useState<Parameters>(
     fetchParameters()
   )
-  const [showAdvanced, setShowAdvanced] = React.useState(
+  const [showAdvanced, setShowAdvanced] = useState(
     userContext.currentUser?.role === Role.System ? true : false
   )
 
+  const inputElement = useRef<HTMLInputElement>(null)
+
   const upsertAttachments = useUpsertAttachment()
   const addArtMutation = useAddArt()
+
+  useEffect(() => {
+    inputElement.current?.focus()
+  }, [])
 
   useEffect(() => {
     localStorage.setItem(
@@ -115,6 +120,7 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
           onChange={(e) =>
             setConfiguration({ ...configuration, prompt: e.target.value })
           }
+          ref={inputElement}
         />
         <button
           type="submit"

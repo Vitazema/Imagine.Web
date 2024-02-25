@@ -6,6 +6,7 @@ import { UserSettings } from "../@types/UserSettings"
 import { UserCredentials } from "../@types/UserCredentials"
 import { UserRegistration } from "../@types/UserRegistration"
 import { Order } from "../@types/Order"
+import { useEffect, useState } from "react"
 
 const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
 
@@ -104,6 +105,19 @@ const useGetUserOrders = (token: string) => {
         .then((response) => response.data),
     { enabled: !!token }
   )
+}
+
+export function useLocalStorageState<T>(initialState: T, key: string) {
+  const [value, setValue] = useState(() => {
+    const storedValue = localStorage.getItem(key)
+    return storedValue ? JSON.parse(storedValue) : initialState
+  })
+
+  useEffect(() => {
+    localStorage.setItem(key, JSON.stringify(value))
+  }, [value, key])
+
+  return [value, setValue]
 }
 
 export {
