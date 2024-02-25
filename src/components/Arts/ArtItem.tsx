@@ -76,7 +76,7 @@ export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
           <InfoIcon />
         </IconButton>
         <IconButton onClick={() => onFavorite()}>
-          {art.favourite ? <Favorite /> : <FavoriteBorder />}
+          {art.favorite ? <Favorite /> : <FavoriteBorder />}
         </IconButton>
         <Button onClick={onRecreateHandler}>Recreate</Button>
         <Button>

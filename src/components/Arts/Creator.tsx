@@ -1,6 +1,11 @@
 import { useContext, useEffect, useState } from "react"
 import { UserContext } from "../../context/UserContext"
-import { RequestFilter, useDeleteArt, useGetArts } from "../../context/ArtHooks"
+import {
+  RequestFilter,
+  useDeleteArt,
+  useFavoriteArt,
+  useGetArts,
+} from "../../context/ArtHooks"
 import { Art } from "../../@types/Art"
 import { Container, Paper } from "@mui/material"
 import ArtFilter from "./ArtFilter"
@@ -33,6 +38,8 @@ export default function Creator() {
     !!userContext.token
   )
 
+  const favorite = useFavoriteArt()
+
   function addArtHandler(art: Art) {
     setArts([art, ...arts])
   }
@@ -45,9 +52,10 @@ export default function Creator() {
   const onChangeFavourite = async (id: string) => {
     setArts((arts) =>
       arts.map((art) =>
-        art.id === id ? { ...art, favourite: !art.favourite } : art
+        art.id === id ? { ...art, favorite: !art.favorite } : art
       )
     )
+    favorite.mutate(id)
   }
 
   // Refetch data when user configuration changes

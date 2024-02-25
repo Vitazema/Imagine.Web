@@ -6,7 +6,7 @@ export class Art {
   progress: number
   createdAt: Date
   urls: string[]
-  favourite: boolean
+  favorite: boolean
   artType: AiTypes
   user?: string
   parameters: Parameters
@@ -17,13 +17,13 @@ export class Art {
     artType: AiTypes,
     parameters: Parameters,
     title: string | undefined,
-    favourite: boolean
+    favorite: boolean
   ) {
     this.id = id
     this.title = title
     this.progress = 0
     this.urls = []
-    this.favourite = favourite
+    this.favorite = favorite
     this.createdAt = new Date()
     this.artType = artType
     this.parameters = parameters

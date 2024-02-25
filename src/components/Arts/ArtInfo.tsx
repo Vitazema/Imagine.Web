@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Art } from "../../@types/Art"
 import FeedbackRating from "./FeedbackRating"
 import { dateFormatter } from "../../utils/DateFormatter"
+import { useRateArt } from "../../context/ArtHooks"
 
 export function ArtInfo({
   expanded,
@@ -13,8 +14,11 @@ export function ArtInfo({
   children: React.ReactNode
 }) {
   const [rating, setRating] = useState<number | undefined>(art.rating)
+  const rate = useRateArt()
   const rateHandler = (index: number) => {
     setRating(index)
+    art.rating = index
+    rate.mutate(art)
   }
 
   return (
@@ -23,7 +27,7 @@ export function ArtInfo({
         <div>
           <h3>{art.title}</h3>
           <span>{dateFormatter.format(new Date(art.createdAt))}</span>
-          <FeedbackRating initialRating={art.rating} onRate={rateHandler} />
+          <FeedbackRating initialRating={rating} onRate={rateHandler} />
         </div>
       )}
       {/* <div className="col-6">

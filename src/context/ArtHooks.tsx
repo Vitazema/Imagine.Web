@@ -89,6 +89,18 @@ const useEditArt = () => {
   )
 }
 
+const useRateArt = () => {
+  return useMutation<AxiosResponse, AxiosError<Problem>, Art>((art) =>
+    axios.put(`${imagineApiBaseUrl}/arts/${art.id}/rate/${art.rating}`)
+  )
+}
+
+const useFavoriteArt = () => {
+  return useMutation<AxiosResponse, AxiosError<Problem>, string>((id) =>
+    axios.put(`${imagineApiBaseUrl}/arts/${id}/favorite`)
+  )
+}
+
 const useDeleteArt = () => {
   const queryClient = useQueryClient()
   const url = `${imagineApiBaseUrl}/arts`
@@ -121,4 +133,6 @@ export {
   useEditArt,
   useDeleteArt,
   useGetProgress,
+  useRateArt,
+  useFavoriteArt,
 }
