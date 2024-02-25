@@ -44,8 +44,8 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
   }
 
   const [user, setUser] = React.useState<User | undefined>()
-  const [token, setToken] = React.useState<string>(
-    localStorage.getItem("token") ?? ""
+  const [token, setToken] = React.useState<string | undefined>(
+    localStorage.getItem("token") ?? undefined
   )
   const [settings, setSettings] = React.useState<UserSettings>()
 

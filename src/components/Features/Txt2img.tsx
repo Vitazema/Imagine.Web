@@ -9,6 +9,7 @@ import { UserContext } from "../../context/UserContext"
 import { ArtGrid } from "../Arts/ArtGrid"
 import { Role } from "../../@types/User"
 import { RequestFilter, useAddArt, useGetArts } from "../../context/ArtHooks"
+import { AiTypes } from "../../@types/shared"
 
 export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
   const userContext = useContext(UserContext)
@@ -34,7 +35,7 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
 
   useEffect(() => {
     localStorage.setItem(
-      userContext.settings.selectedFeature.toString(),
+      AiTypes[userContext.settings.selectedFeature],
       JSON.stringify(configuration)
     )
   }, [configuration])
@@ -46,7 +47,7 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
 
   function fetchParameters(): Parameters {
     const selectedFeature = userContext.settings.selectedFeature
-    const config = localStorage.getItem(selectedFeature.toString())
+    const config = localStorage.getItem(AiTypes[selectedFeature])
     if (config) {
       return JSON.parse(config)
     } else {

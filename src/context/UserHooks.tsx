@@ -78,7 +78,7 @@ function getCurrentUser(token: string): Promise<User> {
   }
 }
 
-const useSetUserSettings = (token: string) => {
+const useSetUserSettings = (token?: string) => {
   const url = `${imagineApiBaseUrl}/account/settings`
   return useMutation<AxiosResponse, AxiosError<Problem>, UserSettings>(
     (settings) =>
@@ -95,11 +95,13 @@ const useGetUserOrders = (token: string) => {
   return useQuery<[Order], AxiosError<Problem>>(
     ["orders", token],
     () =>
-      axios.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }).then((response) => response.data),
+      axios
+        .get(url, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((response) => response.data),
     { enabled: !!token }
   )
 }
