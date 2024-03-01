@@ -24,7 +24,7 @@ import { signal } from "@preact/signals-react"
 import { Order } from "../../@types/Order"
 import OrderList from "./OrderList"
 
-const drawerWidth: number = 200
+const drawerWidth = 200
 
 interface AppBarProps extends MuiAppBarProps {
   open?: boolean

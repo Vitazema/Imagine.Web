@@ -97,7 +97,7 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
         selectedFile.type,
         image
       )
-      let response = await upsertAttachments.mutateAsync(attachment)
+      const response = await upsertAttachments.mutateAsync(attachment)
       if (response.data) {
         attachment = response.data
         setConfiguration({

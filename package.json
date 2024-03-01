@@ -29,7 +29,7 @@
   },
   "scripts": {
     "start": "react-scripts start --host 0.0.0.0",
-    "build": "CI=false react-scripts build",
+    "build": "react-scripts build",
     "test": "react-scripts test --ci --reporters=default --reporters=jest-junit",
     "eject": "react-scripts eject"
   },
