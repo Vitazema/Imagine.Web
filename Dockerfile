@@ -15,5 +15,5 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf *
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 # Copy static assets from builder stage
-COPY --from=builder /app/build /usr/share/nginx/html
+COPY --from=builder /app/dist /usr/share/nginx/html
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
