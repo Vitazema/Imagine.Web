@@ -8,7 +8,7 @@ import { UserRegistration } from "../@types/UserRegistration"
 import { Order } from "../@types/Order"
 import { useEffect, useState } from "react"
 
-const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
+const imagineApiBaseUrl = import.meta.env.VITE_IMAGINE_API_URI
 
 const useLoginUser = (
   userName: string,

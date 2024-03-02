@@ -3,7 +3,7 @@ import { useMutation } from "react-query"
 import Problem from "../@types/problem"
 import { Attachment } from "../@types/Attachment"
 
-const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
+const imagineApiBaseUrl = import.meta.env.VITE_IMAGINE_API_URI
 
 async function getAttachment(id: string) {
   const url = `${imagineApiBaseUrl}/attachment/${id}`

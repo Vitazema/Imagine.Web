@@ -11,7 +11,7 @@ import React from "react"
 import Problem from "../@types/problem"
 import { UserContext } from "./UserContext"
 
-const imagineApiBaseUrl = process.env.REACT_APP_IMAGINE_API_URI
+const imagineApiBaseUrl = import.meta.env.VITE_IMAGINE_API_URI
 
 export class RequestFilter {
   constructor(public aiType: Feature, public limit: number) {}
