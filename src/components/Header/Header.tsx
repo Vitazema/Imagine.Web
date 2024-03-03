@@ -11,6 +11,7 @@ import {
 } from "@mui/material"
 import { features } from "../../@types/UserSettings"
 import { UserContext } from "../../context/UserContext"
+import { Link } from "react-router-dom"
 
 const Header: React.FC = () => {
   const userContext = React.useContext(UserContext)
@@ -37,7 +38,9 @@ const Header: React.FC = () => {
           }}
         >
           <Grid item>
-            <img src={logo} width={50} alt="logo" />
+            <Link to="/">
+              <img src={logo} width={50} alt="logo"></img>
+            </Link>
           </Grid>
           <Grid item>
             <ToggleButtonGroup

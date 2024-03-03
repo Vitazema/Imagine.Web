@@ -9,8 +9,9 @@ import SignUp from "./components/Account/SignUp"
 import { Dashboard } from "./components/Account/Dashboard"
 import { Footer } from "./components/Common/Footer"
 import { About } from "./components/Common/About"
-import { Checkout } from "./components/Payment/Payment"
+import { Checkout } from "./components/Payment/Checkout"
 import Creator from "./components/Arts/Creator"
+import PageNotFound from "./components/Common/NotFound"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -34,6 +35,7 @@ function App() {
             <Route path="/dashboard" element={<Dashboard />}></Route>
             <Route path="/checkout" element={<Checkout />}></Route>
             <Route path="/about" element={<About />}></Route>
+            <Route path="*" element={<PageNotFound />}></Route>
           </Routes>
           <Footer />
         </BrowserRouter>
