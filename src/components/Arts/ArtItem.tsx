@@ -6,7 +6,7 @@ import renderAnimation from "../../assets/rendering.gif"
 import { useGetProgress } from "../../context/ArtHooks"
 import ProgressBar from "./ProgressBar"
 import { useQueryClient } from "react-query"
-import { Button, IconButton, Paper } from "@mui/material"
+import { Box, Button, IconButton, Paper } from "@mui/material"
 import {
   Favorite,
   Close,
@@ -24,7 +24,7 @@ type Args = {
 }
 
 export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
-  const [expanded, setExpanded] = useState(true)
+  const [expanded, setExpanded] = useState(import.meta.env.DEV)
   const createdAt = art.createdAt.toString()
   const queryClient = useQueryClient()
   const [artStatus, setProgress] = React.useState<ArtStatus | undefined>()
@@ -72,24 +72,26 @@ export default function ArtItem({ art, onCancel, onFavorite, onSelect }: Args) {
         )}
       </div>
       <Paper>
-        <IconButton onClick={expandInfoHandler}>
-          <InfoIcon />
-        </IconButton>
-        <IconButton onClick={() => onFavorite()}>
-          {art.favorite ? <Favorite /> : <FavoriteBorder />}
-        </IconButton>
-        <Button onClick={onRecreateHandler}>Recreate</Button>
+        <Box style={{ display: "flex", justifyContent: "space-between" }}>
+          <IconButton onClick={expandInfoHandler}>
+            <InfoIcon />
+          </IconButton>
+          <IconButton onClick={() => onFavorite()}>
+            {art.favorite ? <Favorite /> : <FavoriteBorder />}
+          </IconButton>
+          {/* <Button onClick={onRecreateHandler}>Recreate</Button>
         <Button>
-          <Link to={`/gallery/${art.id}`}>Edit</Link>
-        </Button>
-        <Button className="btn btn-danger w-100" onClick={onCancel}>
-          <Close />
-        </Button>
+        <Link to={`/gallery/${art.id}`}>Edit</Link>
+      </Button> */}
+          <Button className="btn btn-danger w-100" onClick={onCancel}>
+            <Close />
+          </Button>
+        </Box>
         <ArtInfo key={art.id} expanded={expanded} art={art}>
           {isSuccess && data ? (
             <ProgressBar artStatus={data} />
           ) : (
-            <div>Undefined status</div>
+            artUnfinished && <div>Undefined status</div>
           )}
         </ArtInfo>
       </Paper>

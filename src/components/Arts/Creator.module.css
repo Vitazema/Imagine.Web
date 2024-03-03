@@ -1,6 +1,18 @@
-.form {
-  width: 40rem;
-  margin: 2rem auto;
+.creator {
+  padding: 1rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.creator .preview {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+}
+.creator .preview img {
+  object-fit: cover;
+  border-radius: 12px;
 }
 
 .form label {

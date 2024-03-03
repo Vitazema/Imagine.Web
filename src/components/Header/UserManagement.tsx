@@ -42,8 +42,7 @@ const UserManagement: React.FC = () => {
   } else {
     return (
       <Grid item style={{ display: "flex", alignItems: "center" }}>
-        Credentials: {creds}
-        <Account />
+        <Account credentials={creds} />
       </Grid>
     )
   }

@@ -1,6 +1,7 @@
 import { useState } from "react"
 import "./ArtFilter.css"
 import {
+  Box,
   Button,
   FormControlLabel,
   FormGroup,
@@ -15,7 +16,11 @@ import {
   Redo,
 } from "@mui/icons-material"
 
-export default function ArtFilter() {
+export default function ArtFilter({
+  clearParameters,
+}: {
+  clearParameters: () => void
+}) {
   const [onlyFavourites, setFilter] = useState(false)
 
   const filterChangeHandler = (e: any) => {
@@ -34,31 +39,25 @@ export default function ArtFilter() {
 
   return (
     <div className="art-filter">
-      <div className="art-filter__control">
-        <FormGroup aria-label="position" row>
-          <Button>Create</Button>
-          <Button>Advanced</Button>
-          {/* <IconButton>
+      {/* <IconButton>
             <Undo />
           </IconButton>
           <IconButton>
             <Redo />
           </IconButton> */}
-          <IconButton onClick={deleteAllArtsHandler}>
-            <DeleteForever />
-          </IconButton>
-          <IconButton>
-            <ViewComfy />
-          </IconButton>
-          <FormControlLabel
-            control={
-              <Switch value={onlyFavourites} onChange={filterChangeHandler} />
-            }
-            label={<Favorite />}
-            labelPlacement="start"
-          />
-        </FormGroup>
-      </div>
+      <IconButton onClick={clearParameters}>
+        <DeleteForever />
+      </IconButton>
+      {/* <IconButton>
+        <ViewComfy />
+      </IconButton> */}
+      <FormControlLabel
+        control={
+          <Switch value={onlyFavourites} onChange={filterChangeHandler} />
+        }
+        label={<Favorite />}
+        labelPlacement="end"
+      />
     </div>
   )
 }

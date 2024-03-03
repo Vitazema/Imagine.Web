@@ -8,11 +8,11 @@ import {
 } from "../../context/ArtHooks"
 import { Art } from "../../@types/Art"
 import { Container, Paper } from "@mui/material"
-import ArtFilter from "./ArtFilter"
 import { ApiStatus } from "../Common/ApiStatus"
 import ErrorModule from "../Common/ErrorModule"
 import { ArtGrid } from "./ArtGrid"
 import Txt2Img from "../Features/Txt2img"
+import classes from "./Creator.module.css"
 
 const ITEMS_PER_PAGE = 4
 
@@ -88,9 +88,8 @@ export default function Creator() {
 
   return (
     <Container maxWidth="md">
-      <Txt2Img onAddArt={addArtHandler} />
-      <Paper>
-        <ArtFilter />
+      <Paper className={classes.creator}>
+        <Txt2Img onAddArt={addArtHandler} />
       </Paper>
       {content}
     </Container>

@@ -1,0 +1,7 @@
+.grid ul {
+  display: grid;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  list-style-type: none;
+}

@@ -4,10 +4,12 @@ import UserManagement from "./UserManagement"
 import { AiTypes as AiType } from "../../@types/shared"
 import {
   AppBar,
+  Button,
   Grid,
   ToggleButton,
   ToggleButtonGroup,
   Toolbar,
+  Typography,
 } from "@mui/material"
 import { features } from "../../@types/UserSettings"
 import { UserContext } from "../../context/UserContext"
@@ -43,7 +45,8 @@ const Header: React.FC = () => {
             </Link>
           </Grid>
           <Grid item>
-            <ToggleButtonGroup
+            <Typography variant="h6">Text to Image</Typography>
+            {/* <ToggleButtonGroup
               value={userContext.settings?.selectedFeature}
               exclusive
               onChange={featureChangeHandler}
@@ -55,7 +58,7 @@ const Header: React.FC = () => {
                   </ToggleButton>
                 )
               })}
-            </ToggleButtonGroup>
+            </ToggleButtonGroup> */}
           </Grid>
           <UserManagement />
         </Grid>

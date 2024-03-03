@@ -1,14 +1,23 @@
 import React, { useContext, useEffect, useRef, useState } from "react"
-import classes from "./ArtForm.module.css"
+import classes from "../Arts/Creator.module.css"
 import { Art, Parameters as Parameters } from "../../@types/Art"
 import ValidationSummary from "../Common/ValidationSummary"
 import toBase64 from "../../utils/utils"
 import { useUpsertAttachment } from "../../context/AttachmentHooks"
 import { Attachment } from "../../@types/Attachment"
 import { UserContext } from "../../context/UserContext"
-import { Role } from "../../@types/User"
 import { useAddArt } from "../../context/ArtHooks"
 import { AiTypes } from "../../@types/shared"
+import ArtFilter from "../Arts/ArtFilter"
+import {
+  Box,
+  Button,
+  IconButton,
+  InputAdornment,
+  TextField,
+} from "@mui/material"
+import "../Arts/ArtFilter.css"
+import { Image } from "@mui/icons-material"
 
 export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
   const userContext = useContext(UserContext)
@@ -25,9 +34,7 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
   const [configuration, setConfiguration] = useState<Parameters>(
     fetchParameters()
   )
-  const [showAdvanced, setShowAdvanced] = useState(
-    userContext.currentUser?.role === Role.System ? true : false
-  )
+  const [showAdvanced, setShowAdvanced] = useState(import.meta.env.DEV)
 
   const inputElement = useRef<HTMLInputElement>(null)
 
@@ -109,34 +116,60 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
     }
   }
 
+  function clearParametersHandler() {
+    const confirmed = window.confirm(
+      "Are you sure you want to clear all parameters?"
+    )
+    if (confirmed) {
+      setConfiguration(new Parameters("", 1))
+    }
+  }
+
   return (
     <>
-      <form className={classes.form}>
-        <label htmlFor="text">Promtp</label>
-        <input
-          type="text"
-          id="text"
+      <form>
+        <TextField
+          id="input-with-icon-textfield"
+          label="Prompt"
           value={configuration.prompt}
+          multiline
+          maxRows={5}
           onChange={(e) =>
             setConfiguration({ ...configuration, prompt: e.target.value })
           }
           ref={inputElement}
+          variant="outlined"
+          fullWidth
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <input
+                  accept="image/*"
+                  type="file"
+                  style={{ display: "none" }}
+                  id="icon-button-file"
+                  onChange={onFileSelected}
+                />
+                <label htmlFor="icon-button-file">
+                  <IconButton
+                    color="primary"
+                    aria-label="upload picture"
+                    component="span"
+                  >
+                    <Image />
+                  </IconButton>
+                </label>
+              </InputAdornment>
+            ),
+          }}
         />
-        <button
-          type="submit"
-          disabled={configuration.prompt.trim().length === 0}
-          onClick={createArtHandler}
-        >
-          Create
-        </button>
-        <button
-          onClick={showAdvancedHandler}
-          className={showAdvanced === true ? "clicked" : ""}
-        >
-          Advanced
-        </button>
+        {configuration.image && (
+          <div className={classes.preview}>
+            <img src={configuration.image} width={200} height={200} />
+          </div>
+        )}
         {showAdvanced && (
-          <div>
+          <div className={classes.form}>
             <label>Amount</label>
             <input
               type="number"
@@ -162,20 +195,27 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
                 })
               }
             ></input>
-            <div className="form-group mt-2">
-              <label htmlFor="image">Image</label>
-              <input
-                id="image"
-                type="file"
-                className="form-control"
-                onChange={onFileSelected}
-              />
-            </div>
-            <div className="mt-2">
-              <img src={configuration.image} width={200} height={200} />
-            </div>
           </div>
         )}
+        <div className="art-create">
+          <div>
+            <Button
+              variant="contained"
+              type="submit"
+              disabled={configuration.prompt.trim().length === 0}
+              onClick={createArtHandler}
+            >
+              Create
+            </Button>
+            <Button
+              onClick={showAdvancedHandler}
+              className={showAdvanced === true ? "clicked" : ""}
+            >
+              Advanced
+            </Button>
+          </div>
+          <ArtFilter clearParameters={clearParametersHandler} />
+        </div>
       </form>
       {addArtMutation.isError && (
         <ValidationSummary error={addArtMutation.error} />

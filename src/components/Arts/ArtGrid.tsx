@@ -4,6 +4,7 @@ import InfiniteScroll from "react-infinite-scroll-component"
 import { useState } from "react"
 import { Box, Container, Modal } from "@mui/material"
 import ArtDetail from "./ArtDetail"
+import classes from "./ArtGrid.module.css"
 
 type Args = {
   arts: Art[]
@@ -50,24 +51,26 @@ export const ArtGrid = ({
           </Box>
         </Container>
       </Modal>
-      <InfiniteScroll
-        next={fetchNextPage}
-        hasMore={hasNextPage || false}
-        loader={<h4>Loading...</h4>}
-        dataLength={arts.length || 0}
-      >
-        <ul>
-          {arts.map((art) => (
-            <ArtItem
-              key={art.id}
-              art={art}
-              onCancel={() => onDeleteArt(art.id)}
-              onFavorite={() => onFavorite(art.id)}
-              onSelect={() => setSelectedArt(art)}
-            />
-          ))}
-        </ul>
-      </InfiniteScroll>
+      <div className={classes.grid}>
+        <InfiniteScroll
+          next={fetchNextPage}
+          hasMore={hasNextPage || false}
+          loader={<h4>Loading...</h4>}
+          dataLength={arts.length || 0}
+        >
+          <ul>
+            {arts.map((art) => (
+              <ArtItem
+                key={art.id}
+                art={art}
+                onCancel={() => onDeleteArt(art.id)}
+                onFavorite={() => onFavorite(art.id)}
+                onSelect={() => setSelectedArt(art)}
+              />
+            ))}
+          </ul>
+        </InfiniteScroll>
+      </div>
     </>
   )
 }

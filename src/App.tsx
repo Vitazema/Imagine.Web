@@ -12,6 +12,7 @@ import { About } from "./components/Common/About"
 import { Checkout } from "./components/Payment/Checkout"
 import Creator from "./components/Arts/Creator"
 import PageNotFound from "./components/Common/NotFound"
+import Home from "./components/Common/Home"
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,7 @@ function App() {
         <BrowserRouter>
           <Header />
           <Routes>
+            <Route path="/home" element={<Home />} />
             <Route path="/" element={<Creator />} />
             <Route path="/signup" Component={SignUp} />
             <Route path="/gallery" element={<Gallery />}></Route>

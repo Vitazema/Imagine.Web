@@ -8,7 +8,11 @@ import { Grid } from "@mui/material"
 import { useNavigate } from "react-router-dom"
 import { Role } from "../../@types/User"
 
-export default function Account() {
+export default function Account({
+  credentials,
+}: {
+  credentials: number | undefined
+}) {
   const userContext = React.useContext(UserContext)
   const nav = useNavigate()
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null)
@@ -55,6 +59,7 @@ export default function Account() {
         >
           Profile: {userContext.currentUser?.userName}
         </MenuItem>
+        {/* <MenuItem>Credentials: {credentials}</MenuItem> */}
         {userContext.currentUser === undefined ||
         userContext.currentUser?.role === Role.Guest ? (
           <MenuItem onClick={upgradeUserHandler}>Sign Up</MenuItem>

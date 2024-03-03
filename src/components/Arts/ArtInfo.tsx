@@ -23,13 +23,13 @@ export function ArtInfo({
 
   return (
     <>
-      {expanded && (
+      {expanded ? (
         <div>
           <h3>{art.title}</h3>
           <span>{dateFormatter.format(new Date(art.createdAt))}</span>
           <FeedbackRating initialRating={rating} onRate={rateHandler} />
         </div>
-      )}
+      ) : null}
       {/* <div className="col-6">
           <div className="row mt-2">
             <h5 className="col-12">{artData.title}</h5>
