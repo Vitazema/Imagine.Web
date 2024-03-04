@@ -56,6 +56,13 @@ async function authenticateUser(credentials: UserCredentials): Promise<User> {
   }
 }
 
+const useGenerateUser = () => {
+  const url = `${imagineApiBaseUrl}/account/generate`
+  return useMutation<AxiosResponse<User>, AxiosError<Problem>>(() =>
+    axios.post(url)
+  )
+}
+
 const useRegisterUser = () => {
   const url = `${imagineApiBaseUrl}/account/register`
   return useMutation<
@@ -128,4 +135,5 @@ export {
   useSetUserSettings,
   useRegisterUser,
   useGetUserOrders,
+  useGenerateUser,
 }

@@ -2,6 +2,7 @@ import React, { useEffect } from "react"
 import {
   authenticateUser,
   getCurrentUser,
+  useGenerateUser,
   useSetUserSettings,
 } from "./UserHooks"
 import { User } from "../@types/User"
@@ -36,9 +37,10 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
         setSettings(user.userSettings ?? new UserSettings())
       })
     } else {
-      const isLoggedIn = await login(new UserCredentials("Guest", ""))
-      if (isLoggedIn) {
-        return user
+      if (false) {
+        if (await login(new UserCredentials("Guest", ""))) return user
+      } else {
+        if (await login()) return user
       }
     }
   }
@@ -50,6 +52,7 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
   const [settings, setSettings] = React.useState<UserSettings>()
 
   const setUserSettingsMutation = useSetUserSettings(token)
+  const generateUser = useGenerateUser()
 
   useEffect(() => {
     fetchUser()
@@ -61,8 +64,13 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
     localStorage.setItem("token", user.token)
   }
 
-  const login = async (credentials: UserCredentials) => {
-    const user = await authenticateUser(credentials)
+  const login = async (credentials?: UserCredentials) => {
+    let user: User | undefined
+    if (credentials) user = await authenticateUser(credentials)
+    else {
+      const response = await generateUser.mutateAsync()
+      if (response.status === 200 && response.data) user = response.data
+    }
     if (user) {
       setAsCurrentUser(user)
       return true
