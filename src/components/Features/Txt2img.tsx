@@ -128,41 +128,44 @@ export default function Txt2Img(props: { onAddArt: (art: Art) => void }) {
   return (
     <>
       <form>
-        <TextField
-          id="input-with-icon-textfield"
-          label="Prompt"
-          value={configuration.prompt}
-          multiline
-          maxRows={5}
-          onChange={(e) =>
-            setConfiguration({ ...configuration, prompt: e.target.value })
-          }
-          ref={inputElement}
-          variant="outlined"
-          fullWidth
-          InputProps={{
-            endAdornment: (
-              <InputAdornment position="end">
-                <input
-                  accept="image/*"
-                  type="file"
-                  style={{ display: "none" }}
-                  id="icon-button-file"
-                  onChange={onFileSelected}
-                />
-                <label htmlFor="icon-button-file">
-                  <IconButton
-                    color="primary"
-                    aria-label="upload picture"
-                    component="span"
-                  >
-                    <Image />
-                  </IconButton>
-                </label>
-              </InputAdornment>
-            ),
-          }}
-        />
+        <div style={{ background: "#ffffff" }}>
+          <TextField
+            id="input-with-icon-textfield"
+            label="Prompt"
+            value={configuration.prompt}
+            multiline
+            variant="outlined"
+            maxRows={5}
+            onChange={(e) =>
+              setConfiguration({ ...configuration, prompt: e.target.value })
+            }
+            ref={inputElement}
+            fullWidth
+            InputProps={{
+              className: classes.prompt,
+              endAdornment: (
+                <InputAdornment position="end">
+                  <input
+                    accept="image/*"
+                    type="file"
+                    style={{ display: "none" }}
+                    id="icon-button-file"
+                    onChange={onFileSelected}
+                  />
+                  <label htmlFor="icon-button-file">
+                    <IconButton
+                      color="primary"
+                      aria-label="upload picture"
+                      component="span"
+                    >
+                      <Image />
+                    </IconButton>
+                  </label>
+                </InputAdornment>
+              ),
+            }}
+          />
+        </div>
         {configuration.image && (
           <div className={classes.preview}>
             <img src={configuration.image} width={200} height={200} />

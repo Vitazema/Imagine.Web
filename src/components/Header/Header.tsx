@@ -27,7 +27,7 @@ const Header: React.FC = () => {
   }
 
   return (
-    <AppBar position="static">
+    <AppBar position="static" style={{ background: "#222831" }}>
       <Toolbar>
         <Grid
           container
