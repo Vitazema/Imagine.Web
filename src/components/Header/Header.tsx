@@ -1,5 +1,4 @@
 import React from "react"
-import logo from "../../assets/logo192.png"
 import UserManagement from "./UserManagement"
 import { AiTypes as AiType } from "../../@types/shared"
 import {
@@ -39,13 +38,20 @@ const Header: React.FC = () => {
             width: "100%",
           }}
         >
-          <Grid item>
-            <Link to="/">
-              <img src={logo} width={50} alt="logo"></img>
-            </Link>
+          <Grid item alignItems={"center"}>
+            <Grid container direction="row" alignItems="center">
+              <Link to="/">
+                <img
+                  style={{ opacity: 0.7, marginRight: 10 }}
+                  src={"/logo192.png"}
+                  width={50}
+                  alt="logo"
+                ></img>
+              </Link>
+              <Typography variant="h6">Text to Image</Typography>
+            </Grid>
           </Grid>
           <Grid item>
-            <Typography variant="h6">Text to Image</Typography>
             {/* <ToggleButtonGroup
               value={userContext.settings?.selectedFeature}
               exclusive
