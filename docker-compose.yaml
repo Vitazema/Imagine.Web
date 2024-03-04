@@ -1,8 +1,13 @@
-version: '3.9'
+version: "3.9"
 services:
   imagine-web:
     image: ${DC_IMAGE_NAME}:${DC_IMAGE_TAG}
     container_name: imagine-web
     ports:
       - 50000:80
+    volumes:
+      - node-modules:/app/node_modules
     restart: unless-stopped
+
+volumes:
+  node-modules:
