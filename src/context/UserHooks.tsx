@@ -77,9 +77,7 @@ function getCurrentUser(token: string): Promise<User> {
   try {
     return axios
       .get(url, { headers: { Authorization: `Bearer ${token}` } })
-      .then((response) => {
-        return response.data
-      })
+      .then((response) => response.data)
   } catch (error) {
     console.error(error)
     throw error

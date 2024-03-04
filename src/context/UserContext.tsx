@@ -1,9 +1,9 @@
 import React, { useEffect } from "react"
 import {
   authenticateUser,
-  getCurrentUser,
   useGenerateUser,
   useSetUserSettings,
+  getCurrentUser,
 } from "./UserHooks"
 import { User } from "../@types/User"
 import { UserSettings } from "../@types/UserSettings"
@@ -26,25 +26,6 @@ export interface IUserContext {
 const UserContext = React.createContext<IUserContext>({} as IUserContext)
 
 const UserProvider: React.FC<ContextProps> = ({ children }) => {
-  async function fetchUser(): Promise<User | undefined> {
-    if (user) return user
-    const token = localStorage.getItem("token")
-    if (token) {
-      getCurrentUser(token).then((user) => {
-        user.token = token
-        setUser(user)
-        setToken(token)
-        setSettings(user.userSettings ?? new UserSettings())
-      })
-    } else {
-      if (false) {
-        if (await login(new UserCredentials("Guest", ""))) return user
-      } else {
-        if (await login()) return user
-      }
-    }
-  }
-
   const [user, setUser] = React.useState<User | undefined>()
   const [token, setToken] = React.useState<string | undefined>(
     localStorage.getItem("token") ?? undefined
@@ -55,7 +36,24 @@ const UserProvider: React.FC<ContextProps> = ({ children }) => {
   const generateUser = useGenerateUser()
 
   useEffect(() => {
-    fetchUser()
+    const storageToken = localStorage.getItem("token")
+    if (storageToken) {
+      getCurrentUser(storageToken)
+        .then((user) => {
+          user.token = storageToken
+          setUser(user)
+          setSettings(user.userSettings ?? new UserSettings())
+        })
+        .catch((error) => {
+          if (!login()) {
+            console.log("login failed with error: " + error)
+          }
+        })
+    } else {
+      if (!login()) {
+        console.log("login failed")
+      }
+    }
   }, [])
 
   const setAsCurrentUser = (user: User) => {
