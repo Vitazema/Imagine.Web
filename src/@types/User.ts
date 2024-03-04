@@ -7,7 +7,7 @@ export type User = {
   token: string
   role: Role
   userSettings?: UserSettings
-  permissions?: Permission[]
+  permission?: Permission
   subscription?: Subscription
   configurations?: Configuration[]
 }
@@ -18,7 +18,7 @@ export type Credentials = {
   password: string
 }
 
-export type Permission = {  
+export type Permission = {
   userName: string
   action: string
   resource: string
@@ -27,11 +27,11 @@ export type Permission = {
 }
 
 export enum Role {
-    System = "System",
-    Guest = "Guest",
-    Free = "Free",
-    Trial = "Trial",
-    Paid = "Paid"
+  System = "System",
+  Guest = "Guest",
+  Free = "Free",
+  Trial = "Trial",
+  Paid = "Paid",
 }
 
 export type Subscription = {

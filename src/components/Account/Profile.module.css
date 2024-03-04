@@ -1,0 +1,23 @@
+/* ProfilePage.module.css */
+.profileContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; /* Adjust based on your design */
+  padding: 24px; /* Adjust based on your design */
+}
+
+.profileAvatar {
+  width: 120px;
+  height: 120px; /* Adjust based on your design */
+}
+
+.profileTitle {
+  font-size: 24px; /* Adjust based on your design */
+  margin: 0; /* Adjust based on your design */
+}
+
+.profileDescription {
+  font-size: 16px; /* Adjust based on your design */
+  margin: 0; /* Adjust based on your design */
+}

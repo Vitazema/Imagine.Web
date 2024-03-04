@@ -22,7 +22,7 @@ export const ArtGrid = ({
   onFavorite,
 }: Args) => {
   const [selectedArt, setSelectedArt] = useState<Art>()
-  if (arts.length === 0) return <h1>"Arts not found."</h1>
+  if (!arts.length) return <h1>"Arts not found."</h1>
 
   return (
     <>
