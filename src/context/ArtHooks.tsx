@@ -14,14 +14,18 @@ import { UserContext } from "./UserContext"
 const imagineApiBaseUrl = import.meta.env.VITE_IMAGINE_API_URI
 
 export class RequestFilter {
-  constructor(public aiType: Feature, public limit: number) {}
+  constructor(
+    public aiType: Feature,
+    public limit: number,
+    public sort: string = "createdAtDesc"
+  ) {}
 }
 
 const useGetArts = (filter: RequestFilter, isEnabled: boolean) => {
   const userContext = React.useContext(UserContext)
   const buildUrl = (pageParam: number) => {
     let url = `${imagineApiBaseUrl}/arts?artType=${AiTypes[filter.aiType]}`
-    url += `&page=${pageParam}&limit=${filter.limit}`
+    url += `&page=${pageParam}&limit=${filter.limit}&sort=${filter.sort}`
     return url
   }
   return useInfiniteQuery<ArtRequest, AxiosError<Problem>>(
