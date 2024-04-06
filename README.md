@@ -5,7 +5,10 @@ This project provides an advanced platform for AI-generated images using the Sta
 <p align="center">
   <img src="preview.png" alt="alt text" width="200">
 </p>
-  <a href="https://aiexpression.net/"><strong><h1 align="center">www.aiexpression.net</h1></strong></a>
+
+<h1 align="center">
+https://aiexpression.net/
+</h1>
 
 ## Features
 
