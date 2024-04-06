@@ -22,7 +22,6 @@ export const ArtGrid = ({
   onFavorite,
 }: Args) => {
   const [selectedArt, setSelectedArt] = useState<Art>()
-  if (!arts.length) return <h1>"Arts not found."</h1>
 
   return (
     <>
@@ -52,24 +51,28 @@ export const ArtGrid = ({
         </Container>
       </Modal>
       <div className={classes.grid}>
-        <InfiniteScroll
-          next={fetchNextPage}
-          hasMore={hasNextPage || false}
-          loader={<h4>Loading...</h4>}
-          dataLength={arts.length || 0}
-        >
-          <ul>
-            {arts.map((art) => (
-              <ArtItem
-                key={art.id}
-                art={art}
-                onCancel={() => onDeleteArt(art.id)}
-                onFavorite={() => onFavorite(art.id)}
-                onSelect={() => setSelectedArt(art)}
-              />
-            ))}
-          </ul>
-        </InfiniteScroll>
+        {!arts.length ? (
+          <h1>"Arts not found. Start creating!"</h1>
+        ) : (
+          <InfiniteScroll
+            next={fetchNextPage}
+            hasMore={hasNextPage || false}
+            loader={<h4>Loading...</h4>}
+            dataLength={arts.length || 0}
+          >
+            <ul>
+              {arts.map((art) => (
+                <ArtItem
+                  key={art.id}
+                  art={art}
+                  onCancel={() => onDeleteArt(art.id)}
+                  onFavorite={() => onFavorite(art.id)}
+                  onSelect={() => setSelectedArt(art)}
+                />
+              ))}
+            </ul>
+          </InfiniteScroll>
+        )}
       </div>
     </>
   )

@@ -5,3 +5,8 @@
   gap: 20px;
   list-style-type: none;
 }
+
+.grid h1 {
+  display: grid;
+  justify-content: center;
+}
